@@ -28,8 +28,7 @@
 .hudGrid {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(var(--grid) 1px, transparent 1px),
+  background: linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 24px 24px;
   pointer-events: none;
@@ -40,8 +39,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    radial-gradient(
+  background: radial-gradient(
       closest-side at 50% 50%,
       transparent 55%,
       rgba(0, 0, 0, 0.55) 100%
@@ -59,19 +57,17 @@
 
 .hitbox {
   position: absolute;
-  border: 2px solid rgba(0, 255, 122, 0.9);
+  border: 2px solid transparent;
   border-radius: 10px;
-  box-shadow: 0 0 18px rgba(0, 255, 122, 0.25);
-  background: rgba(0, 255, 122, 0.06);
+  background: transparent;
   cursor: pointer;
   transition: transform 120ms ease, background 120ms ease,
-    border-color 120ms ease;
+    border-color 120ms ease, box-shadow 120ms ease;
 }
 
 .hitbox:hover,
 .hitbox:focus-visible {
   transform: translateY(-1px);
-  background: rgba(0, 255, 122, 0.1);
 }
 
 .hitbox.selected {
@@ -94,4 +90,8 @@
   border: 1px solid rgba(0, 255, 122, 0.35);
   color: rgba(215, 255, 231, 0.92);
   white-space: nowrap;
+}
+
+.hitbox:not(.selected) .tag {
+  opacity: 0;
 }

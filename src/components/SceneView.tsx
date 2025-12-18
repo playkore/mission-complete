@@ -1,40 +1,46 @@
-import type { SceneDefinition, SceneHotspot } from '../types'
+import type { SceneDefinition, SceneObject } from '../types'
 import './SceneView.css'
 
 export interface SceneViewProps {
   scene: SceneDefinition
-  selectedHotspotId: string | null
-  onHotspotSelect: (hotspot: SceneHotspot) => void
+  selectedObjectId: string | null
+  onObjectSelect: (sceneObject: SceneObject) => void
 }
 
 const SceneView = ({
   scene,
-  selectedHotspotId,
-  onHotspotSelect
+  selectedObjectId,
+  onObjectSelect
 }: SceneViewProps) => {
+  const imageSrc = resolveSceneImage(scene.imageSrc)
+
   return (
     <div className="povWrap" aria-label={`Scene ${scene.name}`}>
       <div className="pov">
-        <img src={scene.imageSrc} alt={scene.narrative} draggable="false" />
+        <img
+          src={imageSrc}
+          alt={scene.description ?? scene.name}
+          draggable="false"
+        />
         <div className="hudGrid" aria-hidden="true" />
         <div className="vfx" aria-hidden="true" />
 
-        {scene.hotspots.map((hotspot) => (
+        {scene.objects.map((sceneObject) => (
           <button
-            key={hotspot.id}
+            key={sceneObject.id}
             type="button"
             className={`hitbox${
-              selectedHotspotId === hotspot.id ? ' selected' : ''
+              selectedObjectId === sceneObject.id ? ' selected' : ''
             }`}
             style={{
-              left: `${hotspot.region.x}%`,
-              top: `${hotspot.region.y}%`,
-              width: `${hotspot.region.width}%`,
-              height: `${hotspot.region.height}%`
+              left: `${sceneObject.boundingBox.x * 100}%`,
+              top: `${sceneObject.boundingBox.y * 100}%`,
+              width: `${sceneObject.boundingBox.width * 100}%`,
+              height: `${sceneObject.boundingBox.height * 100}%`
             }}
-            onClick={() => onHotspotSelect(hotspot)}
+            onClick={() => onObjectSelect(sceneObject)}
           >
-            <span className="tag">{hotspot.name}</span>
+            <span className="tag">{sceneObject.name}</span>
           </button>
         ))}
       </div>
@@ -43,3 +49,14 @@ const SceneView = ({
 }
 
 export default SceneView
+
+const resolveSceneImage = (src: string) => {
+  if (/^(https?:)?\/\//i.test(src) || src.startsWith('data:')) {
+    return src
+  }
+
+  const normalized = src.startsWith('/') ? src.slice(1) : src
+  const rawBase = import.meta.env.BASE_URL ?? '/'
+  const basePath = rawBase === '' ? '/' : rawBase
+  return `${basePath.replace(/\/+$/, '')}/${normalized}`
+}

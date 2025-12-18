@@ -2,103 +2,336 @@ import type { SceneDefinition } from '../types'
 
 export const scenes: SceneDefinition[] = [
   {
-    id: 'relay-platform',
-    name: 'Relay Platform',
-    imageSrc: '/sample-scene.svg',
-    narrative:
-      'The makeshift listening post overlooks the city harbor. You need to locate the saboteur before radio silence begins.',
-    hotspots: [
+    id: 'storage_facility_autumn',
+    name: 'Storage Facility Approach',
+    description:
+      'Late afternoon outside a suburban storage facility. Fallen leaves collect near unit doors while a sedan idles nearby.',
+    imageSrc: '/scenes/chapter01/storage-outside-car.png',
+    objects: [
       {
-        id: 'antenna-array',
-        name: 'Antenna Array',
-        description:
-          'A nest of copper wires and improvised receivers hum with static. Whoever was here left in a hurry.',
-        region: { x: 41, y: 28, width: 15, height: 14 },
-        actions: [
+        id: 'car_001',
+        type: 'vehicle',
+        name: 'Sedan',
+        boundingBox: { x: 0.62, y: 0.4, width: 0.3, height: 0.32 },
+        properties: {
+          model: '1980s_sedan',
+          color: 'off_white',
+          drivable: false,
+          doors: 4,
+          trunkAccessible: true,
+          condition: 'used'
+        },
+        interactions: [
           {
-            id: 'scan-signal',
-            label: 'Scan signal',
-            description:
-              'Sweep the dials to triangulate the strongest frequency spike.',
-            notes: 'Opens the path to the cargo tram scene',
-            nextSceneId: 'cargo-tram'
+            verb: 'inspect',
+            label: 'Inspect car',
+            effects: ['show_description']
           },
           {
-            id: 'secure-logs',
-            label: 'Secure logs',
-            description:
-              'Copy the encrypted chatter to your pocket terminal for later decoding.'
+            verb: 'open_trunk',
+            label: 'Open trunk',
+            requires: { anyOf: ['has_key_car_001', 'lockpicked_trunk_001'] },
+            effects: ['toggle_container:trunk', 'maybe_alert'],
+            cooldownSec: 1
+          },
+          {
+            verb: 'search',
+            label: 'Search interior',
+            effects: ['loot_roll:car_001', 'show_loot_ui'],
+            cooldownSec: 2
+          },
+          {
+            verb: 'hide',
+            label: 'Hide behind car',
+            requires: { notInCombat: true },
+            effects: ['set_cover:0.7', 'set_visibility:-0.4']
+          },
+          {
+            verb: 'hotwire',
+            label: 'Try to hotwire',
+            requires: { skillAtLeast: { mechanics: 2 } },
+            effects: [
+              'skill_check:mechanics',
+              'on_success:set_flag:car_001_hotwired',
+              'on_fail:maybe_alarm'
+            ],
+            cooldownSec: 10
           }
         ]
       },
       {
-        id: 'supply-crates',
-        name: 'Supply Crates',
-        description:
-          'Standard-issue crates, but the seals are broken and the inventory tags are missing.',
-        region: { x: 30, y: 58, width: 18, height: 18 },
-        actions: [
+        id: 'storage_building_001',
+        type: 'building',
+        name: 'Storage Facility',
+        boundingBox: { x: 0, y: 0.05, width: 0.78, height: 0.55 },
+        properties: {
+          material: 'concrete',
+          era: '1970s',
+          color: 'gray',
+          enterable: false
+        },
+        interactions: [
           {
-            id: 'search',
-            label: 'Search for clues',
-            description:
-              'You sift through cables and ration packs until you find a torn patch with tram line insignia.'
+            verb: 'inspect',
+            label: 'Look around',
+            effects: ['show_description']
+          },
+          {
+            verb: 'listen',
+            label: 'Listen',
+            effects: ['perception_roll:audio', 'maybe_hint:nearby_activity'],
+            cooldownSec: 3
           }
         ]
       },
       {
-        id: 'skyline',
-        name: 'City Skyline',
-        description:
-          'The watchlights sweep in wide arcs. In the distance a tram sparks across the cables.',
-        region: { x: 65, y: 25, width: 25, height: 25 },
-        actions: [
+        id: 'storage_door_001',
+        type: 'door',
+        name: 'Storage Unit Door',
+        boundingBox: { x: 0.05, y: 0.18, width: 0.1, height: 0.32 },
+        properties: {
+          color: 'green',
+          lockType: 'keypad',
+          locked: true,
+          unitNumber: 12
+        },
+        interactions: [
           {
-            id: 'observe',
-            label: 'Observe movement',
-            description:
-              'A shadow leaps between tram cars then vanishes into the cargo platform haze.'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'cargo-tram',
-    name: 'Cargo Tram',
-    imageSrc:
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=60',
-    narrative:
-      'Fog and neon. The tram cables sing while the cargo bay lights pulse in warning. The saboteur might be hiding in the crates or on the catwalks.',
-    hotspots: [
-      {
-        id: 'cargo-door',
-        name: 'Cargo Door',
-        description:
-          'Industrial steel door with a new scorch mark along the hinge.',
-        region: { x: 5, y: 60, width: 30, height: 25 },
-        actions: [
+            verb: 'inspect',
+            label: 'Inspect door',
+            effects: ['show_description', 'maybe_hint:lock']
+          },
           {
-            id: 'force-open',
-            label: 'Force door open',
-            description:
-              'You pry the latch open. The interior is empty, but the saboteur left a portable projector ticking down.',
-            notes: 'Future action hook: disarm puzzle'
+            verb: 'use_keypad',
+            label: 'Use keypad',
+            requires: { powered: true },
+            effects: ['open_ui:keypad_001']
+          },
+          {
+            verb: 'try_open',
+            label: 'Try to open',
+            effects: ['if_locked:show_message:locked', 'if_unlocked:open_door'],
+            cooldownSec: 1
+          },
+          {
+            verb: 'lockpick',
+            label: 'Pick lock',
+            requires: { item: 'lockpick', skillAtLeast: { lockpicking: 1 } },
+            effects: [
+              'skill_check:lockpicking',
+              'on_success:set_locked:false',
+              'on_fail:maybe_alert'
+            ],
+            cooldownSec: 6
+          },
+          {
+            verb: 'force_open',
+            label: 'Force open',
+            requires: { skillAtLeast: { strength: 2 } },
+            effects: [
+              'skill_check:strength',
+              'on_success:open_door',
+              'on_fail:noise:+2',
+              'maybe_alert'
+            ],
+            cooldownSec: 8
           }
         ]
       },
       {
-        id: 'tram-cables',
-        name: 'Tram Cables',
-        description:
-          'Heavy copper cables disappearing into the night, vibrating with approaching weight.',
-        region: { x: 60, y: 5, width: 30, height: 18 },
-        actions: [
+        id: 'storage_door_002',
+        type: 'door',
+        name: 'Storage Unit Door',
+        boundingBox: { x: 0.17, y: 0.18, width: 0.1, height: 0.32 },
+        properties: {
+          color: 'green',
+          lockType: 'keypad',
+          locked: true,
+          unitNumber: 13
+        },
+        interactions: [
           {
-            id: 'listen',
-            label: 'Listen to cables',
-            description:
-              'You catch faint footsteps above you. Someone is moving toward the control tower.'
+            verb: 'inspect',
+            label: 'Inspect door',
+            effects: ['show_description', 'maybe_hint:lock']
+          },
+          {
+            verb: 'try_open',
+            label: 'Try to open',
+            effects: ['if_locked:show_message:locked', 'if_unlocked:open_door'],
+            cooldownSec: 1
+          },
+          {
+            verb: 'lockpick',
+            label: 'Pick lock',
+            requires: { item: 'lockpick', skillAtLeast: { lockpicking: 1 } },
+            effects: [
+              'skill_check:lockpicking',
+              'on_success:set_locked:false',
+              'on_fail:maybe_alert'
+            ],
+            cooldownSec: 6
+          }
+        ]
+      },
+      {
+        id: 'keypad_001',
+        type: 'device',
+        name: 'Access Keypad',
+        boundingBox: { x: 0.07, y: 0.25, width: 0.02, height: 0.08 },
+        properties: {
+          deviceType: 'numeric_keypad',
+          powered: true,
+          interactable: true,
+          linkedDoorId: 'storage_door_001'
+        },
+        interactions: [
+          {
+            verb: 'inspect',
+            label: 'Inspect keypad',
+            effects: ['show_description']
+          },
+          {
+            verb: 'enter_code',
+            label: 'Enter code',
+            effects: [
+              'open_ui:keypad_input',
+              'on_correct:unlock:storage_door_001',
+              'on_wrong:beep',
+              'maybe_alert'
+            ]
+          },
+          {
+            verb: 'hack',
+            label: 'Hack keypad',
+            requires: { item: 'hack_tool', skillAtLeast: { electronics: 2 } },
+            effects: [
+              'skill_check:electronics',
+              'on_success:unlock:storage_door_001',
+              'on_fail:disable:10s',
+              'maybe_alert'
+            ],
+            cooldownSec: 12
+          },
+          {
+            verb: 'cut_power',
+            label: 'Cut power',
+            requires: { item: 'wire_cutter' },
+            effects: ['set_powered:false', 'set_flag:keypad_001_disabled', 'noise:+1'],
+            cooldownSec: 5
+          }
+        ]
+      },
+      {
+        id: 'wood_pallets_001',
+        type: 'prop',
+        name: 'Wooden Pallets',
+        boundingBox: { x: 0.03, y: 0.42, width: 0.12, height: 0.22 },
+        properties: {
+          material: 'wood',
+          movable: false,
+          flammable: true,
+          lootable: false
+        },
+        interactions: [
+          {
+            verb: 'inspect',
+            label: 'Inspect pallets',
+            effects: ['show_description']
+          },
+          {
+            verb: 'take_wood',
+            label: 'Take scrap wood',
+            requires: { inventorySpace: 1 },
+            effects: ['give_item:scrap_wood', 'set_state:wood_pallets_001:reduced'],
+            cooldownSec: 2
+          },
+          {
+            verb: 'climb',
+            label: 'Climb',
+            requires: { skillAtLeast: { agility: 1 } },
+            effects: ['set_position:slightly_higher', 'set_visibility:+0.1']
+          },
+          {
+            verb: 'burn',
+            label: 'Burn',
+            requires: { item: 'lighter' },
+            effects: ['spawn_fx:fire_small', 'noise:+2', 'maybe_alert'],
+            cooldownSec: 20
+          }
+        ]
+      },
+      {
+        id: 'bush_001',
+        type: 'vegetation',
+        name: 'Overgrown Bush',
+        boundingBox: { x: 0.5, y: 0.45, width: 0.15, height: 0.3 },
+        properties: {
+          season: 'autumn',
+          walkable: false,
+          concealment: 0.6
+        },
+        interactions: [
+          {
+            verb: 'inspect',
+            label: 'Inspect bush',
+            effects: ['show_description']
+          },
+          {
+            verb: 'search',
+            label: 'Search bush',
+            effects: ['loot_roll:bush_001', 'maybe_find:clue_or_item'],
+            cooldownSec: 4
+          },
+          {
+            verb: 'hide',
+            label: 'Hide in foliage',
+            requires: { notInCombat: true },
+            effects: ['set_cover:0.5', 'set_visibility:-0.6']
+          },
+          {
+            verb: 'clear',
+            label: 'Clear branches',
+            requires: { item: 'knife' },
+            effects: ['set_state:bush_001:cleared', 'reveal:ground_spot'],
+            cooldownSec: 6
+          }
+        ]
+      },
+      {
+        id: 'fallen_leaves_001',
+        type: 'environment_fx',
+        name: 'Fallen Leaves',
+        boundingBox: { x: 0, y: 0.55, width: 1, height: 0.45 },
+        properties: {
+          slippery: false,
+          noiseModifier: 1.3,
+          seasonal: true,
+          interactive: false
+        },
+        interactions: [
+          {
+            verb: 'inspect',
+            label: 'Inspect ground',
+            effects: ['show_description']
+          },
+          {
+            verb: 'sweep',
+            label: 'Sweep leaves',
+            requires: { item: 'broom' },
+            effects: ['reveal:surface_detail', 'maybe_find:trace'],
+            cooldownSec: 8
+          },
+          {
+            verb: 'track',
+            label: 'Look for footprints',
+            requires: { skillAtLeast: { perception: 2 } },
+            effects: [
+              'skill_check:perception',
+              'on_success:spawn_clue:footprints',
+              'on_fail:show_message:nothing'
+            ],
+            cooldownSec: 5
           }
         ]
       }

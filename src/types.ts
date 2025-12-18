@@ -1,41 +1,40 @@
-export interface SceneAction {
-  id: string
+export type ObjectPropertyValue = string | number | boolean
+
+export interface ObjectInteraction {
+  verb: string
   label: string
-  description: string
-  /**
-   * Optional ID of the scene that should be loaded
-   * after the action is completed.
-   */
-  nextSceneId?: string
-  notes?: string
+  effects: string[]
+  requires?: Record<string, unknown>
+  cooldownSec?: number
 }
 
-export interface SceneHotspot {
-  id: string
-  name: string
-  description: string
-  region: HotspotRegion
-  actions: SceneAction[]
-}
-
-export interface HotspotRegion {
+export interface BoundingBox {
   /**
-   * Percentage from the left edge of the image.
+   * Normalized coordinate from the left edge (0-1).
    */
   x: number
   /**
-   * Percentage from the top edge of the image.
+   * Normalized coordinate from the top edge (0-1).
    */
   y: number
   width: number
   height: number
 }
 
+export interface SceneObject {
+  id: string
+  type: string
+  name: string
+  boundingBox: BoundingBox
+  properties: Record<string, ObjectPropertyValue>
+  interactions: ObjectInteraction[]
+}
+
 export interface SceneDefinition {
   id: string
   name: string
   imageSrc: string
-  narrative: string
-  hotspots: SceneHotspot[]
+  description?: string
+  objects: SceneObject[]
   ambientSound?: string
 }

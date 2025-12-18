@@ -25,7 +25,7 @@ export const scenes: SceneDefinition[] = [
           {
             verb: "get_in",
             label: "Get in car",
-            effects: ["enter_vehicle:car_001"],
+            effects: [{ type: "enter_vehicle", vehicleId: "car_001" }],
           },
         ],
       },
@@ -44,12 +44,15 @@ export const scenes: SceneDefinition[] = [
           {
             verb: "inspect",
             label: "Inspect door",
-            effects: ["show_description", "maybe_hint:lock"],
+            effects: [
+              { type: "show_description" },
+              { type: "maybe_hint", topic: "lock" },
+            ],
           },
           {
             verb: "use_keypad",
             label: "Use keypad",
-            effects: ["open_ui:keypad_001"],
+            effects: [{ type: "open_ui", interfaceId: "keypad_001" }],
           },
         ],
       },
@@ -68,7 +71,12 @@ export const scenes: SceneDefinition[] = [
           {
             verb: "inspect",
             label: "Inspect door",
-            effects: ["show_description:storage_door_002"],
+            effects: [
+              {
+                type: "show_description",
+                targetId: "storage_door_002",
+              },
+            ],
           },
         ],
       },
@@ -87,15 +95,19 @@ export const scenes: SceneDefinition[] = [
           {
             verb: "inspect",
             label: "Inspect pallets",
-            effects: ["show_description"],
+            effects: [{ type: "show_description" }],
           },
           {
             verb: "take_wood",
             label: "Take scrap wood",
             requires: { inventorySpace: 1 },
             effects: [
-              "give_item:scrap_wood",
-              "set_state:wood_pallets_001:reduced",
+              { type: "give_item", itemId: "scrap_wood" },
+              {
+                type: "set_state",
+                targetId: "wood_pallets_001",
+                state: "reduced",
+              },
             ],
             cooldownSec: 2,
           },
@@ -103,13 +115,20 @@ export const scenes: SceneDefinition[] = [
             verb: "climb",
             label: "Climb",
             requires: { skillAtLeast: { agility: 1 } },
-            effects: ["set_position:slightly_higher", "set_visibility:+0.1"],
+            effects: [
+              { type: "set_position", position: "slightly_higher" },
+              { type: "set_visibility", delta: 0.1 },
+            ],
           },
           {
             verb: "burn",
             label: "Burn",
             requires: { item: "lighter" },
-            effects: ["spawn_fx:fire_small", "noise:+2", "maybe_alert"],
+            effects: [
+              { type: "spawn_fx", effectId: "fire_small" },
+              { type: "noise", amount: "+2" },
+              { type: "maybe_alert" },
+            ],
             cooldownSec: 20,
           },
         ],
@@ -128,25 +147,38 @@ export const scenes: SceneDefinition[] = [
           {
             verb: "inspect",
             label: "Inspect bush",
-            effects: ["show_description"],
+            effects: [{ type: "show_description" }],
           },
           {
             verb: "search",
             label: "Search bush",
-            effects: ["loot_roll:bush_001", "maybe_find:clue_or_item"],
+            effects: [
+              { type: "loot_roll", tableId: "bush_001" },
+              { type: "maybe_find", resultId: "clue_or_item" },
+            ],
             cooldownSec: 4,
           },
           {
             verb: "hide",
             label: "Hide in foliage",
             requires: { notInCombat: true },
-            effects: ["set_cover:0.5", "set_visibility:-0.6"],
+            effects: [
+              { type: "set_cover", value: 0.5 },
+              { type: "set_visibility", delta: -0.6 },
+            ],
           },
           {
             verb: "clear",
             label: "Clear branches",
             requires: { item: "knife" },
-            effects: ["set_state:bush_001:cleared", "reveal:ground_spot"],
+            effects: [
+              {
+                type: "set_state",
+                targetId: "bush_001",
+                state: "cleared",
+              },
+              { type: "reveal", targetId: "ground_spot" },
+            ],
             cooldownSec: 6,
           },
         ],

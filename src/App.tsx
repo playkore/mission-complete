@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
 import SceneView from './components/SceneView'
 import { initialSceneId, scenes } from './data/scenes'
+import { executeEffects } from './effects/registry'
 import type {
   ObjectInteraction,
   SceneDefinition,
+  SceneEffectCommand,
   SceneObject
 } from './types'
 import './App.css'
@@ -19,6 +21,45 @@ const formatPropertyValue = (value: unknown) => {
   if (typeof value === 'boolean') return value ? 'Yes' : 'No'
   if (value === null || value === undefined) return '—'
   return String(value)
+}
+
+const describeEffect = (effect: SceneEffectCommand) => {
+  switch (effect.type) {
+    case 'enter_vehicle':
+      return `enter_vehicle(${effect.vehicleId})`
+    case 'maybe_hint':
+      return `maybe_hint(${effect.topic ?? '—'})`
+    case 'show_description':
+      return effect.targetId
+        ? `show_description(${effect.targetId})`
+        : 'show_description'
+    case 'open_ui':
+      return `open_ui(${effect.interfaceId})`
+    case 'give_item':
+      return `give_item(${effect.itemId})`
+    case 'set_state':
+      return `set_state(${effect.targetId}, ${effect.state})`
+    case 'set_position':
+      return `set_position(${effect.position})`
+    case 'set_visibility':
+      return `set_visibility(${effect.delta})`
+    case 'spawn_fx':
+      return `spawn_fx(${effect.effectId})`
+    case 'noise':
+      return `noise(${effect.amount})`
+    case 'maybe_alert':
+      return 'maybe_alert'
+    case 'loot_roll':
+      return `loot_roll(${effect.tableId})`
+    case 'maybe_find':
+      return `maybe_find(${effect.resultId})`
+    case 'set_cover':
+      return `set_cover(${effect.value})`
+    case 'reveal':
+      return `reveal(${effect.targetId})`
+    default:
+      return effect.type
+  }
 }
 
 const App = () => {
@@ -49,7 +90,17 @@ const App = () => {
   }
 
   const handleInteraction = (interaction: ObjectInteraction) => {
-    const summary = `${interaction.label} :: ${interaction.effects.join(', ')}`
+    if (!currentScene || !selectedObject) return
+
+    const results = executeEffects(interaction.effects, {
+      scene: currentScene,
+      object: selectedObject
+    })
+
+    const summary = results.length
+      ? `${interaction.label} → ${results.join(' | ')}`
+      : interaction.label
+
     setLastAction(summary)
   }
 
@@ -145,7 +196,7 @@ const App = () => {
               >
                 <strong>{interaction.label}</strong>
                 <span className="actionMeta">
-                  {interaction.effects.join(', ')}
+                  {interaction.effects.map(describeEffect).join(', ')}
                 </span>
                 {interaction.cooldownSec ? (
                   <span className="actionMeta">

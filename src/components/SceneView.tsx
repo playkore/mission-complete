@@ -1,35 +1,31 @@
-import type { SceneDefinition, SceneObject } from '../types'
-import './SceneView.css'
+import type { MouseEvent as ReactMouseEvent } from "react";
+import type { SceneDefinition, SceneObject } from "../types";
+import "./SceneView.css";
 
 export interface SceneViewProps {
-  scene: SceneDefinition
-  selectedObjectId: string | null
-  onObjectSelect: (sceneObject: SceneObject | null) => void
+  scene: SceneDefinition;
+  selectedObjectId: string | null;
+  onObjectSelect: (sceneObject: SceneObject | null) => void;
 }
 
 const SceneView = ({
   scene,
   selectedObjectId,
-  onObjectSelect
+  onObjectSelect,
 }: SceneViewProps) => {
-  const imageSrc = resolveSceneImage(scene.imageSrc)
+  const imageSrc = resolveSceneImage(scene.imageSrc);
 
-  const handleSceneClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    const target = event.target as HTMLElement
-    if (target.closest('button.hitbox')) {
-      return
+  const handleSceneClick = (event: ReactMouseEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLElement;
+    if (target.closest("button.hitbox")) {
+      return;
     }
-    onObjectSelect(null)
-  }
+    onObjectSelect(null);
+  };
 
   return (
     <div className="povWrap" aria-label={`Scene ${scene.name}`}>
-      <div
-        className="pov"
-        onClick={handleSceneClick}
-      >
+      <div className="pov" onClick={handleSceneClick}>
         <img
           src={imageSrc}
           alt={scene.description ?? scene.name}
@@ -43,13 +39,13 @@ const SceneView = ({
             key={sceneObject.id}
             type="button"
             className={`hitbox${
-              selectedObjectId === sceneObject.id ? ' selected' : ''
+              selectedObjectId === sceneObject.id ? " selected" : ""
             }`}
             style={{
               left: `${sceneObject.boundingBox.x * 100}%`,
               top: `${sceneObject.boundingBox.y * 100}%`,
               width: `${sceneObject.boundingBox.width * 100}%`,
-              height: `${sceneObject.boundingBox.height * 100}%`
+              height: `${sceneObject.boundingBox.height * 100}%`,
             }}
             onClick={() => onObjectSelect(sceneObject)}
           >
@@ -58,18 +54,18 @@ const SceneView = ({
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SceneView
+export default SceneView;
 
 const resolveSceneImage = (src: string) => {
-  if (/^(https?:)?\/\//i.test(src) || src.startsWith('data:')) {
-    return src
+  if (/^(https?:)?\/\//i.test(src) || src.startsWith("data:")) {
+    return src;
   }
 
-  const normalized = src.startsWith('/') ? src.slice(1) : src
-  const rawBase = import.meta.env.BASE_URL ?? '/'
-  const basePath = rawBase === '' ? '/' : rawBase
-  return `${basePath.replace(/\/+$/, '')}/${normalized}`
-}
+  const normalized = src.startsWith("/") ? src.slice(1) : src;
+  const rawBase = import.meta.env.BASE_URL ?? "/";
+  const basePath = rawBase === "" ? "/" : rawBase;
+  return `${basePath.replace(/\/+$/, "")}/${normalized}`;
+};

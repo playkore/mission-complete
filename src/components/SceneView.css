@@ -61,6 +61,9 @@
   border-radius: 10px;
   background: transparent;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: block;
   transition: transform 120ms ease, background 120ms ease,
     border-color 120ms ease, box-shadow 120ms ease;
 }
@@ -90,6 +93,7 @@
   border: 1px solid rgba(0, 255, 122, 0.35);
   color: rgba(215, 255, 231, 0.92);
   white-space: nowrap;
+  pointer-events: none;
 }
 
 .hitbox:not(.selected) .tag {

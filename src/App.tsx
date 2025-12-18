@@ -37,8 +37,8 @@ const App = () => {
     currentScene?.objects.find((object) => object.id === selectedObjectId) ??
     null
 
-  const handleObjectSelect = (object: SceneObject) => {
-    setSelectedObjectId(object.id)
+  const handleObjectSelect = (object: SceneObject | null) => {
+    setSelectedObjectId(object?.id ?? null)
     setLastAction(null)
   }
 

@@ -4,7 +4,7 @@ import './SceneView.css'
 export interface SceneViewProps {
   scene: SceneDefinition
   selectedObjectId: string | null
-  onObjectSelect: (sceneObject: SceneObject) => void
+  onObjectSelect: (sceneObject: SceneObject | null) => void
 }
 
 const SceneView = ({
@@ -14,9 +14,22 @@ const SceneView = ({
 }: SceneViewProps) => {
   const imageSrc = resolveSceneImage(scene.imageSrc)
 
+  const handleSceneClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const target = event.target as HTMLElement
+    if (target.closest('button.hitbox')) {
+      return
+    }
+    onObjectSelect(null)
+  }
+
   return (
     <div className="povWrap" aria-label={`Scene ${scene.name}`}>
-      <div className="pov">
+      <div
+        className="pov"
+        onClick={handleSceneClick}
+      >
         <img
           src={imageSrc}
           alt={scene.description ?? scene.name}

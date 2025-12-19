@@ -1,108 +1,52 @@
-import { useMemo, useState } from 'react'
-import SceneView from './components/SceneView'
-import { initialSceneId, scenes } from './data/scenes'
-import { executeEffects } from './effects/handlers'
-import type {
-  ObjectInteraction,
-  SceneDefinition,
-  SceneObject
-} from './types'
-import './App.css'
-import { SceneEffectCommand } from './effects/types'
+import { useMemo, useState } from "react";
+import SceneView from "./components/SceneView";
+import { initialSceneId, scenes } from "./data/scenes";
+import { executeEffects } from "./effects/handlers";
+import type { ObjectInteraction, SceneDefinition, SceneObject } from "./types";
+import "./App.css";
 
 const formatPropertyKey = (key: string) =>
   key
-    .replace(/_/g, ' ')
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/_/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
     .replace(/\b\w/g, (char) => char.toUpperCase())
-    .trim()
+    .trim();
 
 const formatPropertyValue = (value: unknown) => {
-  if (typeof value === 'boolean') return value ? 'Yes' : 'No'
-  if (value === null || value === undefined) return '—'
-  return String(value)
-}
-
-const describeEffect = (effect: SceneEffectCommand) => {
-  switch (effect.type) {
-    case 'enter_vehicle':
-      return `enter_vehicle(${effect.vehicleId})`
-    case 'maybe_hint':
-      return `maybe_hint(${effect.topic ?? '—'})`
-    case 'show_description':
-      return effect.targetId
-        ? `show_description(${effect.targetId})`
-        : 'show_description'
-    case 'open_ui':
-      return `open_ui(${effect.interfaceId})`
-    case 'give_item':
-      return `give_item(${effect.itemId})`
-    case 'set_state':
-      return `set_state(${effect.targetId}, ${effect.state})`
-    case 'set_position':
-      return `set_position(${effect.position})`
-    case 'set_visibility':
-      return `set_visibility(${effect.delta})`
-    case 'spawn_fx':
-      return `spawn_fx(${effect.effectId})`
-    case 'noise':
-      return `noise(${effect.amount})`
-    case 'maybe_alert':
-      return 'maybe_alert'
-    case 'loot_roll':
-      return `loot_roll(${effect.tableId})`
-    case 'maybe_find':
-      return `maybe_find(${effect.resultId})`
-    case 'set_cover':
-      return `set_cover(${effect.value})`
-    case 'reveal':
-      return `reveal(${effect.targetId})`
-    default:
-      return ''
-  }
-}
+  if (typeof value === "boolean") return value ? "Yes" : "No";
+  if (value === null || value === undefined) return "—";
+  return String(value);
+};
 
 const App = () => {
-  const [currentSceneId, setCurrentSceneId] = useState(initialSceneId)
-  const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null)
-  const [lastAction, setLastAction] = useState<string | null>(null)
+  const [currentSceneId, setCurrentSceneId] = useState(initialSceneId);
+  const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
 
   const sceneMap = useMemo(() => {
     return new Map<string, SceneDefinition>(
       scenes.map((scene) => [scene.id, scene])
-    )
-  }, [])
+    );
+  }, []);
 
-  const currentScene = sceneMap.get(currentSceneId)
+  const currentScene = sceneMap.get(currentSceneId);
   const selectedObject: SceneObject | null =
     currentScene?.objects.find((object) => object.id === selectedObjectId) ??
-    null
+    null;
 
   const handleObjectSelect = (object: SceneObject | null) => {
-    setSelectedObjectId(object?.id ?? null)
-    setLastAction(null)
-  }
+    setSelectedObjectId(object?.id ?? null);
+  };
 
   const handleSceneChange = (sceneId: string) => {
-    setCurrentSceneId(sceneId)
-    setSelectedObjectId(null)
-    setLastAction(null)
-  }
+    setCurrentSceneId(sceneId);
+    setSelectedObjectId(null);
+  };
 
   const handleInteraction = (interaction: ObjectInteraction) => {
-    if (!currentScene || !selectedObject) return
+    if (!currentScene || !selectedObject) return;
 
-    const results = executeEffects(interaction.effect, {
-      scene: currentScene,
-      object: selectedObject
-    })
-
-    const summary = results.length
-      ? `${interaction.label} → ${results.join(' | ')}`
-      : interaction.label
-
-    setLastAction(summary)
-  }
+    executeEffects(interaction.effect);
+  };
 
   if (!currentScene) {
     return (
@@ -111,12 +55,12 @@ const App = () => {
           <p>No scenes registered yet. Add one in src/data/scenes.ts.</p>
         </section>
       </main>
-    )
+    );
   }
 
   const propertyEntries = selectedObject
     ? Object.entries(selectedObject.properties)
-    : []
+    : [];
 
   return (
     <main className="appShell">
@@ -124,9 +68,7 @@ const App = () => {
         <div className="propertiesHeader">
           <div>
             <p className="eyebrow">{currentScene.name}</p>
-            <h1>
-              {selectedObject ? selectedObject.name : 'Select an object'}
-            </h1>
+            <h1>{selectedObject ? selectedObject.name : "Select an object"}</h1>
             <p className="sceneDescription">
               {selectedObject
                 ? `Type: ${formatPropertyKey(selectedObject.type)}`
@@ -178,31 +120,20 @@ const App = () => {
             <p>
               {selectedObject
                 ? `${selectedObject.interactions.length} options available`
-                : 'Select an object to see contextual actions'}
+                : "Select an object to see contextual actions"}
             </p>
           </div>
-          {lastAction ? (
-            <span className="pill">Last: {lastAction}</span>
-          ) : null}
         </div>
         {selectedObject ? (
           <div className="actionsGrid">
             {selectedObject.interactions.map((interaction) => (
               <button
-                key={`${selectedObject.id}-${interaction.verb}`}
+                key={`${selectedObject.id}-${interaction.effect.type}`}
                 type="button"
                 className="actionButton"
                 onClick={() => handleInteraction(interaction)}
               >
                 <strong>{interaction.label}</strong>
-                <span className="actionMeta">
-                  {interaction.effects.map(describeEffect).join(', ')}
-                </span>
-                {interaction.cooldownSec ? (
-                  <span className="actionMeta">
-                    Cooldown: {interaction.cooldownSec}s
-                  </span>
-                ) : null}
               </button>
             ))}
           </div>
@@ -213,7 +144,7 @@ const App = () => {
         )}
       </section>
     </main>
-  )
-}
+  );
+};
 
-export default App
+export default App;

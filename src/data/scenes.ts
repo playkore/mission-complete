@@ -1,4 +1,4 @@
-import type { SceneDefinition } from "../types/scenes";
+import type { SceneDefinition, SceneId } from "../types/scenes";
 
 export const scenes: SceneDefinition[] = [
   {
@@ -517,4 +517,4 @@ export const scenes: SceneDefinition[] = [
   },
 ];
 
-export const initialSceneId = scenes[0]?.id ?? "";
+export const initialSceneId: SceneId = "storage-chair-broken";

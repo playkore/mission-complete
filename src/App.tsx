@@ -64,28 +64,15 @@ const App = () => {
         <div className="overviewHeader">
           <div>
             <p className="eyebrow">{currentScene.name}</p>
-            <h1>{selectedObject ? selectedObject.name : "Select an object"}</h1>
+            {selectedObject && <h1>{selectedObject.name}</h1>}
             <p className="sceneDescription">
-              {currentScene.description ?? selectedObject?.name ?? ""}
+              {selectedObject
+                ? selectedObject.description
+                : currentScene.description}
             </p>
           </div>
-          <label className="scenePicker">
-            <span>Scene</span>
-            <select
-              value={currentSceneId}
-              onChange={(event) =>
-                handleSceneChange(event.target.value as SceneId)
-              }
-            >
-              {scenes.map((scene) => (
-                <option key={scene.id} value={scene.id}>
-                  {scene.name}
-                </option>
-              ))}
-            </select>
-          </label>
         </div>
-        {selectedObject ? (
+        {selectedObject && (
           <div className="actionsGrid">
             {selectedObject.interactions.map((interaction) => (
               <button
@@ -98,10 +85,6 @@ const App = () => {
               </button>
             ))}
           </div>
-        ) : (
-          <p className="emptyState">
-            Choose an object above to reveal its actions.
-          </p>
         )}
       </section>
     </main>

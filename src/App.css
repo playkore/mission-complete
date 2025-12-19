@@ -49,22 +49,6 @@
   color: rgba(215, 255, 231, 0.72);
 }
 
-.scenePicker {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.8rem;
-  color: rgba(215, 255, 231, 0.8);
-}
-
-.scenePicker select {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  border: 1px solid rgba(0, 255, 122, 0.22);
-  color: inherit;
-  padding: 8px 12px;
-}
-
 .panelMessage {
   margin: 0;
   font-size: 0.95rem;

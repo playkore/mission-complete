@@ -1,5 +1,5 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
-import type { SceneDefinition, SceneObject } from "../types";
+import type { SceneDefinition, SceneObject } from "../types/scenes";
 import "./SceneView.css";
 
 export interface SceneViewProps {

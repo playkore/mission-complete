@@ -1,4 +1,18 @@
-import { SceneEffectCommand } from "./effects/types";
+import { SceneEffectCommand } from "./effects";
+
+// Should correspond the image name <sceneId>.png in src/assets/scenes/chapter01/
+export type SceneId =
+  | "storage-chair-broken"
+  | "storage-chair-fixed"
+  | "storage-exit"
+  | "storage-mirror-angry"
+  | "storage-mirror"
+  | "storage-outside-car-inside"
+  | "storage-outside-car"
+  | "storage-vcr"
+  | "store-entrance"
+  | "store-hardware-ducttape"
+  | "store-hardware";
 
 export type ObjectPropertyValue = string | number | boolean;
 
@@ -30,7 +44,7 @@ export interface SceneObject {
 }
 
 export interface SceneDefinition {
-  id: string;
+  id: SceneId;
   name: string;
   imageSrc: string;
   description?: string;

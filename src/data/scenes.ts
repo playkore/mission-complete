@@ -1,8 +1,8 @@
-import type { SceneDefinition } from "../types";
+import type { SceneDefinition } from "../types/scenes";
 
 export const scenes: SceneDefinition[] = [
   {
-    id: "storage_facility_autumn",
+    id: "storage-outside-car",
     name: "Storage Facility Approach",
     description:
       "Late afternoon outside a suburban storage facility. Fallen leaves collect near unit doors while a sedan idles nearby.",
@@ -41,8 +41,8 @@ export const scenes: SceneDefinition[] = [
         },
         interactions: [
           {
-            label: "Inspect door",
-            effect: { type: "maybe_hint", topic: "lock" },
+            label: "Get inside the storage unit",
+            effect: { type: "change_scene", sceneId: "storage" },
           },
           {
             label: "Use keypad",

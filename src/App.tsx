@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import SceneView from "./components/SceneView";
-import { initialSceneId, scenes } from "./data/scenes";
-import { executeEffects } from "./effects/handlers";
-import type { ObjectInteraction, SceneDefinition, SceneObject } from "./types";
+import { scenes } from "./data/scenes";
+import { useGameState } from "./effects/useGameState";
+import type { ObjectInteraction, SceneDefinition, SceneObject } from "./types/scenes";
 import "./App.css";
 
 const formatPropertyKey = (key: string) =>
@@ -19,8 +19,8 @@ const formatPropertyValue = (value: unknown) => {
 };
 
 const App = () => {
-  const [currentSceneId, setCurrentSceneId] = useState(initialSceneId);
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
+  const { executeEffect, currentSceneId, setCurrentSceneId } = useGameState();
 
   const sceneMap = useMemo(() => {
     return new Map<string, SceneDefinition>(
@@ -45,7 +45,7 @@ const App = () => {
   const handleInteraction = (interaction: ObjectInteraction) => {
     if (!currentScene || !selectedObject) return;
 
-    executeEffects(interaction.effect);
+    executeEffect(interaction.effect);
   };
 
   if (!currentScene) {

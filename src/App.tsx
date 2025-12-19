@@ -2,7 +2,12 @@ import { useMemo, useState } from "react";
 import SceneView from "./components/SceneView";
 import { scenes } from "./data/scenes";
 import { useGameState } from "./effects/useGameState";
-import type { ObjectInteraction, SceneDefinition, SceneId, SceneObject } from "./types/scenes";
+import type {
+  ObjectInteraction,
+  SceneDefinition,
+  SceneId,
+  SceneObject,
+} from "./types/scenes";
 import "./App.css";
 
 const formatPropertyKey = (key: string) =>
@@ -54,7 +59,15 @@ const App = () => {
 
   return (
     <main className="appShell">
-      <section className="panel overviewPanel" aria-label="Scene overview">
+      <section className="panel panel--flush" aria-label="Scene view">
+        <SceneView
+          scene={currentScene}
+          selectedObjectId={selectedObjectId}
+          onObjectSelect={handleObjectSelect}
+        />
+      </section>
+
+      <section className="panel actionsPanel" aria-label="Available actions">
         <div className="overviewHeader">
           <div>
             <p className="eyebrow">{currentScene.name}</p>
@@ -69,7 +82,9 @@ const App = () => {
             <span>Scene</span>
             <select
               value={currentSceneId}
-              onChange={(event) => handleSceneChange(event.target.value as SceneId)}
+              onChange={(event) =>
+                handleSceneChange(event.target.value as SceneId)
+              }
             >
               {scenes.map((scene) => (
                 <option key={scene.id} value={scene.id}>
@@ -81,22 +96,12 @@ const App = () => {
         </div>
         {selectedObject ? (
           <p className="panelMessage">
-            Use the contextual actions below to interact with {selectedObject.name}.
+            Use the contextual actions below to interact with{" "}
+            {selectedObject.name}.
           </p>
         ) : (
           <p className="emptyState">Tap the scene to inspect an object.</p>
         )}
-      </section>
-
-      <section className="panel panel--flush" aria-label="Scene view">
-        <SceneView
-          scene={currentScene}
-          selectedObjectId={selectedObjectId}
-          onObjectSelect={handleObjectSelect}
-        />
-      </section>
-
-      <section className="panel actionsPanel" aria-label="Available actions">
         <div className="actionsHeader">
           <div>
             <h2>Actions</h2>

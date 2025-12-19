@@ -13,14 +13,6 @@ export const scenes: SceneDefinition[] = [
         type: "vehicle",
         name: "Sedan",
         boundingBox: { x: 0.66, y: 0.31, width: 0.34, height: 0.28 },
-        properties: {
-          model: "1980s_sedan",
-          color: "off_white",
-          drivable: false,
-          doors: 4,
-          trunkAccessible: true,
-          condition: "used",
-        },
         interactions: [
           {
             label: "Get in car",
@@ -36,12 +28,6 @@ export const scenes: SceneDefinition[] = [
         type: "door",
         name: "Storage Unit Door",
         boundingBox: { x: 0, y: 0.06, width: 0.14, height: 0.54 },
-        properties: {
-          color: "green",
-          lockType: "keypad",
-          locked: true,
-          unitNumber: 12,
-        },
         interactions: [
           {
             label: "Get inside the storage unit",
@@ -54,12 +40,6 @@ export const scenes: SceneDefinition[] = [
         type: "door",
         name: "Storage Unit Door",
         boundingBox: { x: 0.25, y: 0.15, width: 0.13, height: 0.36 },
-        properties: {
-          color: "green",
-          lockType: "keypad",
-          locked: true,
-          unitNumber: 13,
-        },
         interactions: [],
       },
       {
@@ -67,12 +47,6 @@ export const scenes: SceneDefinition[] = [
         type: "prop",
         name: "Wooden Pallets",
         boundingBox: { x: 0.2, y: 0.37, width: 0.13, height: 0.22 },
-        properties: {
-          material: "wood",
-          movable: false,
-          flammable: true,
-          lootable: false,
-        },
         interactions: [],
       },
       {
@@ -80,11 +54,6 @@ export const scenes: SceneDefinition[] = [
         type: "vegetation",
         name: "Overgrown Bush",
         boundingBox: { x: 0.4, y: 0.37, width: 0.09, height: 0.12 },
-        properties: {
-          season: "autumn",
-          walkable: false,
-          concealment: 0.6,
-        },
         interactions: [],
       },
     ],
@@ -101,11 +70,6 @@ export const scenes: SceneDefinition[] = [
         type: "vehicle",
         name: "Dashboard",
         boundingBox: { x: 0.22, y: 0.56, width: 0.32, height: 0.32 },
-        properties: {
-          fuelLevel: "half",
-          radioWorking: true,
-          heater: "off",
-        },
         interactions: [
           {
             label: "Drive over to the store",
@@ -118,10 +82,6 @@ export const scenes: SceneDefinition[] = [
         type: "container",
         name: "Glove Box",
         boundingBox: { x: 0.52, y: 0.6, width: 0.34, height: 0.28 },
-        properties: {
-          contains: "old_maps",
-          locked: false,
-        },
         interactions: [
           {
             label: "Step back outside",
@@ -137,9 +97,6 @@ export const scenes: SceneDefinition[] = [
         type: "mirror",
         name: "Rear View Mirror",
         boundingBox: { x: 0.44, y: 0.28, width: 0.12, height: 0.08 },
-        properties: {
-          visibility: "clear",
-        },
         interactions: [
           {
             label: "Check the storage unit",
@@ -161,11 +118,6 @@ export const scenes: SceneDefinition[] = [
         type: "furniture",
         name: "Splintered Chair",
         boundingBox: { x: 0.37, y: 0.52, width: 0.26, height: 0.34 },
-        properties: {
-          condition: "broken",
-          material: "pine",
-          stable: false,
-        },
         interactions: [
           {
             label: "Try to fix the chair",
@@ -178,10 +130,6 @@ export const scenes: SceneDefinition[] = [
         type: "storage",
         name: "Stocked Shelves",
         boundingBox: { x: 0.08, y: 0.14, width: 0.53, height: 0.5 },
-        properties: {
-          items: "preserves,boxes",
-          climbable: false,
-        },
         interactions: [
           {
             label: "Inspect the workbench wall",
@@ -194,10 +142,6 @@ export const scenes: SceneDefinition[] = [
         type: "path",
         name: "Hall Toward Exit",
         boundingBox: { x: 0.66, y: 0.14, width: 0.28, height: 0.64 },
-        properties: {
-          illuminated: true,
-          destination: "exit",
-        },
         interactions: [
           {
             label: "Walk toward the exit door",
@@ -219,11 +163,6 @@ export const scenes: SceneDefinition[] = [
         type: "furniture",
         name: "Mended Chair",
         boundingBox: { x: 0.4, y: 0.48, width: 0.24, height: 0.32 },
-        properties: {
-          condition: "fixed",
-          reinforcedWith: "duct_tape",
-          stable: true,
-        },
         interactions: [
           {
             label: "Admire your handiwork",
@@ -236,10 +175,6 @@ export const scenes: SceneDefinition[] = [
         type: "detail",
         name: "Wrapped Legs",
         boundingBox: { x: 0.42, y: 0.64, width: 0.18, height: 0.22 },
-        properties: {
-          tapeLayers: 4,
-          squeaks: false,
-        },
         interactions: [
           {
             label: "Double-check the supplies",
@@ -252,10 +187,6 @@ export const scenes: SceneDefinition[] = [
         type: "path",
         name: "Hall Toward Exit",
         boundingBox: { x: 0.66, y: 0.14, width: 0.28, height: 0.64 },
-        properties: {
-          illuminated: true,
-          destination: "exit",
-        },
         interactions: [
           {
             label: "Head toward the exit",
@@ -277,14 +208,10 @@ export const scenes: SceneDefinition[] = [
         type: "door",
         name: "Exit Door",
         boundingBox: { x: 0.34, y: 0.18, width: 0.32, height: 0.54 },
-        properties: {
-          locked: false,
-          destination: "parking_lot",
-        },
         interactions: [
           {
             label: "Step outside",
-            effect: { type: "change_scene", sceneId: "store-entrance" },
+            effect: { type: "change_scene", sceneId: "storage-outside-car" },
           },
           {
             label: "Return deeper inside",
@@ -297,10 +224,6 @@ export const scenes: SceneDefinition[] = [
         type: "gadget",
         name: "Security Keypad",
         boundingBox: { x: 0.63, y: 0.34, width: 0.06, height: 0.12 },
-        properties: {
-          power: "on",
-          codeKnown: true,
-        },
         interactions: [
           {
             label: "Unlock the unit",
@@ -313,9 +236,6 @@ export const scenes: SceneDefinition[] = [
         type: "signage",
         name: "Exit Sign",
         boundingBox: { x: 0.42, y: 0.05, width: 0.16, height: 0.08 },
-        properties: {
-          illuminated: true,
-        },
         interactions: [
           {
             label: "Head back to the lot",
@@ -340,10 +260,6 @@ export const scenes: SceneDefinition[] = [
         type: "mirror",
         name: "Full-Length Mirror",
         boundingBox: { x: 0.14, y: 0.08, width: 0.46, height: 0.78 },
-        properties: {
-          dustLevel: "low",
-          cracks: 0,
-        },
         interactions: [
           {
             label: "Practice a tough stare",
@@ -356,9 +272,6 @@ export const scenes: SceneDefinition[] = [
         type: "path",
         name: "Doorway",
         boundingBox: { x: 0.56, y: 0.14, width: 0.28, height: 0.72 },
-        properties: {
-          leadsTo: "hallway",
-        },
         interactions: [
           {
             label: "Walk toward the exit",
@@ -371,9 +284,6 @@ export const scenes: SceneDefinition[] = [
         type: "storage",
         name: "Side Shelves",
         boundingBox: { x: 0.02, y: 0.1, width: 0.2, height: 0.72 },
-        properties: {
-          items: "canning_jars",
-        },
         interactions: [
           {
             label: "Check on the chair",
@@ -395,9 +305,6 @@ export const scenes: SceneDefinition[] = [
         type: "mirror",
         name: "Defiant Reflection",
         boundingBox: { x: 0.18, y: 0.08, width: 0.44, height: 0.8 },
-        properties: {
-          mood: "angry",
-        },
         interactions: [
           {
             label: "Take a calming breath",
@@ -410,9 +317,6 @@ export const scenes: SceneDefinition[] = [
         type: "path",
         name: "Doorway",
         boundingBox: { x: 0.6, y: 0.16, width: 0.26, height: 0.72 },
-        properties: {
-          leadsTo: "hallway",
-        },
         interactions: [
           {
             label: "Storm toward the exit",
@@ -434,10 +338,6 @@ export const scenes: SceneDefinition[] = [
         type: "electronics",
         name: "VCR Deck",
         boundingBox: { x: 0.46, y: 0.62, width: 0.22, height: 0.16 },
-        properties: {
-          powered: false,
-          tapesNearby: false,
-        },
         interactions: [
           {
             label: "Head back to the chair",
@@ -450,9 +350,6 @@ export const scenes: SceneDefinition[] = [
         type: "tools",
         name: "Hanging Tools",
         boundingBox: { x: 0.16, y: 0.1, width: 0.62, height: 0.36 },
-        properties: {
-          contains: "saws,ropes,wrenches",
-        },
         interactions: [
           {
             label: "Go look for supplies at the store",
@@ -465,10 +362,6 @@ export const scenes: SceneDefinition[] = [
         type: "container",
         name: "Paint Cans",
         boundingBox: { x: 0.06, y: 0.6, width: 0.2, height: 0.2 },
-        properties: {
-          sealed: true,
-          flammable: true,
-        },
         interactions: [
           {
             label: "Check on the mirror",
@@ -490,10 +383,6 @@ export const scenes: SceneDefinition[] = [
         type: "display",
         name: "Pumpkin Sale",
         boundingBox: { x: 0.42, y: 0.38, width: 0.22, height: 0.32 },
-        properties: {
-          salePrice: 3,
-          freshness: "excellent",
-        },
         interactions: [
           {
             label: "Push the cart inside",
@@ -506,9 +395,6 @@ export const scenes: SceneDefinition[] = [
         type: "vehicle",
         name: "Shopping Cart",
         boundingBox: { x: 0.32, y: 0.68, width: 0.36, height: 0.3 },
-        properties: {
-          squeakyWheel: true,
-        },
         interactions: [
           {
             label: "Head down the hardware aisle",
@@ -521,9 +407,6 @@ export const scenes: SceneDefinition[] = [
         type: "path",
         name: "Sliding Doors",
         boundingBox: { x: 0.02, y: 0.22, width: 0.2, height: 0.62 },
-        properties: {
-          leadsTo: "parking_lot",
-        },
         interactions: [
           {
             label: "Return to the car",
@@ -548,10 +431,6 @@ export const scenes: SceneDefinition[] = [
         type: "shelf",
         name: "Adhesives Section",
         boundingBox: { x: 0.64, y: 0.2, width: 0.3, height: 0.58 },
-        properties: {
-          stocked: true,
-          ductTapeVisible: true,
-        },
         interactions: [
           {
             label: "Grab duct tape",
@@ -567,10 +446,6 @@ export const scenes: SceneDefinition[] = [
         type: "tools",
         name: "Power Tools",
         boundingBox: { x: 0.04, y: 0.18, width: 0.38, height: 0.6 },
-        properties: {
-          sale: true,
-          brands: "VoltRex, MegaBuild",
-        },
         interactions: [
           {
             label: "Head back to the entrance",
@@ -583,9 +458,6 @@ export const scenes: SceneDefinition[] = [
         type: "vehicle",
         name: "Cart Handle",
         boundingBox: { x: 0.34, y: 0.68, width: 0.32, height: 0.28 },
-        properties: {
-          loaded: false,
-        },
         interactions: [
           {
             label: "Return to the workbench",
@@ -607,10 +479,6 @@ export const scenes: SceneDefinition[] = [
         type: "item",
         name: "Heavy Duty Duct Tape",
         boundingBox: { x: 0.42, y: 0.54, width: 0.22, height: 0.2 },
-        properties: {
-          color: "silver",
-          adhesiveStrength: "high",
-        },
         interactions: [
           {
             label: "Wheel back to the aisle",
@@ -623,9 +491,6 @@ export const scenes: SceneDefinition[] = [
         type: "path",
         name: "Aisle Exit",
         boundingBox: { x: 0.32, y: 0.72, width: 0.34, height: 0.24 },
-        properties: {
-          leadsTo: "checkout",
-        },
         interactions: [
           {
             label: "Return to the car with supplies",
@@ -641,9 +506,6 @@ export const scenes: SceneDefinition[] = [
         type: "shelf",
         name: "Hardware Shelves",
         boundingBox: { x: 0.64, y: 0.2, width: 0.3, height: 0.56 },
-        properties: {
-          stocked: true,
-        },
         interactions: [
           {
             label: "Survey the rest of the tools",

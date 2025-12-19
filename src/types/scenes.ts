@@ -14,8 +14,6 @@ export type SceneId =
   | "store-hardware-ducttape"
   | "store-hardware";
 
-export type ObjectPropertyValue = string | number | boolean;
-
 export interface ObjectInteraction {
   label: string;
   effect: SceneEffectCommand;
@@ -39,7 +37,6 @@ export interface SceneObject {
   type: string;
   name: string;
   boundingBox: BoundingBox;
-  properties: Record<string, ObjectPropertyValue>;
   interactions: ObjectInteraction[];
 }
 

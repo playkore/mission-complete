@@ -14,6 +14,7 @@ pnpm-debug.log*
 .idea
 .vscode
 *.sw?
+tsconfig*.tsbuildinfo
 
 # Mac/OS files
 .DS_Store

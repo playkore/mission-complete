@@ -12,12 +12,6 @@ const formatPropertyKey = (key: string) =>
     .replace(/\b\w/g, (char) => char.toUpperCase())
     .trim();
 
-const formatPropertyValue = (value: unknown) => {
-  if (typeof value === "boolean") return value ? "Yes" : "No";
-  if (value === null || value === undefined) return "—";
-  return String(value);
-};
-
 const App = () => {
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
   const { executeEffect, currentSceneId, setCurrentSceneId } = useGameState();
@@ -58,14 +52,10 @@ const App = () => {
     );
   }
 
-  const propertyEntries = selectedObject
-    ? Object.entries(selectedObject.properties)
-    : [];
-
   return (
     <main className="appShell">
-      <section className="panel propertiesPanel" aria-label="Object properties">
-        <div className="propertiesHeader">
+      <section className="panel overviewPanel" aria-label="Scene overview">
+        <div className="overviewHeader">
           <div>
             <p className="eyebrow">{currentScene.name}</p>
             <h1>{selectedObject ? selectedObject.name : "Select an object"}</h1>
@@ -89,20 +79,13 @@ const App = () => {
             </select>
           </label>
         </div>
-        <div className="propertyGrid">
-          {selectedObject ? (
-            propertyEntries.map(([key, value]) => (
-              <div key={key} className="propertyRow">
-                <span className="label">{formatPropertyKey(key)}</span>
-                <span className="value">{formatPropertyValue(value)}</span>
-              </div>
-            ))
-          ) : (
-            <p className="emptyState">
-              Tap the scene to inspect an object and view its properties.
-            </p>
-          )}
-        </div>
+        {selectedObject ? (
+          <p className="panelMessage">
+            Use the contextual actions below to interact with {selectedObject.name}.
+          </p>
+        ) : (
+          <p className="emptyState">Tap the scene to inspect an object.</p>
+        )}
       </section>
 
       <section className="panel panel--flush" aria-label="Scene view">

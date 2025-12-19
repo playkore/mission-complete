@@ -569,7 +569,7 @@ export const scenes: SceneDefinition[] = [
         boundingBox: { x: 0.04, y: 0.18, width: 0.38, height: 0.6 },
         properties: {
           sale: true,
-          brands: ["VoltRex", "MegaBuild"],
+          brands: "VoltRex, MegaBuild",
         },
         interactions: [
           {

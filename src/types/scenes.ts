@@ -34,7 +34,6 @@ export interface BoundingBox {
 
 export interface SceneObject {
   id: string;
-  type: string;
   name: string;
   boundingBox: BoundingBox;
   interactions: ObjectInteraction[];

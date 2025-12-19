@@ -84,40 +84,6 @@
   overflow-y: auto;
 }
 
-.actionsHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.actionsHeader h2 {
-  margin: 0;
-  font-size: 1.2rem;
-}
-
-.actionsHeader p {
-  margin: 4px 0 0;
-  font-size: 0.9rem;
-  color: rgba(215, 255, 231, 0.7);
-}
-
-.actionsHeader .pill {
-  margin-left: auto;
-}
-
-.pill {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 255, 122, 0.25);
-  color: rgba(215, 255, 231, 0.85);
-  background: rgba(0, 25, 12, 0.65);
-  white-space: nowrap;
-}
-
 .actionsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));

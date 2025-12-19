@@ -10,13 +10,6 @@ import type {
 } from "./types/scenes";
 import "./App.css";
 
-const formatPropertyKey = (key: string) =>
-  key
-    .replace(/_/g, " ")
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replace(/\b\w/g, (char) => char.toUpperCase())
-    .trim();
-
 const App = () => {
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
   const { executeEffect, currentSceneId, setCurrentSceneId } = useGameState();
@@ -73,9 +66,7 @@ const App = () => {
             <p className="eyebrow">{currentScene.name}</p>
             <h1>{selectedObject ? selectedObject.name : "Select an object"}</h1>
             <p className="sceneDescription">
-              {selectedObject
-                ? `Type: ${formatPropertyKey(selectedObject.type)}`
-                : currentScene.description}
+              {currentScene.description ?? selectedObject?.name ?? ""}
             </p>
           </div>
           <label className="scenePicker">
@@ -93,24 +84,6 @@ const App = () => {
               ))}
             </select>
           </label>
-        </div>
-        {selectedObject ? (
-          <p className="panelMessage">
-            Use the contextual actions below to interact with{" "}
-            {selectedObject.name}.
-          </p>
-        ) : (
-          <p className="emptyState">Tap the scene to inspect an object.</p>
-        )}
-        <div className="actionsHeader">
-          <div>
-            <h2>Actions</h2>
-            <p>
-              {selectedObject
-                ? `${selectedObject.interactions.length} options available`
-                : "Select an object to see contextual actions"}
-            </p>
-          </div>
         </div>
         {selectedObject ? (
           <div className="actionsGrid">

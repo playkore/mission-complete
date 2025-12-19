@@ -10,7 +10,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "car_001",
-        type: "vehicle",
         name: "Sedan",
         boundingBox: { x: 0.66, y: 0.31, width: 0.34, height: 0.28 },
         interactions: [
@@ -25,7 +24,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "storage_door_001",
-        type: "door",
         name: "Storage Unit Door",
         boundingBox: { x: 0, y: 0.06, width: 0.14, height: 0.54 },
         interactions: [
@@ -37,21 +35,18 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "storage_door_002",
-        type: "door",
         name: "Storage Unit Door",
         boundingBox: { x: 0.25, y: 0.15, width: 0.13, height: 0.36 },
         interactions: [],
       },
       {
         id: "wood_pallets_001",
-        type: "prop",
         name: "Wooden Pallets",
         boundingBox: { x: 0.2, y: 0.37, width: 0.13, height: 0.22 },
         interactions: [],
       },
       {
         id: "bush_001",
-        type: "vegetation",
         name: "Overgrown Bush",
         boundingBox: { x: 0.4, y: 0.37, width: 0.09, height: 0.12 },
         interactions: [],
@@ -67,7 +62,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "dashboard",
-        type: "vehicle",
         name: "Dashboard",
         boundingBox: { x: 0.22, y: 0.56, width: 0.32, height: 0.32 },
         interactions: [
@@ -79,7 +73,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "glove_box",
-        type: "container",
         name: "Glove Box",
         boundingBox: { x: 0.52, y: 0.6, width: 0.34, height: 0.28 },
         interactions: [
@@ -94,7 +87,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "rearview_mirror",
-        type: "mirror",
         name: "Rear View Mirror",
         boundingBox: { x: 0.44, y: 0.28, width: 0.12, height: 0.08 },
         interactions: [
@@ -115,7 +107,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "broken_chair",
-        type: "furniture",
         name: "Splintered Chair",
         boundingBox: { x: 0.37, y: 0.52, width: 0.26, height: 0.34 },
         interactions: [
@@ -127,7 +118,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "rear_shelves",
-        type: "storage",
         name: "Stocked Shelves",
         boundingBox: { x: 0.08, y: 0.14, width: 0.53, height: 0.5 },
         interactions: [
@@ -139,7 +129,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "hall_light",
-        type: "path",
         name: "Hall Toward Exit",
         boundingBox: { x: 0.66, y: 0.14, width: 0.28, height: 0.64 },
         interactions: [
@@ -160,7 +149,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "repaired_chair",
-        type: "furniture",
         name: "Mended Chair",
         boundingBox: { x: 0.4, y: 0.48, width: 0.24, height: 0.32 },
         interactions: [
@@ -172,7 +160,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "taped_legs",
-        type: "detail",
         name: "Wrapped Legs",
         boundingBox: { x: 0.42, y: 0.64, width: 0.18, height: 0.22 },
         interactions: [
@@ -184,7 +171,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "hall_light_fixed",
-        type: "path",
         name: "Hall Toward Exit",
         boundingBox: { x: 0.66, y: 0.14, width: 0.28, height: 0.64 },
         interactions: [
@@ -205,7 +191,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "exit_door",
-        type: "door",
         name: "Exit Door",
         boundingBox: { x: 0.34, y: 0.18, width: 0.32, height: 0.54 },
         interactions: [
@@ -221,7 +206,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "keypad",
-        type: "gadget",
         name: "Security Keypad",
         boundingBox: { x: 0.63, y: 0.34, width: 0.06, height: 0.12 },
         interactions: [
@@ -233,7 +217,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "exit_sign",
-        type: "signage",
         name: "Exit Sign",
         boundingBox: { x: 0.42, y: 0.05, width: 0.16, height: 0.08 },
         interactions: [
@@ -257,7 +240,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "mirror_frame",
-        type: "mirror",
         name: "Full-Length Mirror",
         boundingBox: { x: 0.14, y: 0.08, width: 0.46, height: 0.78 },
         interactions: [
@@ -269,7 +251,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "doorway_glow",
-        type: "path",
         name: "Doorway",
         boundingBox: { x: 0.56, y: 0.14, width: 0.28, height: 0.72 },
         interactions: [
@@ -281,7 +262,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "shelf_edge",
-        type: "storage",
         name: "Side Shelves",
         boundingBox: { x: 0.02, y: 0.1, width: 0.2, height: 0.72 },
         interactions: [
@@ -302,7 +282,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "angry_reflection",
-        type: "mirror",
         name: "Defiant Reflection",
         boundingBox: { x: 0.18, y: 0.08, width: 0.44, height: 0.8 },
         interactions: [
@@ -314,7 +293,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "doorway_shadow",
-        type: "path",
         name: "Doorway",
         boundingBox: { x: 0.6, y: 0.16, width: 0.26, height: 0.72 },
         interactions: [
@@ -335,7 +313,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "vcr_player",
-        type: "electronics",
         name: "VCR Deck",
         boundingBox: { x: 0.46, y: 0.62, width: 0.22, height: 0.16 },
         interactions: [
@@ -347,7 +324,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "tool_wall",
-        type: "tools",
         name: "Hanging Tools",
         boundingBox: { x: 0.16, y: 0.1, width: 0.62, height: 0.36 },
         interactions: [
@@ -359,7 +335,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "paint_cans",
-        type: "container",
         name: "Paint Cans",
         boundingBox: { x: 0.06, y: 0.6, width: 0.2, height: 0.2 },
         interactions: [
@@ -380,7 +355,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "pumpkin_display",
-        type: "display",
         name: "Pumpkin Sale",
         boundingBox: { x: 0.42, y: 0.38, width: 0.22, height: 0.32 },
         interactions: [
@@ -392,7 +366,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "shopping_cart",
-        type: "vehicle",
         name: "Shopping Cart",
         boundingBox: { x: 0.32, y: 0.68, width: 0.36, height: 0.3 },
         interactions: [
@@ -404,7 +377,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "exit_to_lot",
-        type: "path",
         name: "Sliding Doors",
         boundingBox: { x: 0.02, y: 0.22, width: 0.2, height: 0.62 },
         interactions: [
@@ -428,7 +400,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "tape_shelf",
-        type: "shelf",
         name: "Adhesives Section",
         boundingBox: { x: 0.64, y: 0.2, width: 0.3, height: 0.58 },
         interactions: [
@@ -443,7 +414,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "tool_wall_left",
-        type: "tools",
         name: "Power Tools",
         boundingBox: { x: 0.04, y: 0.18, width: 0.38, height: 0.6 },
         interactions: [
@@ -455,7 +425,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "hardware_cart",
-        type: "vehicle",
         name: "Cart Handle",
         boundingBox: { x: 0.34, y: 0.68, width: 0.32, height: 0.28 },
         interactions: [
@@ -476,7 +445,6 @@ export const scenes: SceneDefinition[] = [
     objects: [
       {
         id: "duct_tape_rolls",
-        type: "item",
         name: "Heavy Duty Duct Tape",
         boundingBox: { x: 0.42, y: 0.54, width: 0.22, height: 0.2 },
         interactions: [
@@ -488,7 +456,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "hardware_exit",
-        type: "path",
         name: "Aisle Exit",
         boundingBox: { x: 0.32, y: 0.72, width: 0.34, height: 0.24 },
         interactions: [
@@ -503,7 +470,6 @@ export const scenes: SceneDefinition[] = [
       },
       {
         id: "right_shelf_detail",
-        type: "shelf",
         name: "Hardware Shelves",
         boundingBox: { x: 0.64, y: 0.2, width: 0.3, height: 0.56 },
         interactions: [

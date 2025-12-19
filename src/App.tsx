@@ -5,14 +5,13 @@ import { useGameState } from "./effects/useGameState";
 import type {
   ObjectInteraction,
   SceneDefinition,
-  SceneId,
   SceneObject,
 } from "./types/scenes";
 import "./App.css";
 
 const App = () => {
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
-  const { executeEffect, currentSceneId, setCurrentSceneId } = useGameState();
+  const { executeEffect, currentSceneId } = useGameState();
 
   const sceneMap = useMemo(() => {
     return new Map<string, SceneDefinition>(
@@ -27,11 +26,6 @@ const App = () => {
 
   const handleObjectSelect = (object: SceneObject | null) => {
     setSelectedObjectId(object?.id ?? null);
-  };
-
-  const handleSceneChange = (sceneId: SceneId) => {
-    setCurrentSceneId(sceneId);
-    setSelectedObjectId(null);
   };
 
   const handleInteraction = (interaction: ObjectInteraction) => {

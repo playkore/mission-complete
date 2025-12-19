@@ -1,14 +1,14 @@
 import { useMemo, useState } from 'react'
 import SceneView from './components/SceneView'
 import { initialSceneId, scenes } from './data/scenes'
-import { executeEffects } from './effects/registry'
+import { executeEffects } from './effects/handlers'
 import type {
   ObjectInteraction,
   SceneDefinition,
-  SceneEffectCommand,
   SceneObject
 } from './types'
 import './App.css'
+import { SceneEffectCommand } from './effects/types'
 
 const formatPropertyKey = (key: string) =>
   key
@@ -58,7 +58,7 @@ const describeEffect = (effect: SceneEffectCommand) => {
     case 'reveal':
       return `reveal(${effect.targetId})`
     default:
-      return effect.type
+      return ''
   }
 }
 
@@ -92,7 +92,7 @@ const App = () => {
   const handleInteraction = (interaction: ObjectInteraction) => {
     if (!currentScene || !selectedObject) return
 
-    const results = executeEffects(interaction.effects, {
+    const results = executeEffects(interaction.effect, {
       scene: currentScene,
       object: selectedObject
     })

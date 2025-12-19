@@ -36,12 +36,17 @@ You can customize the per-action UI by editing `src/components/SceneView.tsx`.
 
 ## Deploying to GitHub Pages
 
+This repository now ships with `.github/workflows/deploy.yml`, which automatically
+builds the site on pushes to `main` (and on manual dispatches) and publishes the
+`dist/` folder through the official GitHub Pages deployment pipeline.
+
 1. Push the repository to GitHub (ensure the repo name matches the project folder).
-2. Install dependencies on your machine and run `npm run deploy`.
-   This builds the project and publishes the `dist/` folder to a `gh-pages` branch
-   via the `gh-pages` package.
-3. In GitHub, go to **Settings → Pages** and choose the `gh-pages` branch (root).
-4. Future deployments only need `npm run deploy` again.
+2. In GitHub, go to **Settings → Pages** and choose **GitHub Actions** as the source
+   (if it is not already selected). The workflow will take care of subsequent deploys.
+3. Every push to `main` will run `npm ci`, `npm run build`, and deploy the build
+   artifact to the Pages environment.
+4. If you still need a manual deploy (for example, from a fork), run `npm run deploy`
+   locally to publish via the `gh-pages` branch.
 
 The Vite config automatically derives the correct `base` path from the repository
 name when `GITHUB_REPOSITORY` is available (e.g., inside Actions), so links will

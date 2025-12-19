@@ -26,7 +26,9 @@ export const useGameState = () => {
           } else {
             setCurrentSceneId("storage-chair-broken");
           }
+          return;
         }
+        setCurrentSceneId(command.sceneId as SceneId);
         break;
       }
       case "fix_chair": {

@@ -24,7 +24,10 @@ export const scenes: SceneDefinition[] = [
         interactions: [
           {
             label: "Get in car",
-            effect: { type: "change_scene", sceneId: "car_001" },
+            effect: {
+              type: "change_scene",
+              sceneId: "storage-outside-car-inside",
+            },
           },
         ],
       },
@@ -92,9 +95,564 @@ export const scenes: SceneDefinition[] = [
     description:
       "Inside the sedan parked outside the storage facility. The engine is off, and the keys are in the ignition.",
     imageSrc: "/scenes/chapter01/storage-outside-car-inside.png",
-    objects: [],
+    objects: [
+      {
+        id: "dashboard",
+        type: "vehicle",
+        name: "Dashboard",
+        boundingBox: { x: 0.22, y: 0.56, width: 0.32, height: 0.32 },
+        properties: {
+          fuelLevel: "half",
+          radioWorking: true,
+          heater: "off",
+        },
+        interactions: [
+          {
+            label: "Drive over to the store",
+            effect: { type: "change_scene", sceneId: "store-entrance" },
+          },
+        ],
+      },
+      {
+        id: "glove_box",
+        type: "container",
+        name: "Glove Box",
+        boundingBox: { x: 0.52, y: 0.6, width: 0.34, height: 0.28 },
+        properties: {
+          contains: "old_maps",
+          locked: false,
+        },
+        interactions: [
+          {
+            label: "Step back outside",
+            effect: {
+              type: "change_scene",
+              sceneId: "storage-outside-car",
+            },
+          },
+        ],
+      },
+      {
+        id: "rearview_mirror",
+        type: "mirror",
+        name: "Rear View Mirror",
+        boundingBox: { x: 0.44, y: 0.28, width: 0.12, height: 0.08 },
+        properties: {
+          visibility: "clear",
+        },
+        interactions: [
+          {
+            label: "Check the storage unit",
+            effect: { type: "change_scene", sceneId: "storage" },
+          },
+        ],
+      },
+    ],
   },
-  
+  {
+    id: "storage-chair-broken",
+    name: "Storage Unit — Broken Chair",
+    description:
+      "The center of the unit is dominated by a splintered wooden chair surrounded by dust and old shelving.",
+    imageSrc: "/scenes/chapter01/storage-chair-broken.png",
+    objects: [
+      {
+        id: "broken_chair",
+        type: "furniture",
+        name: "Splintered Chair",
+        boundingBox: { x: 0.37, y: 0.52, width: 0.26, height: 0.34 },
+        properties: {
+          condition: "broken",
+          material: "pine",
+          stable: false,
+        },
+        interactions: [
+          {
+            label: "Try to fix the chair",
+            effect: { type: "fix_chair" },
+          },
+        ],
+      },
+      {
+        id: "rear_shelves",
+        type: "storage",
+        name: "Stocked Shelves",
+        boundingBox: { x: 0.08, y: 0.14, width: 0.53, height: 0.5 },
+        properties: {
+          items: "preserves,boxes",
+          climbable: false,
+        },
+        interactions: [
+          {
+            label: "Inspect the workbench wall",
+            effect: { type: "change_scene", sceneId: "storage-vcr" },
+          },
+        ],
+      },
+      {
+        id: "hall_light",
+        type: "path",
+        name: "Hall Toward Exit",
+        boundingBox: { x: 0.66, y: 0.14, width: 0.28, height: 0.64 },
+        properties: {
+          illuminated: true,
+          destination: "exit",
+        },
+        interactions: [
+          {
+            label: "Walk toward the exit door",
+            effect: { type: "change_scene", sceneId: "storage-exit" },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "storage-chair-fixed",
+    name: "Storage Unit — Chair Repaired",
+    description:
+      "After a liberal application of duct tape the chair stands proud once again in the dusty storage unit.",
+    imageSrc: "/scenes/chapter01/storage-chair-fixed.png",
+    objects: [
+      {
+        id: "repaired_chair",
+        type: "furniture",
+        name: "Mended Chair",
+        boundingBox: { x: 0.4, y: 0.48, width: 0.24, height: 0.32 },
+        properties: {
+          condition: "fixed",
+          reinforcedWith: "duct_tape",
+          stable: true,
+        },
+        interactions: [
+          {
+            label: "Admire your handiwork",
+            effect: { type: "change_scene", sceneId: "storage-mirror" },
+          },
+        ],
+      },
+      {
+        id: "taped_legs",
+        type: "detail",
+        name: "Wrapped Legs",
+        boundingBox: { x: 0.42, y: 0.64, width: 0.18, height: 0.22 },
+        properties: {
+          tapeLayers: 4,
+          squeaks: false,
+        },
+        interactions: [
+          {
+            label: "Double-check the supplies",
+            effect: { type: "change_scene", sceneId: "storage-vcr" },
+          },
+        ],
+      },
+      {
+        id: "hall_light_fixed",
+        type: "path",
+        name: "Hall Toward Exit",
+        boundingBox: { x: 0.66, y: 0.14, width: 0.28, height: 0.64 },
+        properties: {
+          illuminated: true,
+          destination: "exit",
+        },
+        interactions: [
+          {
+            label: "Head toward the exit",
+            effect: { type: "change_scene", sceneId: "storage-exit" },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "storage-exit",
+    name: "Storage Exit Door",
+    description:
+      "An industrial metal door marked EXIT bleeds warm light through the crack at the floor.",
+    imageSrc: "/scenes/chapter01/storage-exit.png",
+    objects: [
+      {
+        id: "exit_door",
+        type: "door",
+        name: "Exit Door",
+        boundingBox: { x: 0.34, y: 0.18, width: 0.32, height: 0.54 },
+        properties: {
+          locked: false,
+          destination: "parking_lot",
+        },
+        interactions: [
+          {
+            label: "Step outside",
+            effect: { type: "change_scene", sceneId: "store-entrance" },
+          },
+          {
+            label: "Return deeper inside",
+            effect: { type: "change_scene", sceneId: "storage" },
+          },
+        ],
+      },
+      {
+        id: "keypad",
+        type: "gadget",
+        name: "Security Keypad",
+        boundingBox: { x: 0.63, y: 0.34, width: 0.06, height: 0.12 },
+        properties: {
+          power: "on",
+          codeKnown: true,
+        },
+        interactions: [
+          {
+            label: "Unlock the unit",
+            effect: { type: "change_scene", sceneId: "storage" },
+          },
+        ],
+      },
+      {
+        id: "exit_sign",
+        type: "signage",
+        name: "Exit Sign",
+        boundingBox: { x: 0.42, y: 0.05, width: 0.16, height: 0.08 },
+        properties: {
+          illuminated: true,
+        },
+        interactions: [
+          {
+            label: "Head back to the lot",
+            effect: {
+              type: "change_scene",
+              sceneId: "storage-outside-car",
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "storage-mirror",
+    name: "Storage Mirror",
+    description:
+      "A wall-length mirror leans against the shelves, reflecting your determined expression.",
+    imageSrc: "/scenes/chapter01/storage-mirror.png",
+    objects: [
+      {
+        id: "mirror_frame",
+        type: "mirror",
+        name: "Full-Length Mirror",
+        boundingBox: { x: 0.14, y: 0.08, width: 0.46, height: 0.78 },
+        properties: {
+          dustLevel: "low",
+          cracks: 0,
+        },
+        interactions: [
+          {
+            label: "Practice a tough stare",
+            effect: { type: "change_scene", sceneId: "storage-mirror-angry" },
+          },
+        ],
+      },
+      {
+        id: "doorway_glow",
+        type: "path",
+        name: "Doorway",
+        boundingBox: { x: 0.56, y: 0.14, width: 0.28, height: 0.72 },
+        properties: {
+          leadsTo: "hallway",
+        },
+        interactions: [
+          {
+            label: "Walk toward the exit",
+            effect: { type: "change_scene", sceneId: "storage-exit" },
+          },
+        ],
+      },
+      {
+        id: "shelf_edge",
+        type: "storage",
+        name: "Side Shelves",
+        boundingBox: { x: 0.02, y: 0.1, width: 0.2, height: 0.72 },
+        properties: {
+          items: "canning_jars",
+        },
+        interactions: [
+          {
+            label: "Check on the chair",
+            effect: { type: "change_scene", sceneId: "storage" },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "storage-mirror-angry",
+    name: "Storage Mirror — Angry",
+    description:
+      "Your reflection mirrors your frustration with crossed arms and a glare.",
+    imageSrc: "/scenes/chapter01/storage-mirror-angry.png",
+    objects: [
+      {
+        id: "angry_reflection",
+        type: "mirror",
+        name: "Defiant Reflection",
+        boundingBox: { x: 0.18, y: 0.08, width: 0.44, height: 0.8 },
+        properties: {
+          mood: "angry",
+        },
+        interactions: [
+          {
+            label: "Take a calming breath",
+            effect: { type: "change_scene", sceneId: "storage-mirror" },
+          },
+        ],
+      },
+      {
+        id: "doorway_shadow",
+        type: "path",
+        name: "Doorway",
+        boundingBox: { x: 0.6, y: 0.16, width: 0.26, height: 0.72 },
+        properties: {
+          leadsTo: "hallway",
+        },
+        interactions: [
+          {
+            label: "Storm toward the exit",
+            effect: { type: "change_scene", sceneId: "storage-exit" },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "storage-vcr",
+    name: "Workbench & VCR",
+    description:
+      "A dusty workbench holds a VCR surrounded by tools, extension cords, and paint cans.",
+    imageSrc: "/scenes/chapter01/storage-vcr.png",
+    objects: [
+      {
+        id: "vcr_player",
+        type: "electronics",
+        name: "VCR Deck",
+        boundingBox: { x: 0.46, y: 0.62, width: 0.22, height: 0.16 },
+        properties: {
+          powered: false,
+          tapesNearby: false,
+        },
+        interactions: [
+          {
+            label: "Head back to the chair",
+            effect: { type: "change_scene", sceneId: "storage" },
+          },
+        ],
+      },
+      {
+        id: "tool_wall",
+        type: "tools",
+        name: "Hanging Tools",
+        boundingBox: { x: 0.16, y: 0.1, width: 0.62, height: 0.36 },
+        properties: {
+          contains: "saws,ropes,wrenches",
+        },
+        interactions: [
+          {
+            label: "Go look for supplies at the store",
+            effect: { type: "change_scene", sceneId: "store-entrance" },
+          },
+        ],
+      },
+      {
+        id: "paint_cans",
+        type: "container",
+        name: "Paint Cans",
+        boundingBox: { x: 0.06, y: 0.6, width: 0.2, height: 0.2 },
+        properties: {
+          sealed: true,
+          flammable: true,
+        },
+        interactions: [
+          {
+            label: "Check on the mirror",
+            effect: { type: "change_scene", sceneId: "storage-mirror" },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "store-entrance",
+    name: "Grocery Store Entrance",
+    description:
+      "A festive supermarket entryway greets customers with pumpkins, produce, and a Halloween banner.",
+    imageSrc: "/scenes/chapter01/store-entrance.png",
+    objects: [
+      {
+        id: "pumpkin_display",
+        type: "display",
+        name: "Pumpkin Sale",
+        boundingBox: { x: 0.42, y: 0.38, width: 0.22, height: 0.32 },
+        properties: {
+          salePrice: 3,
+          freshness: "excellent",
+        },
+        interactions: [
+          {
+            label: "Push the cart inside",
+            effect: { type: "change_scene", sceneId: "store-hardware" },
+          },
+        ],
+      },
+      {
+        id: "shopping_cart",
+        type: "vehicle",
+        name: "Shopping Cart",
+        boundingBox: { x: 0.32, y: 0.68, width: 0.36, height: 0.3 },
+        properties: {
+          squeakyWheel: true,
+        },
+        interactions: [
+          {
+            label: "Head down the hardware aisle",
+            effect: { type: "change_scene", sceneId: "store-hardware" },
+          },
+        ],
+      },
+      {
+        id: "exit_to_lot",
+        type: "path",
+        name: "Sliding Doors",
+        boundingBox: { x: 0.02, y: 0.22, width: 0.2, height: 0.62 },
+        properties: {
+          leadsTo: "parking_lot",
+        },
+        interactions: [
+          {
+            label: "Return to the car",
+            effect: {
+              type: "change_scene",
+              sceneId: "storage-outside-car",
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "store-hardware",
+    name: "Hardware Aisle",
+    description:
+      "The aisle is lined with power tools, pliers, batteries, and anything else one could need.",
+    imageSrc: "/scenes/chapter01/store-hardware.png",
+    objects: [
+      {
+        id: "tape_shelf",
+        type: "shelf",
+        name: "Adhesives Section",
+        boundingBox: { x: 0.64, y: 0.2, width: 0.3, height: 0.58 },
+        properties: {
+          stocked: true,
+          ductTapeVisible: true,
+        },
+        interactions: [
+          {
+            label: "Grab duct tape",
+            effect: {
+              type: "change_scene",
+              sceneId: "store-hardware-ducttape",
+            },
+          },
+        ],
+      },
+      {
+        id: "tool_wall_left",
+        type: "tools",
+        name: "Power Tools",
+        boundingBox: { x: 0.04, y: 0.18, width: 0.38, height: 0.6 },
+        properties: {
+          sale: true,
+          brands: ["VoltRex", "MegaBuild"],
+        },
+        interactions: [
+          {
+            label: "Head back to the entrance",
+            effect: { type: "change_scene", sceneId: "store-entrance" },
+          },
+        ],
+      },
+      {
+        id: "hardware_cart",
+        type: "vehicle",
+        name: "Cart Handle",
+        boundingBox: { x: 0.34, y: 0.68, width: 0.32, height: 0.28 },
+        properties: {
+          loaded: false,
+        },
+        interactions: [
+          {
+            label: "Return to the workbench",
+            effect: { type: "change_scene", sceneId: "storage-vcr" },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "store-hardware-ducttape",
+    name: "Hardware Aisle — Duct Tape",
+    description:
+      "A pair of duct tape rolls sit proudly in the cart, mission accomplished.",
+    imageSrc: "/scenes/chapter01/store-hardware-ducttape.png",
+    objects: [
+      {
+        id: "duct_tape_rolls",
+        type: "item",
+        name: "Heavy Duty Duct Tape",
+        boundingBox: { x: 0.42, y: 0.54, width: 0.22, height: 0.2 },
+        properties: {
+          color: "silver",
+          adhesiveStrength: "high",
+        },
+        interactions: [
+          {
+            label: "Wheel back to the aisle",
+            effect: { type: "change_scene", sceneId: "store-hardware" },
+          },
+        ],
+      },
+      {
+        id: "hardware_exit",
+        type: "path",
+        name: "Aisle Exit",
+        boundingBox: { x: 0.32, y: 0.72, width: 0.34, height: 0.24 },
+        properties: {
+          leadsTo: "checkout",
+        },
+        interactions: [
+          {
+            label: "Return to the car with supplies",
+            effect: {
+              type: "change_scene",
+              sceneId: "storage-outside-car",
+            },
+          },
+        ],
+      },
+      {
+        id: "right_shelf_detail",
+        type: "shelf",
+        name: "Hardware Shelves",
+        boundingBox: { x: 0.64, y: 0.2, width: 0.3, height: 0.56 },
+        properties: {
+          stocked: true,
+        },
+        interactions: [
+          {
+            label: "Survey the rest of the tools",
+            effect: { type: "change_scene", sceneId: "store-hardware" },
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export const initialSceneId = scenes[0]?.id ?? "";

@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import SceneView from "./components/SceneView";
 import { scenes } from "./data/scenes";
 import { useGameState } from "./effects/useGameState";
-import type { ObjectInteraction, SceneDefinition, SceneObject } from "./types/scenes";
+import type { ObjectInteraction, SceneDefinition, SceneId, SceneObject } from "./types/scenes";
 import "./App.css";
 
 const formatPropertyKey = (key: string) =>
@@ -37,7 +37,7 @@ const App = () => {
     setSelectedObjectId(object?.id ?? null);
   };
 
-  const handleSceneChange = (sceneId: string) => {
+  const handleSceneChange = (sceneId: SceneId) => {
     setCurrentSceneId(sceneId);
     setSelectedObjectId(null);
   };
@@ -79,7 +79,7 @@ const App = () => {
             <span>Scene</span>
             <select
               value={currentSceneId}
-              onChange={(event) => handleSceneChange(event.target.value)}
+              onChange={(event) => handleSceneChange(event.target.value as SceneId)}
             >
               {scenes.map((scene) => (
                 <option key={scene.id} value={scene.id}>

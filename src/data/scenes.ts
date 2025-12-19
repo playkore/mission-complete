@@ -24,7 +24,7 @@ export const scenes: SceneDefinition[] = [
         interactions: [
           {
             label: "Get in car",
-            effect: { type: "enter_vehicle", vehicleId: "car_001" },
+            effect: { type: "change_scene", sceneId: "car_001" },
           },
         ],
       },
@@ -44,10 +44,6 @@ export const scenes: SceneDefinition[] = [
             label: "Get inside the storage unit",
             effect: { type: "change_scene", sceneId: "storage" },
           },
-          {
-            label: "Use keypad",
-            effect: { type: "open_ui", interfaceId: "keypad_001" },
-          },
         ],
       },
       {
@@ -61,15 +57,7 @@ export const scenes: SceneDefinition[] = [
           locked: true,
           unitNumber: 13,
         },
-        interactions: [
-          {
-            label: "Inspect door",
-            effect: {
-              type: "show_description",
-              targetId: "storage_door_002",
-            },
-          },
-        ],
+        interactions: [],
       },
       {
         id: "wood_pallets_001",
@@ -82,34 +70,7 @@ export const scenes: SceneDefinition[] = [
           flammable: true,
           lootable: false,
         },
-        interactions: [
-          {
-            label: "Inspect pallets",
-            effect: { type: "show_description" },
-          },
-          {
-            label: "Take scrap wood",
-            effect: {
-              type: "give_item",
-              itemId: "scrap_wood",
-            },
-          },
-          {
-            label: "Reduce pallets",
-            effect: {
-              type: "set_state",
-              targetId: "wood_pallets_001",
-              state: "reduced",
-            },
-          },
-          {
-            label: "Climb",
-            effect: {
-              type: "set_position",
-              position: "slightly_higher",
-            },
-          },
-        ],
+        interactions: [],
       },
       {
         id: "bush_001",
@@ -121,15 +82,19 @@ export const scenes: SceneDefinition[] = [
           walkable: false,
           concealment: 0.6,
         },
-        interactions: [
-          {
-            label: "Inspect bush",
-            effect: { type: "show_description" },
-          },
-        ],
+        interactions: [],
       },
     ],
   },
+  {
+    id: "storage-outside-car-inside",
+    name: "Inside The Car",
+    description:
+      "Inside the sedan parked outside the storage facility. The engine is off, and the keys are in the ignition.",
+    imageSrc: "/scenes/chapter01/storage-outside-car-inside.png",
+    objects: [],
+  },
+  
 ];
 
 export const initialSceneId = scenes[0]?.id ?? "";

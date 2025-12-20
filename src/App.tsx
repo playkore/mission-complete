@@ -187,18 +187,6 @@ const App = () => {
               onInteractionSelect={handleInteraction}
             />
           </section>
-
-          <section
-            className="panel actionsPanel"
-            aria-label="Available actions"
-          >
-            <div className="overviewHeader">
-              <div>
-                <p className="eyebrow">{currentScene.name}</p>
-                {selectedObject && <h1>{selectedObject.name}</h1>}
-              </div>
-            </div>
-          </section>
         </main>
       </div>
       {isSceneEditorOpen && (

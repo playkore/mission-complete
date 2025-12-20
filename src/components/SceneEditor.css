@@ -160,47 +160,6 @@
   text-transform: uppercase;
 }
 
-.sceneEditorObjectList {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  overflow-y: auto;
-}
-
-.sceneEditorObject {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  padding: 12px;
-  text-align: left;
-  background: rgba(255, 255, 255, 0.02);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-
-.sceneEditorObject strong {
-  font-size: 14px;
-}
-
-.sceneEditorObject span {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
-  font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
-}
-
-.sceneEditorObject small {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.sceneEditorObject.is-selected {
-  border-color: rgba(34, 197, 94, 0.7);
-  background: rgba(34, 197, 94, 0.08);
-}
-
 .sceneEditorEmptyState {
   margin: 0;
   padding: 20px;
@@ -430,12 +389,6 @@
   flex-direction: column;
   gap: 10px;
   background: rgba(255, 255, 255, 0.02);
-}
-
-.sceneEditorInteractionRow {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
 }
 
 .sceneEditorPanel textarea {

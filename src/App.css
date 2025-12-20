@@ -155,24 +155,6 @@
   color: rgba(215, 255, 231, 0.7);
 }
 
-.sceneDescription {
-  margin: 8px 0 0;
-  font-size: 0.95rem;
-  color: rgba(215, 255, 231, 0.72);
-}
-
-.panelMessage {
-  margin: 0;
-  font-size: 0.95rem;
-  color: rgba(215, 255, 231, 0.85);
-}
-
-.emptyState {
-  margin: 0;
-  font-size: 0.9rem;
-  color: rgba(215, 255, 231, 0.6);
-}
-
 .actionsPanel {
   display: flex;
   flex-direction: column;
@@ -187,48 +169,6 @@
   padding: 0 16px;
   display: flex;
   justify-content: flex-end;
-}
-
-.actionsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-}
-
-.actionButton {
-  appearance: none;
-  border: 1px solid rgba(0, 255, 122, 0.2);
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.25);
-  color: rgba(215, 255, 231, 0.95);
-  padding: 14px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  cursor: pointer;
-  transition: border-color 120ms ease, transform 120ms ease,
-    background 120ms ease;
-}
-
-.actionButton strong {
-  font-size: 0.95rem;
-}
-
-.actionMeta {
-  font-size: 0.8rem;
-  color: rgba(215, 255, 231, 0.7);
-}
-
-.actionButton:hover,
-.actionButton:focus-visible {
-  border-color: rgba(0, 255, 122, 0.45);
-  transform: translateY(-1px);
-  background: rgba(0, 0, 0, 0.32);
-}
-
-.actionButton:active {
-  transform: translateY(0);
 }
 
 @media (max-width: 600px) {

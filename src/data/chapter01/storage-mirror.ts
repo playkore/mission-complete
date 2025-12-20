@@ -22,7 +22,7 @@ const storageMirror: SceneDefinition = {
       id: "mirror_frame_neutral",
       name: "My reflection",
       description: "Full-length mirror reflecting my stance.",
-      imageSrc: "public/scenes/chapter01/storage-mirror-neutral-male.png",
+      imageSrc: "/scenes/chapter01/storage-mirror-neutral-male.png",
       visible: (gameState) => gameState.look === "neutral",
       boundingBox: {
         x: 0.1878,
@@ -45,7 +45,7 @@ const storageMirror: SceneDefinition = {
       id: "mirror_frame_happy",
       name: "My reflection",
       description: "Full-length mirror reflecting my happy stance.",
-      imageSrc: "public/scenes/chapter01/storage-mirror-happy-male.png",
+      imageSrc: "/scenes/chapter01/storage-mirror-happy-male.png",
       visible: (gameState) => gameState.look === "happy",
       boundingBox: {
         x: 0.1878,
@@ -68,7 +68,7 @@ const storageMirror: SceneDefinition = {
       id: "mirror_frame_angry",
       name: "My reflection",
       description: "Full-length mirror reflecting my angry stance.",
-      imageSrc: "public/scenes/chapter01/storage-mirror-angry-male.png",
+      imageSrc: "/scenes/chapter01/storage-mirror-angry-male.png",
       boundingBox: {
         x: 0.1878,
         y: 0.0008,

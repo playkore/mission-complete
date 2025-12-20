@@ -40,7 +40,11 @@ const SceneView = ({
 
   const handleSceneClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
-    if (target.closest("button.hitbox")) {
+    if (
+      target.closest("button.hitbox") ||
+      target.closest("button.sceneActionButton")
+    ) {
+      // Click was on an object or a button, do not deselect
       return;
     }
     onObjectSelect(null);

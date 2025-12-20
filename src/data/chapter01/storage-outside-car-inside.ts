@@ -1,5 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
-import { setScene } from "../../effects/mutators";
+import { setMessage, setScene } from "../../effects/mutators";
 
 const storageOutsideCarInside: SceneDefinition = {
   id: "storage-outside-car-inside",
@@ -15,9 +15,9 @@ const storageOutsideCarInside: SceneDefinition = {
   ],
   objects: [
     {
-      id: "dashboard",
-      name: "Dashboard",
-      description: "Dusty dashboard with the ignition and gauges.",
+      id: "steering-wheel",
+      name: "Steering Wheel",
+      description: "The steering wheel of the car. Can be used to drive.",
       boundingBox: {
         x: 0.03,
         y: 0.48,
@@ -26,8 +26,13 @@ const storageOutsideCarInside: SceneDefinition = {
       },
       interactions: [
         {
-          label: "Drive over to the store",
-          effect: setScene("store-entrance"),
+          label: "Drive",
+          effect: (state) => {
+            if (state.inventory.includes("city-map")) {
+              return setScene("city-map")(state);
+            }
+            return setMessage("Where do I go? I need a map. I'm wondering where do I store it?")(state);
+          },
         },
       ],
     },
@@ -36,15 +41,15 @@ const storageOutsideCarInside: SceneDefinition = {
       name: "Glove Box",
       description: "Glove compartment stuffed with paperwork.",
       boundingBox: {
-        x: 0.62,
-        y: 0.78,
-        width: 0.35,
-        height: 0.08,
+        x: 0.61,
+        y: 0.7,
+        width: 0.39,
+        height: 0.18,
       },
       interactions: [
         {
           label: "Look in the glove box",
-          effect: setScene("storage-outside-car"),
+          effect: setScene("car-glove-box"),
         },
       ],
     },
@@ -58,12 +63,7 @@ const storageOutsideCarInside: SceneDefinition = {
         width: 0.21,
         height: 0.1,
       },
-      interactions: [
-        {
-          label: "Check the storage unit",
-          effect: setScene("storage-back"),
-        },
-      ],
+      interactions: [],
     },
   ],
 };

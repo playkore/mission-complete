@@ -10,6 +10,7 @@ import storeEntrance from "./chapter01/store-entrance";
 import storeHardware from "./chapter01/store-hardware";
 import storeHardwareDucttape from "./chapter01/store-hardware-ducttape";
 import carGloveBox from "./chapter01/car-glove-box";
+import cityMap from "./chapter01/city-map";
 
 export const scenes: SceneDefinition[] = [
   storageChairBroken,
@@ -23,6 +24,7 @@ export const scenes: SceneDefinition[] = [
   storeEntrance,
   storeHardware,
   storeHardwareDucttape,
+  cityMap,
 ];
 
 export const initialSceneId: SceneId = "storage-back";

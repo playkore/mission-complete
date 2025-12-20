@@ -10,6 +10,7 @@ export type SceneId =
   | "storage-outside-car-inside"
   | "storage-outside-car"
   | "car-glove-box"
+  | "city-map"
   | "store-entrance"
   | "store-hardware-ducttape"
   | "store-hardware";

@@ -8,6 +8,7 @@ export type GameState = {
   chairFixed: boolean;
   hasDuctTape: boolean;
   inventory: InventoryItemId[];
+  message: string | null;
 };
 
 const createInitialGameState = (): GameState => ({
@@ -15,28 +16,41 @@ const createInitialGameState = (): GameState => ({
   chairFixed: false,
   hasDuctTape: false,
   inventory: [],
+  message: null,
 });
 
 export const useGameState = () => {
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
-
   const [gameState, setGameState] = useState<GameState>(createInitialGameState);
 
   const executeEffect = (objectInteraction: ObjectInteraction) => {
     setGameState((oldState: GameState) => {
-      return objectInteraction.effect(oldState);
+      const nextState = objectInteraction.effect({
+        ...oldState,
+        message: null,
+      });
+
+      return {
+        ...nextState,
+        message: nextState.message ?? null,
+      };
     });
   };
 
   const resetGame = () => {
-    setStatusMessage(null);
     setGameState(createInitialGameState());
   };
+
+  const resetMessage = () => {
+    setGameState((oldState) => ({
+      ...oldState,
+      message: null,
+    }));
+  }
 
   return {
     executeEffect,
     gameState,
-    statusMessage,
     resetGame,
+    resetMessage
   };
 };

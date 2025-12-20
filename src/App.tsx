@@ -14,7 +14,7 @@ const App = () => {
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSceneEditorOpen, setIsSceneEditorOpen] = useState(false);
-  const { executeEffect, gameState, resetGame } = useGameState();
+  const { executeEffect, gameState, resetGame, resetMessage } = useGameState();
   const menuWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const sceneMap = useMemo(() => {
@@ -48,6 +48,7 @@ const App = () => {
 
   const handleObjectSelect = (object: SceneObject | null) => {
     setSelectedObjectId(object?.id ?? null);
+    resetMessage();
   };
 
   const handleInteraction = (interaction: ObjectInteraction) => {
@@ -171,13 +172,18 @@ const App = () => {
             />
           </section>
 
-          <section className="panel actionsPanel" aria-label="Available actions">
+          <section
+            className="panel actionsPanel"
+            aria-label="Available actions"
+          >
             <div className="overviewHeader">
               <div>
                 <p className="eyebrow">{currentScene.name}</p>
                 {selectedObject && <h1>{selectedObject.name}</h1>}
                 <p className="sceneDescription">
-                  {selectedObject
+                  {gameState.message && gameState.message.trim() !== ""
+                    ? gameState.message
+                    : selectedObject
                     ? selectedObject.description
                     : currentScene.description}
                 </p>
@@ -187,7 +193,9 @@ const App = () => {
               <div className="actionsGrid">
                 {selectedObject.interactions.map((interaction) => (
                   <button
-                    key={`${selectedObject.id}-${interaction.effect.toString()}`}
+                    key={`${
+                      selectedObject.id
+                    }-${interaction.effect.toString()}`}
                     type="button"
                     className="actionButton"
                     onClick={() => handleInteraction(interaction)}

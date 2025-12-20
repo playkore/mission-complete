@@ -31,3 +31,12 @@ export const setStateLook = (look: GameStateLook) => {
     };
   };
 };
+
+export const setMessage = (message: string) => {
+  return (state: GameState): GameState => {
+    return {
+      ...state,
+      message,
+    };
+  };
+};

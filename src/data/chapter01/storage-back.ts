@@ -83,42 +83,6 @@ const storageBack: SceneDefinition = {
         },
       ],
     },
-    {
-      id: "hall_light",
-      name: "Hall Toward the Exit",
-      description:
-        "The exit is in that direction. Bright. Inviting. Almost suspiciously obvious.",
-      boundingBox: {
-        x: 0.8212,
-        y: 0.1031,
-        width: 0.1588,
-        height: 0.8384,
-      },
-      interactions: [
-        {
-          label: "Walk toward the exit door",
-          effect: setScene("storage-exit"),
-        },
-      ],
-    },
-    {
-      id: "storage-mirror",
-      name: "Wall with an Old Mirror",
-      description:
-        "A wall to my left. Mostly unremarkable. An old mirror is mounted there, stubbornly intact. Simple reflective technology tends to survive longer than people.",
-      boundingBox: {
-        x: 0.0192,
-        y: 0.1083,
-        width: 0.1764,
-        height: 0.8194,
-      },
-      interactions: [
-        {
-          label: "Turn toward the mirror",
-          effect: setScene("storage-mirror"),
-        },
-      ],
-    },
   ],
 };
 

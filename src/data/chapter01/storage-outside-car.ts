@@ -1,5 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
-import { setScene } from "../../effects/mutators";
+import { setMessage, setScene } from "../../effects/mutators";
 
 const storageOutsideCar: SceneDefinition = {
   id: "storage-outside-car",
@@ -17,7 +17,12 @@ const storageOutsideCar: SceneDefinition = {
       interactions: [
         {
           label: "Get in car",
-          effect: setScene("storage-outside-car-inside"),
+          effect: (state) => {
+            if (state.inventory.includes("car-keys")) {
+              return setScene("storage-outside-car-inside")(state);
+            } 
+            return setMessage("The car is locked. I need to find my keys.")(state);
+          }
         },
       ],
     },

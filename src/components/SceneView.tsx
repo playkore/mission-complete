@@ -126,7 +126,6 @@ const SceneView = ({
 
         {isLoading && (
           <div className="sceneLoadingOverlay" role="status" aria-live="polite">
-            <div className="sceneLoadingSpinner" aria-hidden="true" />
             <span>
               Loading scene{" "}
               {totalCount > 0

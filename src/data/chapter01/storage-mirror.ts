@@ -1,4 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
+import { setScene } from "../../effects/mutators";
 
 const storageMirror: SceneDefinition = {
   id: "storage-mirror",
@@ -19,10 +20,7 @@ const storageMirror: SceneDefinition = {
       interactions: [
         {
           label: "Practice a tough stare",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-mirror-angry"
-          }
+          effect: setScene("storage-mirror-angry")
         }
       ]
     },
@@ -39,10 +37,7 @@ const storageMirror: SceneDefinition = {
       interactions: [
         {
           label: "Walk toward the exit",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-exit"
-          }
+          effect: setScene("storage-exit")
         }
       ]
     },
@@ -59,10 +54,7 @@ const storageMirror: SceneDefinition = {
       interactions: [
         {
           label: "Check on the chair",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-chair-broken"
-          }
+          effect: setScene("storage-chair-broken")
         }
       ]
     }

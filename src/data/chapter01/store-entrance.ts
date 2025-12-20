@@ -1,4 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
+import { setScene } from "../../effects/mutators";
 
 const storeEntrance: SceneDefinition = {
   id: "store-entrance",
@@ -15,7 +16,7 @@ const storeEntrance: SceneDefinition = {
       interactions: [
         {
           label: "Push the cart inside",
-          effect: { type: "change_scene", sceneId: "store-hardware" },
+          effect: setScene("store-hardware"),
         },
       ],
     },
@@ -27,7 +28,7 @@ const storeEntrance: SceneDefinition = {
       interactions: [
         {
           label: "Head down the hardware aisle",
-          effect: { type: "change_scene", sceneId: "store-hardware" },
+          effect: setScene("store-hardware"),
         },
       ],
     },
@@ -39,10 +40,7 @@ const storeEntrance: SceneDefinition = {
       interactions: [
         {
           label: "Return to the car",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-outside-car",
-          },
+          effect: setScene("storage-outside-car"),
         },
       ],
     },

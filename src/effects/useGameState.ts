@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { SceneEffectCommand } from "../types/effects";
 import { initialSceneId } from "../data/scenes";
-import { SceneId } from "../types/scenes";
+import { ObjectInteraction, SceneId } from "../types/scenes";
 
-type GameState = {
+export type GameState = {
+  currentSceneId: SceneId;
   chairFixed: boolean;
   hasDuctTape: boolean;
+  inventory: string[];
 };
 
 const createInitialGameState = (): GameState => ({
+  currentSceneId: initialSceneId,
   chairFixed: false,
   hasDuctTape: false,
+  inventory: [],
 });
 
 export const useGameState = () => {
@@ -19,29 +22,12 @@ export const useGameState = () => {
 
   const [gameState, setGameState] = useState<GameState>(createInitialGameState);
 
-  const executeEffect = (command: SceneEffectCommand) => {
-    switch (command.type) {
-      case "change_scene": {
-        setCurrentSceneId(command.sceneId as SceneId);
-        break;
-      }
-      case "fix_chair": {
-        if (!gameState.hasDuctTape) {
-          setStatusMessage("I need something to fix this chair with.");
-          return;
-        }
-
-        setGameState((prevState) => ({
-          ...prevState,
-          chairFixed: true,
-        }));
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+  const executeEffect = (objectInteraction: ObjectInteraction) => {
+    setGameState((oldState: GameState) => {
+      return objectInteraction.effect(oldState);
+    });
   };
+
   const resetGame = () => {
     setStatusMessage(null);
     setGameState(createInitialGameState());

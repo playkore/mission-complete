@@ -1,4 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
+import { setScene } from "../../effects/mutators";
 
 const storeHardwareDucttape: SceneDefinition = {
   id: "store-hardware-ducttape",
@@ -15,7 +16,7 @@ const storeHardwareDucttape: SceneDefinition = {
       interactions: [
         {
           label: "Wheel back to the aisle",
-          effect: { type: "change_scene", sceneId: "store-hardware" },
+          effect: setScene("store-hardware"),
         },
       ],
     },
@@ -27,10 +28,7 @@ const storeHardwareDucttape: SceneDefinition = {
       interactions: [
         {
           label: "Return to the car with supplies",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-outside-car",
-          },
+          effect: setScene("storage-outside-car"),
         },
       ],
     },
@@ -42,7 +40,7 @@ const storeHardwareDucttape: SceneDefinition = {
       interactions: [
         {
           label: "Survey the rest of the tools",
-          effect: { type: "change_scene", sceneId: "store-hardware" },
+          effect: setScene("store-hardware"),
         },
       ],
     },

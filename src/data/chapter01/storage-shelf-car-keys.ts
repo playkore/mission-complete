@@ -1,4 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
+import { setScene } from "../../effects/mutators";
 
 const storageShelfCarKeys: SceneDefinition = {
   id: "storage-shelf-car-keys",
@@ -20,10 +21,7 @@ const storageShelfCarKeys: SceneDefinition = {
       interactions: [
         {
           label: "Take",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-shelf-car-keys",
-          },
+          effect: setScene("storage-shelf-car-keys"),
         },
       ],
     },

@@ -1,4 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
+import { setScene } from "../../effects/mutators";
 
 const storageChairBroken: SceneDefinition = {
   id: "storage-chair-broken",
@@ -21,8 +22,18 @@ const storageChairBroken: SceneDefinition = {
       interactions: [
         {
           label: "Try to fix the chair",
-          effect: {
-            type: "fix_chair",
+          effect: (state) => {
+            if (state.inventory.includes("duct_tape")) {
+              return {
+                ...state,
+                isChairFixed: true,
+              };
+            } else {
+              return {
+                ...state,
+                message: "I need something to fix the chair with.",
+              }
+            }
           },
         },
       ],
@@ -41,9 +52,8 @@ const storageChairBroken: SceneDefinition = {
       interactions: [
         {
           label: "Inspect the shelves",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-shelf-car-keys",
+          effect: (state) => {
+            return state;
           },
         },
       ],
@@ -62,10 +72,7 @@ const storageChairBroken: SceneDefinition = {
       interactions: [
         {
           label: "Walk toward the exit door",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-exit",
-          },
+          effect: setScene("storage-exit"),
         },
       ],
     },
@@ -83,10 +90,7 @@ const storageChairBroken: SceneDefinition = {
       interactions: [
         {
           label: "Turn toward the mirror",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-mirror",
-          },
+          effect: setScene("storage-mirror"),
         },
       ],
     },

@@ -1,4 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
+import { setScene } from "../../effects/mutators";
 
 const storageChairFixed: SceneDefinition = {
   id: "storage-chair-fixed",
@@ -15,7 +16,7 @@ const storageChairFixed: SceneDefinition = {
       interactions: [
         {
           label: "Admire your handiwork",
-          effect: { type: "change_scene", sceneId: "storage-mirror" },
+          effect: setScene("storage-mirror"),
         },
       ],
     },
@@ -27,7 +28,7 @@ const storageChairFixed: SceneDefinition = {
       interactions: [
         {
           label: "Double-check the supplies",
-          effect: { type: "change_scene", sceneId: "storage-vcr" },
+          effect: setScene("storage-vcr"),
         },
       ],
     },
@@ -39,7 +40,7 @@ const storageChairFixed: SceneDefinition = {
       interactions: [
         {
           label: "Head toward the exit",
-          effect: { type: "change_scene", sceneId: "storage-exit" },
+          effect: setScene("storage-exit"),
         },
       ],
     },

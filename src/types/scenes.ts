@@ -1,4 +1,4 @@
-import { SceneEffectCommand } from "./effects";
+import { GameState } from "../effects/useGameState";
 
 // Should correspond the image name <sceneId>.png in src/assets/scenes/chapter01/
 export type SceneId =
@@ -15,9 +15,11 @@ export type SceneId =
   | "store-hardware-ducttape"
   | "store-hardware";
 
+  
+type SceneEffectCommandFunction = (state: GameState) => GameState
 export interface ObjectInteraction {
   label: string;
-  effect: SceneEffectCommand;
+  effect: SceneEffectCommandFunction;
 }
 
 export interface BoundingBox {

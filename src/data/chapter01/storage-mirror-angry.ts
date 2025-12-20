@@ -1,4 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
+import { setScene } from "../../effects/mutators";
 
 const storageMirrorAngry: SceneDefinition = {
   id: "storage-mirror-angry",
@@ -15,7 +16,7 @@ const storageMirrorAngry: SceneDefinition = {
       interactions: [
         {
           label: "Take a calming breath",
-          effect: { type: "change_scene", sceneId: "storage-mirror" },
+          effect: setScene("storage-mirror"),
         },
       ],
     },
@@ -27,7 +28,7 @@ const storageMirrorAngry: SceneDefinition = {
       interactions: [
         {
           label: "Storm toward the exit",
-          effect: { type: "change_scene", sceneId: "storage-exit" },
+          effect: setScene("storage-exit"),
         },
       ],
     },

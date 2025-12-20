@@ -1,4 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
+import { setScene } from "../../effects/mutators";
 
 const storeHardware: SceneDefinition = {
   id: "store-hardware",
@@ -15,10 +16,7 @@ const storeHardware: SceneDefinition = {
       interactions: [
         {
           label: "Grab duct tape",
-          effect: {
-            type: "change_scene",
-            sceneId: "store-hardware-ducttape",
-          },
+          effect: setScene("store-hardware-ducttape"),
         },
       ],
     },
@@ -30,7 +28,7 @@ const storeHardware: SceneDefinition = {
       interactions: [
         {
           label: "Head back to the entrance",
-          effect: { type: "change_scene", sceneId: "store-entrance" },
+          effect: setScene("store-entrance"),
         },
       ],
     },
@@ -42,7 +40,7 @@ const storeHardware: SceneDefinition = {
       interactions: [
         {
           label: "Return to the workbench",
-          effect: { type: "change_scene", sceneId: "storage-vcr" },
+          effect: setScene("storage-vcr"),
         },
       ],
     },

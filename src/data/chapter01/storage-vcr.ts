@@ -1,4 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
+import { setScene } from "../../effects/mutators";
 
 const storageVcr: SceneDefinition = {
   id: "storage-vcr",
@@ -20,10 +21,7 @@ const storageVcr: SceneDefinition = {
       interactions: [
         {
           label: "Head back to the chair",
-          effect: {
-            type: "change_scene",
-            sceneId: "storage-chair-broken",
-          },
+          effect: setScene("storage-chair-broken"),
         },
       ],
     },

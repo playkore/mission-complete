@@ -637,12 +637,11 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                               type="number"
                               min={0}
                               max={1}
-                              step={0.001}
+                              step={0.01}
                               value={
                                 Math.round(
-                                  (selectedObject.boundingBox[axis] ?? 0) *
-                                    10000
-                                ) / 10000
+                                  (selectedObject.boundingBox[axis] ?? 0) * 100
+                                ) / 100
                               }
                               onChange={(event) =>
                                 handleBoundingBoxChange(
@@ -815,11 +814,14 @@ const makeObjectId = (objects: DraftSceneObject[]) => {
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 
+const roundCoord = (value: number) =>
+  Math.round(Number.isFinite(value) ? value * 100 : 0) / 100;
+
 const clampBoundingBox = (box: BoundingBox): BoundingBox => {
-  const width = clamp(box.width, 0.001, 1);
-  const height = clamp(box.height, 0.001, 1);
-  const x = clamp(box.x, 0, 1 - width);
-  const y = clamp(box.y, 0, 1 - height);
+  const width = roundCoord(clamp(box.width, 0.01, 1));
+  const height = roundCoord(clamp(box.height, 0.01, 1));
+  const x = roundCoord(clamp(box.x, 0, 1 - width));
+  const y = roundCoord(clamp(box.y, 0, 1 - height));
   return { x, y, width, height };
 };
 

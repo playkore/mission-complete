@@ -4,6 +4,7 @@ import { SceneEffectCommand } from "./effects";
 export type SceneId =
   | "storage-chair-broken"
   | "storage-chair-fixed"
+  | "storage-shelf-car-keys"
   | "storage-exit"
   | "storage-mirror-angry"
   | "storage-mirror"

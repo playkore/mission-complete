@@ -206,6 +206,35 @@ export const scenes: SceneDefinition[] = [
       },
     ],
   },
+  {
+    id: "storage-shelf-car-keys",
+    name: "Shelf with Car Keys",
+    description:
+      "A cluttered shelf inside the storage unit. Among the assorted items, your car keys are clearly visible.",
+    imageSrc: "/scenes/chapter01/storage-shelf-car-keys.png",
+    objects: [
+      {
+        id: "car-keys",
+        name: "Car keys",
+        description: "Old merceides car keys",
+        boundingBox: {
+          x: 0.37,
+          y: 0.6,
+          width: 0.36,
+          height: 0.21,
+        },
+        interactions: [
+          {
+            label: "Take",
+            effect: {
+              type: "change_scene",
+              sceneId: "storage-shelf-car-keys",
+            },
+          },
+        ],
+      },
+    ],
+  },
   storageMirror,
   {
     id: "storage-mirror-angry",
@@ -251,11 +280,19 @@ export const scenes: SceneDefinition[] = [
         id: "vcr_player",
         name: "VCR Deck",
         description: "Old VCR hooked up on the workbench.",
-        boundingBox: { x: 0.46, y: 0.62, width: 0.22, height: 0.16 },
+        boundingBox: {
+          x: 0.4391943705673759,
+          y: 0.5926908798758864,
+          width: 0.3365780141843972,
+          height: 0.20688885195035478,
+        },
         interactions: [
           {
             label: "Head back to the chair",
-            effect: { type: "change_scene", sceneId: "storage" },
+            effect: {
+              type: "change_scene",
+              sceneId: "storage",
+            },
           },
         ],
       },
@@ -263,25 +300,25 @@ export const scenes: SceneDefinition[] = [
         id: "tool_wall",
         name: "Hanging Tools",
         description: "Pegboard wall lined with well-worn tools.",
-        boundingBox: { x: 0.16, y: 0.1, width: 0.62, height: 0.36 },
-        interactions: [
-          {
-            label: "Go look for supplies at the store",
-            effect: { type: "change_scene", sceneId: "store-entrance" },
-          },
-        ],
+        boundingBox: {
+          x: 0.16,
+          y: 0.1,
+          width: 0.625434581855792,
+          height: 0.46106382978723404,
+        },
+        interactions: [],
       },
       {
-        id: "paint_cans",
-        name: "Paint Cans",
-        description: "Stacks of dusty paint cans with faded labels.",
-        boundingBox: { x: 0.06, y: 0.6, width: 0.2, height: 0.2 },
-        interactions: [
-          {
-            label: "Check on the mirror",
-            effect: { type: "change_scene", sceneId: "storage-mirror" },
-          },
-        ],
+        id: "exit-door",
+        name: "Turn right",
+        description: "The exit door is to my right.",
+        boundingBox: {
+          x: 0.8,
+          y: 0.11,
+          width: 0.2,
+          height: 0.69,
+        },
+        interactions: [],
       },
     ],
   },

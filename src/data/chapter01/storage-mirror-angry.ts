@@ -7,6 +7,7 @@ const storageMirrorAngry: SceneDefinition = {
   description:
     "Your reflection mirrors your frustration with crossed arms and a glare.",
   imageSrc: "/scenes/chapter01/storage-mirror-angry.png",
+  interactions: [],
   objects: [
     {
       id: "angry_reflection",

@@ -562,16 +562,6 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                     }
                   />
                 </label>
-                <label className="sceneEditorField">
-                  <span>ambientSound</span>
-                  <input
-                    type="text"
-                    value={sceneDraft?.ambientSound ?? ""}
-                    onChange={(event) =>
-                      handleSceneFieldChange("ambientSound", event.target.value)
-                    }
-                  />
-                </label>
               </fieldset>
 
               <fieldset className="sceneEditorFieldset">
@@ -751,6 +741,7 @@ const createDraftScene = (scene?: SceneDefinition | null): DraftScene => {
       name: "",
       description: "",
       imageSrc: "",
+      interactions: [],
       objects: [],
     };
   }

@@ -10,11 +10,11 @@ const storageBack: SceneDefinition = {
   interactions: [
     {
       label: "Turn left",
-      effect: setScene("storage-mirror"),
+      effect: setScene("storage-exit"),
     },
     {
       label: "Turn right",
-      effect: setScene("storage-vcr"),
+      effect: setScene("storage-mirror"),
     },
   ],
   objects: [

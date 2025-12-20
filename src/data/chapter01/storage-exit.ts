@@ -7,7 +7,16 @@ const storageExit: SceneDefinition = {
   description:
     "An industrial metal door marked EXIT bleeds warm light through the crack at the floor.",
   imageSrc: "/scenes/chapter01/storage-exit.png",
-  interactions: [],
+  interactions: [
+    {
+      label: "Turn left",
+      effect: setScene("storage-vcr"),
+    },
+    {
+      label: "Turn right",
+      effect: setScene("storage-back"),
+    },
+  ],
   objects: [
     {
       id: "exit_door",
@@ -23,10 +32,6 @@ const storageExit: SceneDefinition = {
         {
           label: "Step outside",
           effect: setScene("storage-outside-car"),
-        },
-        {
-          label: "Return deeper inside",
-          effect: setScene("storage-back"),
         },
       ],
     },

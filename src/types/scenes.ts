@@ -5,11 +5,10 @@ export type SceneId =
   | "storage-back"
   | "storage-shelf-car-keys"
   | "storage-exit"
-  | "storage-mirror-angry"
   | "storage-mirror"
+  | "storage-vcr"
   | "storage-outside-car-inside"
   | "storage-outside-car"
-  | "storage-vcr"
   | "store-entrance"
   | "store-hardware-ducttape"
   | "store-hardware";

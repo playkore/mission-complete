@@ -7,7 +7,16 @@ const storageVcr: SceneDefinition = {
   description:
     "A dusty workbench holds a VCR surrounded by tools, extension cords, and paint cans.",
   imageSrc: "/scenes/chapter01/storage-vcr.png",
-  interactions: [],
+  interactions: [
+    {
+      label: "Turn left",
+      effect: setScene("storage-mirror"),
+    },
+    {
+      label: "Turn right",
+      effect: setScene("storage-exit"),
+    },
+  ],
   objects: [
     {
       id: "vcr_player",
@@ -19,12 +28,7 @@ const storageVcr: SceneDefinition = {
         width: 0.3365780141843972,
         height: 0.20688885195035478,
       },
-      interactions: [
-        {
-          label: "Head back to the chair",
-          effect: setScene("storage-back"),
-        },
-      ],
+      interactions: [],
     },
     {
       id: "tool_wall",
@@ -35,18 +39,6 @@ const storageVcr: SceneDefinition = {
         y: 0.1,
         width: 0.625434581855792,
         height: 0.46106382978723404,
-      },
-      interactions: [],
-    },
-    {
-      id: "exit-door",
-      name: "Turn right",
-      description: "The exit door is to my right.",
-      boundingBox: {
-        x: 0.8,
-        y: 0.11,
-        width: 0.2,
-        height: 0.69,
       },
       interactions: [],
     },

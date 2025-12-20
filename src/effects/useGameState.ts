@@ -3,12 +3,15 @@ import { initialSceneId } from "../data/scenes";
 import { ObjectInteraction, SceneId } from "../types/scenes";
 import { InventoryItemId } from "../types/inventory";
 
+export type GameStateLook = 'neutral' | 'happy' | 'angry';
+
 export type GameState = {
   currentSceneId: SceneId;
   chairFixed: boolean;
   hasDuctTape: boolean;
   inventory: InventoryItemId[];
   message: string | null;
+  look: GameStateLook;
 };
 
 const createInitialGameState = (): GameState => ({
@@ -17,6 +20,7 @@ const createInitialGameState = (): GameState => ({
   hasDuctTape: false,
   inventory: [],
   message: null,
+  look: 'neutral',
 });
 
 export const useGameState = () => {

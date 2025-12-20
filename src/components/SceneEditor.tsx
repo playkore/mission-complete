@@ -428,6 +428,29 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                       src={stageImageSrc}
                       alt={sceneDraft.description ?? sceneDraft.name}
                     />
+                    {sceneDraft.objects.some((object) => object.imageSrc) && (
+                      <div
+                        className="sceneEditorStageObjectLayer"
+                        aria-hidden="true"
+                      >
+                        {sceneDraft.objects.map((object) => {
+                          if (!object.imageSrc) {
+                            return null;
+                          }
+                          const objectImageSrc = resolveSceneImage(
+                            object.imageSrc
+                          );
+                          return (
+                            <img
+                              key={`scene-object-${object.id}`}
+                              src={objectImageSrc}
+                              alt=""
+                              draggable="false"
+                            />
+                          );
+                        })}
+                      </div>
+                    )}
                     <div className="sceneEditorStageOverlay">
                       {sceneDraft.objects.map((object) => (
                         <div

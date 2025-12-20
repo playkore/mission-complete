@@ -5,7 +5,7 @@ import storageOutsideCar from "./chapter01/storage-outside-car";
 import storageOutsideCarInside from "./chapter01/storage-outside-car-inside";
 import storageChairFixed from "./chapter01/storage-chair-fixed";
 import storageExit from "./chapter01/storage-exit";
-import storageShelfCarKeys from "./chapter01/storage-shelf-car-keys";
+import storageShelf from "./chapter01/storage-shelf";
 import storageMirrorAngry from "./chapter01/storage-mirror-angry";
 import storageVcr from "./chapter01/storage-vcr";
 import storeEntrance from "./chapter01/store-entrance";
@@ -18,7 +18,7 @@ export const scenes: SceneDefinition[] = [
   storageChairBroken,
   storageChairFixed,
   storageExit,
-  storageShelfCarKeys,
+  storageShelf,
   storageMirror,
   storageMirrorAngry,
   storageVcr,

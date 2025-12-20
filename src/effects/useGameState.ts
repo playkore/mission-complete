@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { initialSceneId } from "../data/scenes";
 import { ObjectInteraction, SceneId } from "../types/scenes";
+import { InventoryItemId } from "../types/inventory";
 
 export type GameState = {
   currentSceneId: SceneId;
   chairFixed: boolean;
   hasDuctTape: boolean;
-  inventory: string[];
+  inventory: InventoryItemId[];
 };
 
 const createInitialGameState = (): GameState => ({

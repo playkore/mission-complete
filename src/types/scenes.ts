@@ -41,6 +41,8 @@ export interface SceneObject {
   description: string;
   boundingBox: BoundingBox;
   interactions: ObjectInteraction[];
+  imageSrc?: string;
+  visible?: (state: GameState) => boolean;
 }
 
 export interface SceneDefinition {

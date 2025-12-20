@@ -52,9 +52,7 @@ const storageChairBroken: SceneDefinition = {
       interactions: [
         {
           label: "Inspect the shelves",
-          effect: (state) => {
-            return state;
-          },
+          effect: setScene("storage-shelf-car-keys"),
         },
       ],
     },

@@ -17,12 +17,19 @@
   overflow: hidden;
 }
 
-.pov img {
+.sceneImage,
+.objectImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   filter: contrast(1.08) saturate(0.95) brightness(0.92);
+}
+
+.objectImage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .hudGrid {

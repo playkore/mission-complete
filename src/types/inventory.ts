@@ -1,1 +1,1 @@
-export type InventoryItemId = "car-keys";
+export type InventoryItemId = "car-keys" | "duct_tape";

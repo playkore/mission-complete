@@ -28,6 +28,24 @@ const App = () => {
     currentScene?.objects.find((object) => object.id === selectedObjectId) ??
     null;
 
+  useEffect(() => {
+    if (!currentScene || !selectedObjectId) {
+      return;
+    }
+
+    const activeObject = currentScene.objects.find(
+      (object) => object.id === selectedObjectId
+    );
+
+    const isVisible = activeObject?.visible
+      ? activeObject.visible(gameState)
+      : Boolean(activeObject);
+
+    if (!isVisible) {
+      setSelectedObjectId(null);
+    }
+  }, [currentScene, selectedObjectId, gameState]);
+
   const handleObjectSelect = (object: SceneObject | null) => {
     setSelectedObjectId(object?.id ?? null);
   };
@@ -147,6 +165,7 @@ const App = () => {
           <section className="panel panel--flush" aria-label="Scene view">
             <SceneView
               scene={currentScene}
+              gameState={gameState}
               selectedObjectId={selectedObjectId}
               onObjectSelect={handleObjectSelect}
             />

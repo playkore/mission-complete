@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import SceneView from "./components/SceneView";
+import SceneEditor from "./components/SceneEditor";
 import { scenes } from "./data/scenes";
 import { useGameState } from "./effects/useGameState";
 import type {
@@ -12,6 +13,7 @@ import "./App.css";
 const App = () => {
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSceneEditorOpen, setIsSceneEditorOpen] = useState(false);
   const { executeEffect, currentSceneId, resetGame } = useGameState();
   const menuWrapperRef = useRef<HTMLDivElement | null>(null);
 
@@ -44,6 +46,15 @@ const App = () => {
     setSelectedObjectId(null);
     resetGame();
     setIsMenuOpen(false);
+  };
+
+  const handleOpenSceneEditor = () => {
+    setIsSceneEditorOpen(true);
+    setIsMenuOpen(false);
+  };
+
+  const handleCloseSceneEditor = () => {
+    setIsSceneEditorOpen(false);
   };
 
   useEffect(() => {
@@ -97,8 +108,7 @@ const App = () => {
             <button
               type="button"
               className="menuItem"
-              disabled
-              title="Not available yet"
+              onClick={handleOpenSceneEditor}
             >
               DEV: edit current scene
             </button>
@@ -110,58 +120,74 @@ const App = () => {
 
   if (!currentScene) {
     return (
-      <div className="appStack">
-        {menu}
-        <main className="appShell">
-          <section className="panel">
-            <p>No scenes registered yet. Add one in src/data/scenes.ts.</p>
-          </section>
-        </main>
-      </div>
+      <>
+        <div className="appStack">
+          {menu}
+          <main className="appShell">
+            <section className="panel">
+              <p>No scenes registered yet. Add one in src/data/scenes.ts.</p>
+            </section>
+          </main>
+        </div>
+        {isSceneEditorOpen && (
+          <SceneEditor
+            initialSceneId={currentSceneId}
+            onClose={handleCloseSceneEditor}
+          />
+        )}
+      </>
     );
   }
 
   return (
-    <div className="appStack">
-      {menu}
-      <main className="appShell">
-        <section className="panel panel--flush" aria-label="Scene view">
-          <SceneView
-            scene={currentScene}
-            selectedObjectId={selectedObjectId}
-            onObjectSelect={handleObjectSelect}
-          />
-        </section>
+    <>
+      <div className="appStack">
+        {menu}
+        <main className="appShell">
+          <section className="panel panel--flush" aria-label="Scene view">
+            <SceneView
+              scene={currentScene}
+              selectedObjectId={selectedObjectId}
+              onObjectSelect={handleObjectSelect}
+            />
+          </section>
 
-        <section className="panel actionsPanel" aria-label="Available actions">
-          <div className="overviewHeader">
-            <div>
-              <p className="eyebrow">{currentScene.name}</p>
-              {selectedObject && <h1>{selectedObject.name}</h1>}
-              <p className="sceneDescription">
-                {selectedObject
-                  ? selectedObject.description
-                  : currentScene.description}
-              </p>
+          <section className="panel actionsPanel" aria-label="Available actions">
+            <div className="overviewHeader">
+              <div>
+                <p className="eyebrow">{currentScene.name}</p>
+                {selectedObject && <h1>{selectedObject.name}</h1>}
+                <p className="sceneDescription">
+                  {selectedObject
+                    ? selectedObject.description
+                    : currentScene.description}
+                </p>
+              </div>
             </div>
-          </div>
-          {selectedObject && (
-            <div className="actionsGrid">
-              {selectedObject.interactions.map((interaction) => (
-                <button
-                  key={`${selectedObject.id}-${interaction.effect.type}`}
-                  type="button"
-                  className="actionButton"
-                  onClick={() => handleInteraction(interaction)}
-                >
-                  <strong>{interaction.label}</strong>
-                </button>
-              ))}
-            </div>
-          )}
-        </section>
-      </main>
-    </div>
+            {selectedObject && (
+              <div className="actionsGrid">
+                {selectedObject.interactions.map((interaction) => (
+                  <button
+                    key={`${selectedObject.id}-${interaction.effect.type}`}
+                    type="button"
+                    className="actionButton"
+                    onClick={() => handleInteraction(interaction)}
+                  >
+                    <strong>{interaction.label}</strong>
+                  </button>
+                ))}
+              </div>
+            )}
+          </section>
+        </main>
+      </div>
+      {isSceneEditorOpen && (
+        <SceneEditor
+          initialSceneId={currentSceneId}
+          onClose={handleCloseSceneEditor}
+        />
+      )}
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SceneView from "./components/SceneView";
 import { scenes } from "./data/scenes";
 import { useGameState } from "./effects/useGameState";
@@ -11,7 +11,9 @@ import "./App.css";
 
 const App = () => {
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
-  const { executeEffect, currentSceneId } = useGameState();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { executeEffect, currentSceneId, resetGame } = useGameState();
+  const menuWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const sceneMap = useMemo(() => {
     return new Map<string, SceneDefinition>(
@@ -34,54 +36,132 @@ const App = () => {
     executeEffect(interaction.effect);
   };
 
+  const handleMenuToggle = () => {
+    setIsMenuOpen((prevState) => !prevState);
+  };
+
+  const handleNewGame = () => {
+    setSelectedObjectId(null);
+    resetGame();
+    setIsMenuOpen(false);
+  };
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return;
+    }
+
+    const handlePointerDown = (event: MouseEvent) => {
+      if (
+        menuWrapperRef.current &&
+        !menuWrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMenuOpen]);
+
+  const menu = (
+    <div className="menuGlobalSlot">
+      <div className="menuControls" ref={menuWrapperRef}>
+        <button
+          type="button"
+          className="menuTrigger"
+          aria-haspopup="true"
+          aria-expanded={isMenuOpen}
+          onClick={handleMenuToggle}
+          aria-label="Game menu"
+        >
+          <span className="menuTriggerDots" aria-hidden="true" />
+          Menu
+        </button>
+        {isMenuOpen && (
+          <div className="appMenu" role="menu" aria-label="Game menu">
+            <button type="button" className="menuItem" onClick={handleNewGame}>
+              New game
+            </button>
+            <button
+              type="button"
+              className="menuItem"
+              disabled
+              title="Not available yet"
+            >
+              DEV: edit current scene
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   if (!currentScene) {
     return (
-      <main className="appShell">
-        <section className="panel">
-          <p>No scenes registered yet. Add one in src/data/scenes.ts.</p>
-        </section>
-      </main>
+      <div className="appStack">
+        {menu}
+        <main className="appShell">
+          <section className="panel">
+            <p>No scenes registered yet. Add one in src/data/scenes.ts.</p>
+          </section>
+        </main>
+      </div>
     );
   }
 
   return (
-    <main className="appShell">
-      <section className="panel panel--flush" aria-label="Scene view">
-        <SceneView
-          scene={currentScene}
-          selectedObjectId={selectedObjectId}
-          onObjectSelect={handleObjectSelect}
-        />
-      </section>
+    <div className="appStack">
+      {menu}
+      <main className="appShell">
+        <section className="panel panel--flush" aria-label="Scene view">
+          <SceneView
+            scene={currentScene}
+            selectedObjectId={selectedObjectId}
+            onObjectSelect={handleObjectSelect}
+          />
+        </section>
 
-      <section className="panel actionsPanel" aria-label="Available actions">
-        <div className="overviewHeader">
-          <div>
-            <p className="eyebrow">{currentScene.name}</p>
-            {selectedObject && <h1>{selectedObject.name}</h1>}
-            <p className="sceneDescription">
-              {selectedObject
-                ? selectedObject.description
-                : currentScene.description}
-            </p>
+        <section className="panel actionsPanel" aria-label="Available actions">
+          <div className="overviewHeader">
+            <div>
+              <p className="eyebrow">{currentScene.name}</p>
+              {selectedObject && <h1>{selectedObject.name}</h1>}
+              <p className="sceneDescription">
+                {selectedObject
+                  ? selectedObject.description
+                  : currentScene.description}
+              </p>
+            </div>
           </div>
-        </div>
-        {selectedObject && (
-          <div className="actionsGrid">
-            {selectedObject.interactions.map((interaction) => (
-              <button
-                key={`${selectedObject.id}-${interaction.effect.type}`}
-                type="button"
-                className="actionButton"
-                onClick={() => handleInteraction(interaction)}
-              >
-                <strong>{interaction.label}</strong>
-              </button>
-            ))}
-          </div>
-        )}
-      </section>
-    </main>
+          {selectedObject && (
+            <div className="actionsGrid">
+              {selectedObject.interactions.map((interaction) => (
+                <button
+                  key={`${selectedObject.id}-${interaction.effect.type}`}
+                  type="button"
+                  className="actionButton"
+                  onClick={() => handleInteraction(interaction)}
+                >
+                  <strong>{interaction.label}</strong>
+                </button>
+              ))}
+            </div>
+          )}
+        </section>
+      </main>
+    </div>
   );
 };
 

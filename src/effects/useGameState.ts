@@ -8,14 +8,16 @@ type GameState = {
   hasDuctTape: boolean;
 };
 
+const createInitialGameState = (): GameState => ({
+  chairFixed: false,
+  hasDuctTape: false,
+});
+
 export const useGameState = () => {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [currentSceneId, setCurrentSceneId] = useState<SceneId>(initialSceneId);
 
-  const [gameState, setGameState] = useState<GameState>({
-    chairFixed: false,
-    hasDuctTape: false,
-  });
+  const [gameState, setGameState] = useState<GameState>(createInitialGameState);
 
   const executeEffect = (command: SceneEffectCommand) => {
     switch (command.type) {
@@ -48,5 +50,17 @@ export const useGameState = () => {
       }
     }
   };
-  return { executeEffect, currentSceneId, setCurrentSceneId, statusMessage };
+  const resetGame = () => {
+    setStatusMessage(null);
+    setGameState(createInitialGameState());
+    setCurrentSceneId(initialSceneId);
+  };
+
+  return {
+    executeEffect,
+    currentSceneId,
+    setCurrentSceneId,
+    statusMessage,
+    resetGame,
+  };
 };

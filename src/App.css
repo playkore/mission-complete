@@ -1,3 +1,12 @@
+.appStack {
+  width: 100%;
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
 .appShell {
   width: 100%;
   gap: 16px;
@@ -23,15 +32,118 @@
 
 .overviewHeader {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .overviewHeader h1 {
   margin: 4px 0 0;
   font-size: clamp(1.4rem, 2.4vw, 1.8rem);
+}
+
+.menuControls {
+  position: relative;
+  display: flex;
+}
+
+.menuTrigger {
+  appearance: none;
+  border: 1px solid rgba(0, 255, 122, 0.25);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+  color: rgba(215, 255, 231, 0.92);
+  padding: 7px 14px;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  font-family: var(--mono);
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    background 120ms ease,
+    transform 120ms ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.menuTrigger:hover,
+.menuTrigger:focus-visible {
+  border-color: rgba(0, 255, 122, 0.6);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.menuTrigger:active {
+  transform: translateY(1px);
+}
+
+.appMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  padding: 8px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(0, 255, 122, 0.25);
+  background: rgba(9, 17, 9, 0.98);
+  box-shadow: 0 12px 28px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10;
+}
+
+.menuItem {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  color: rgba(215, 255, 231, 0.95);
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.menuItem:hover,
+.menuItem:focus-visible {
+  background: rgba(0, 255, 122, 0.1);
+  color: rgba(215, 255, 231, 1);
+}
+
+.menuItem:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.menuTriggerDots {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 255, 122, 0.45);
+  position: relative;
+}
+
+.menuTriggerDots::before,
+.menuTriggerDots::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(215, 255, 231, 0.9);
+  transform: translateX(-50%);
+}
+
+.menuTriggerDots::before {
+  top: 4px;
+  box-shadow: 0 4px 0 rgba(215, 255, 231, 0.9);
+}
+
+.menuTriggerDots::after {
+  top: 8px;
 }
 
 .eyebrow {
@@ -66,6 +178,15 @@
   flex-direction: column;
   gap: 14px;
   overflow-y: auto;
+}
+
+.menuGlobalSlot {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .actionsGrid {
@@ -115,7 +236,8 @@
     padding: 12px;
   }
 
-  .overviewHeader {
-    flex-direction: column;
+  .menuGlobalSlot {
+    padding: 0 12px;
+    justify-content: flex-start;
   }
 }

@@ -95,29 +95,28 @@
 .sceneActionButton {
   appearance: none;
   border: 1px solid rgba(0, 255, 122, 0.45);
-  border-radius: 999px;
+  border-radius: 8px;
   background: rgba(0, 0, 0, 0.55);
   color: rgba(215, 255, 231, 0.95);
-  padding: 10px 18px;
+  padding: 12px 16px;
   text-align: center;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   cursor: pointer;
-  transition: border-color 120ms ease, transform 120ms ease,
-    background 120ms ease;
-  flex: 0 0 auto;
+  transition: border-color 120ms ease, background 120ms ease;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .sceneActionButton strong {
   font-size: 0.95rem;
 }
 
-.sceneActionButton:hover,
 .sceneActionButton:focus-visible {
   border-color: rgba(0, 255, 122, 0.9);
-  transform: translateY(-1px);
+  outline: none;
 }
 
 .hitbox {

@@ -9,15 +9,17 @@ import storageVcr from "./chapter01/storage-vcr";
 import storeEntrance from "./chapter01/store-entrance";
 import storeHardware from "./chapter01/store-hardware";
 import storeHardwareDucttape from "./chapter01/store-hardware-ducttape";
+import carGloveBox from "./chapter01/car-glove-box";
 
 export const scenes: SceneDefinition[] = [
-  storageOutsideCar,
-  storageOutsideCarInside,
   storageChairBroken,
   storageExit,
   storageShelf,
   storageMirror,
   storageVcr,
+  storageOutsideCar,
+  storageOutsideCarInside,
+  carGloveBox,
   storeEntrance,
   storeHardware,
   storeHardwareDucttape,

@@ -9,6 +9,7 @@ export type SceneId =
   | "storage-vcr"
   | "storage-outside-car-inside"
   | "storage-outside-car"
+  | "car-glove-box"
   | "store-entrance"
   | "store-hardware-ducttape"
   | "store-hardware";

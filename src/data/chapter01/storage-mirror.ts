@@ -61,7 +61,7 @@ const storageMirror: SceneDefinition = {
           label: "Check on the chair",
           effect: {
             type: "change_scene",
-            sceneId: "storage"
+            sceneId: "storage-chair-broken"
           }
         }
       ]

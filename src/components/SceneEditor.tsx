@@ -754,7 +754,7 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                                           sceneId:
                                             event.target.value as
                                               | SceneDefinition["id"]
-                                              | "storage",
+                                              | "storage-chair-broken",
                                         })
                                       }
                                     />

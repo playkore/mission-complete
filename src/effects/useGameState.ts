@@ -22,14 +22,6 @@ export const useGameState = () => {
   const executeEffect = (command: SceneEffectCommand) => {
     switch (command.type) {
       case "change_scene": {
-        if (command.sceneId === "storage") {
-          if (gameState.chairFixed) {
-            setCurrentSceneId("storage-chair-fixed");
-          } else {
-            setCurrentSceneId("storage-chair-broken");
-          }
-          return;
-        }
         setCurrentSceneId(command.sceneId as SceneId);
         break;
       }

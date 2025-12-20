@@ -10,6 +10,7 @@ import type {
   SceneObject,
 } from "../types/scenes";
 import { scenes } from "../data/scenes";
+import { resolveSceneImage } from "../utils/resolveSceneImage";
 import "./SceneEditor.css";
 
 export interface SceneEditorProps {
@@ -843,14 +844,4 @@ const resizeBoundingBox = (
   }
 
   return clampBoundingBox({ x, y, width, height });
-};
-
-const resolveSceneImage = (src: string) => {
-  if (/^(https?:)?\/\//i.test(src) || src.startsWith("data:")) {
-    return src;
-  }
-  const normalized = src.startsWith("/") ? src.slice(1) : src;
-  const rawBase = import.meta.env.BASE_URL ?? "/";
-  const basePath = rawBase === "" ? "/" : rawBase;
-  return `${basePath.replace(/\/+$/, "")}/${normalized}`;
 };

@@ -1,6 +1,8 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
 import type { SceneDefinition, SceneObject } from "../types/scenes";
 import type { GameState } from "../effects/useGameState";
+import { useSceneAssetsLoading } from "../effects/useSceneAssetsLoading";
+import { resolveSceneImage } from "../utils/resolveSceneImage";
 import "./SceneView.css";
 
 export interface SceneViewProps {
@@ -16,6 +18,9 @@ const SceneView = ({
   selectedObjectId,
   onObjectSelect,
 }: SceneViewProps) => {
+  const { isLoading, loadedCount, totalCount } = useSceneAssetsLoading(scene);
+  const progressPercent =
+    totalCount > 0 ? Math.round((loadedCount / totalCount) * 100) : 100;
   const imageSrc = resolveSceneImage(scene.imageSrc);
   const objectsWithVisibility = scene.objects.map((sceneObject) => ({
     sceneObject,
@@ -32,7 +37,12 @@ const SceneView = ({
 
   return (
     <div className="povWrap" aria-label={`Scene ${scene.name}`}>
-      <div className="pov" onClick={handleSceneClick}>
+      <div
+        className="pov"
+        onClick={handleSceneClick}
+        aria-busy={isLoading}
+        aria-live="polite"
+      >
         <img
           className="sceneImage"
           src={imageSrc}
@@ -81,20 +91,21 @@ const SceneView = ({
             </button>
           );
         })}
+
+        {isLoading && (
+          <div className="sceneLoadingOverlay" role="status" aria-live="polite">
+            <div className="sceneLoadingSpinner" aria-hidden="true" />
+            <span>
+              Loading scene{" "}
+              {totalCount > 0
+                ? `(${loadedCount}/${totalCount}) · ${progressPercent}%`
+                : ""}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default SceneView;
-
-const resolveSceneImage = (src: string) => {
-  if (/^(https?:)?\/\//i.test(src) || src.startsWith("data:")) {
-    return src;
-  }
-
-  const normalized = src.startsWith("/") ? src.slice(1) : src;
-  const rawBase = import.meta.env.BASE_URL ?? "/";
-  const basePath = rawBase === "" ? "/" : rawBase;
-  return `${basePath.replace(/\/+$/, "")}/${normalized}`;
-};

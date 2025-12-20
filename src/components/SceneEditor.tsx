@@ -50,8 +50,11 @@ type PointerSession =
     };
 
 const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
-  const defaultSceneId = initialSceneId ?? scenes[0]?.id ?? "";
-  const [selectedSceneId, setSelectedSceneId] = useState(defaultSceneId);
+  const defaultSceneId =
+    (initialSceneId ?? scenes[0]?.id ?? "") as SceneDefinition["id"] | "";
+  const [selectedSceneId, setSelectedSceneId] = useState<
+    SceneDefinition["id"] | ""
+  >(defaultSceneId);
   const [sceneDraft, setSceneDraft] = useState<DraftScene | null>(() => {
     const scene = scenes.find((item) => item.id === defaultSceneId);
     return createDraftScene(scene);
@@ -183,6 +186,15 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
     setSelectedObjectId(null);
   };
 
+  const getFallbackSceneId = (): SceneDefinition["id"] => {
+    const fallback =
+      selectedSceneId ||
+      sceneDraft?.id ||
+      scenes[0]?.id ||
+      "storage-chair-broken";
+    return fallback as SceneDefinition["id"];
+  };
+
   const handleAddInteraction = () => {
     if (!selectedObject) {
       return;
@@ -194,9 +206,9 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
       template && template.type === "change_scene"
         ? {
             type: "change_scene",
-            sceneId: template.sceneId ?? selectedSceneId ?? "",
+            sceneId: template.sceneId ?? getFallbackSceneId(),
           }
-        : { type: "change_scene", sceneId: selectedSceneId ?? "" };
+        : { type: "change_scene", sceneId: getFallbackSceneId() };
     updateObject(selectedObject.id, (object) => ({
       ...object,
       interactions: [
@@ -400,7 +412,11 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
               <select
                 className="sceneEditorSelect"
                 value={selectedSceneId}
-                onChange={(event) => setSelectedSceneId(event.target.value)}
+                onChange={(event) =>
+                  setSelectedSceneId(
+                    event.target.value as SceneDefinition["id"]
+                  )
+                }
               >
                 {sceneOptions.map((scene) => (
                   <option key={scene.id} value={scene.id}>
@@ -511,14 +527,6 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                 <p className="sceneEditorPanelLabel">Details</p>
                 <strong>Edit scene + object</strong>
               </div>
-              <button
-                type="button"
-                className="sceneEditorButton sceneEditorButton--ghost"
-                onClick={handleCopyJson}
-                disabled={!sceneDraft}
-              >
-                Copy JSON
-              </button>
             </header>
 
             <div className="sceneEditorDetails">
@@ -687,7 +695,7 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                         selectedObject.interactions.map(
                           (interaction, index) => (
                             <div
-                              key={`${interaction.label}-${index}`}
+                              key={`${selectedObject.id}-interaction-${index}`}
                               className="sceneEditorInteractionCard"
                             >
                               <label className="sceneEditorField">
@@ -711,13 +719,15 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                                       const nextType = event.target
                                         .value as SceneEffectCommand["type"];
                                       if (nextType === "change_scene") {
+                                        const newSceneId =
+                                          interaction.effect.type ===
+                                            "change_scene" &&
+                                          interaction.effect.sceneId
+                                            ? interaction.effect.sceneId
+                                            : getFallbackSceneId();
                                         handleInteractionEffectChange(index, {
                                           type: "change_scene",
-                                          sceneId:
-                                            (interaction.effect.type ===
-                                              "change_scene" &&
-                                              interaction.effect.sceneId) ||
-                                            selectedSceneId,
+                                          sceneId: newSceneId,
                                         });
                                       } else {
                                         handleInteractionEffectChange(index, {
@@ -741,7 +751,10 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                                       onChange={(event) =>
                                         handleInteractionEffectChange(index, {
                                           type: "change_scene",
-                                          sceneId: event.target.value,
+                                          sceneId:
+                                            event.target.value as
+                                              | SceneDefinition["id"]
+                                              | "storage",
                                         })
                                       }
                                     />
@@ -774,6 +787,19 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
 
               <fieldset className="sceneEditorFieldset">
                 <legend>Scene JSON</legend>
+                <div className="sceneEditorFieldsetRow">
+                  <span className="sceneEditorHint">
+                    Preview of the current scene definition.
+                  </span>
+                  <button
+                    type="button"
+                    className="sceneEditorButton sceneEditorButton--ghost"
+                    onClick={handleCopyJson}
+                    disabled={!sceneDraft}
+                  >
+                    Copy JSON
+                  </button>
+                </div>
                 <textarea value={sceneJson} readOnly rows={12} />
               </fieldset>
             </div>

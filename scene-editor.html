@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Scene TS Visual Editor</title>
+    <style>
+      :root {
+        --bg: #0b0e14;
+        --panel: #111827;
+        --panel2: #0f172a;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --border: rgba(255, 255, 255, 0.12);
+        --accent: #22c55e;
+        --danger: #ef4444;
+        --warn: #f59e0b;
+        --focus: rgba(34, 197, 94, 0.25);
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Arial;
+        background: var(--bg);
+        color: var(--text);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      a {
+        color: inherit;
+      }
+      .app {
+        display: grid;
+        grid-template-columns: 360px 1fr 420px;
+        grid-template-rows: auto 1fr;
+        height: 100%;
+        gap: 10px;
+        padding: 10px;
+      }
+      .topbar {
+        grid-column: 1 / -1;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.02)
+        );
+        border: 1px solid var(--border);
+        border-radius: 14px;
+      }
+      .pill {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .btn {
+        padding: 9px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn.primary {
+        border-color: rgba(34, 197, 94, 0.45);
+        background: rgba(34, 197, 94, 0.12);
+      }
+      .btn.danger {
+        border-color: rgba(239, 68, 68, 0.5);
+        background: rgba(239, 68, 68, 0.12);
+      }
+      .btn.warn {
+        border-color: rgba(245, 158, 11, 0.5);
+        background: rgba(245, 158, 11, 0.12);
+      }
+      .btn.small {
+        padding: 6px 10px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .spacer {
+        flex: 1;
+      }
+
+      .panel {
+        background: radial-gradient(
+            1200px 400px at 20% -30%,
+            rgba(34, 197, 94, 0.07),
+            transparent 45%
+          ),
+          radial-gradient(
+            800px 300px at 90% 0%,
+            rgba(59, 130, 246, 0.06),
+            transparent 40%
+          ),
+          rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .panel > header {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: rgba(0, 0, 0, 0.12);
+      }
+      .panel > header h2 {
+        margin: 0;
+        font-size: 13px;
+        letter-spacing: 0.2px;
+        color: var(--muted);
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+      .panel .content {
+        padding: 12px;
+        overflow: auto;
+        min-height: 0;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+        margin-bottom: 10px;
+      }
+      .field label {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .field input[type="text"],
+      .field textarea,
+      .field select {
+        width: 100%;
+        padding: 10px 10px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.25);
+        color: var(--text);
+        outline: none;
+      }
+      .field textarea {
+        min-height: 70px;
+        resize: vertical;
+        line-height: 1.3;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .row > * {
+        flex: 1;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.35;
+      }
+      .kbd {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 11px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 2px 6px;
+        border-radius: 8px;
+        color: var(--muted);
+      }
+
+      /* Object list */
+      .list {
+        display: grid;
+        gap: 8px;
+      }
+      .card {
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 14px;
+        padding: 10px;
+        cursor: pointer;
+      }
+      .card:hover {
+        background: rgba(0, 0, 0, 0.26);
+      }
+      .card.selected {
+        border-color: rgba(34, 197, 94, 0.55);
+        box-shadow: 0 0 0 3px var(--focus);
+        background: rgba(34, 197, 94, 0.06);
+      }
+      .card .title {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: baseline;
+      }
+      .card .title strong {
+        font-size: 13px;
+      }
+      .card .title span {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .card .sub {
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.35;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+        padding: 3px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      /* Canvas area */
+      .stageWrap {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .stageToolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.12);
+      }
+      .stage {
+        position: relative;
+        overflow: auto;
+        padding: 12px;
+        flex: 1;
+        min-height: 0;
+      }
+      .imageFrame {
+        position: relative;
+        display: inline-block;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.02);
+        user-select: none;
+      }
+      .imageFrame img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+      .overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .rect {
+        position: absolute;
+        border: 2px solid rgba(34, 197, 94, 0.9);
+        background: rgba(34, 197, 94, 0.12);
+        border-radius: 10px;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+      .rect.selected {
+        border-color: rgba(59, 130, 246, 0.9);
+        background: rgba(59, 130, 246, 0.1);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+      }
+      .rect .label {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.92);
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+        pointer-events: none;
+        max-width: calc(100% - 16px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .handle {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        background: rgba(0, 0, 0, 0.35);
+        pointer-events: auto;
+      }
+      .handle.nw {
+        left: -6px;
+        top: -6px;
+        cursor: nwse-resize;
+      }
+      .handle.ne {
+        right: -6px;
+        top: -6px;
+        cursor: nesw-resize;
+      }
+      .handle.sw {
+        left: -6px;
+        bottom: -6px;
+        cursor: nesw-resize;
+      }
+      .handle.se {
+        right: -6px;
+        bottom: -6px;
+        cursor: nwse-resize;
+      }
+
+      .drawRect {
+        position: absolute;
+        border: 2px dashed rgba(245, 158, 11, 0.95);
+        background: rgba(245, 158, 11, 0.12);
+        border-radius: 10px;
+        pointer-events: none;
+      }
+
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .hr {
+        height: 1px;
+        background: var(--border);
+        margin: 12px 0;
+      }
+
+      .toast {
+        position: fixed;
+        right: 14px;
+        bottom: 14px;
+        padding: 10px 12px;
+        background: rgba(0, 0, 0, 0.75);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        color: var(--text);
+        font-size: 12px;
+        max-width: 360px;
+        display: none;
+        white-space: pre-wrap;
+        line-height: 1.35;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="topbar">
+        <div class="pill">
+          <strong style="color: var(--text)">Scene TS Visual Editor</strong>
+          <span>— draw + edit regions</span>
+        </div>
+
+        <label class="btn small">
+          Open Image…
+          <input
+            id="imageInput"
+            type="file"
+            accept="image/*"
+            style="display: none"
+          />
+        </label>
+
+        <label class="btn small">
+          Open .ts…
+          <input
+            id="tsInput"
+            type="file"
+            accept=".ts,.tsx,text/plain"
+            style="display: none"
+          />
+        </label>
+
+        <button id="saveBtn" class="btn small primary" disabled>Save</button>
+        <button id="downloadBtn" class="btn small" disabled>
+          Download .ts
+        </button>
+
+        <div class="spacer"></div>
+
+        <div class="pill">
+          <span class="kbd">Drag</span> move ·
+          <span class="kbd">Handles</span> resize ·
+          <span class="kbd">Empty space</span> draw new
+        </div>
+      </div>
+
+      <!-- Left: Objects -->
+      <section class="panel" id="leftPanel">
+        <header>
+          <h2>Objects</h2>
+          <div
+            class="row"
+            style="justify-content: flex-end; gap: 8px; flex: 0 0 auto"
+          >
+            <button id="addObjectBtn" class="btn small primary" disabled>
+              + Object
+            </button>
+          </div>
+        </header>
+        <div class="content">
+          <div class="hint" id="loadHint">
+            1) Open an image<br />
+            2) Open a <span class="mono">.ts</span> scene file<br /><br />
+            You can also start from scratch by opening just an image, then
+            hitting <b>+ Object</b>.
+          </div>
+          <div class="list" id="objectList"></div>
+        </div>
+      </section>
+
+      <!-- Center: Stage -->
+      <section class="panel">
+        <header>
+          <h2>Stage</h2>
+          <div
+            class="row"
+            style="justify-content: flex-end; gap: 8px; flex: 0 0 auto"
+          >
+            <span class="badge" id="stageBadge">No image</span>
+          </div>
+        </header>
+
+        <div class="stageWrap">
+          <div class="stageToolbar">
+            <button id="fitBtn" class="btn small" disabled>Fit</button>
+            <button id="clearSelBtn" class="btn small" disabled>
+              Clear selection
+            </button>
+            <div class="spacer"></div>
+            <span class="hint"
+              >Rectangles use normalized coords:
+              <span class="mono">x,y,width,height</span> in 0..1</span
+            >
+          </div>
+
+          <div class="stage" id="stageScroll">
+            <div class="imageFrame" id="imageFrame" style="display: none">
+              <img id="sceneImg" alt="Scene" />
+              <div class="overlay" id="overlay"></div>
+              <div class="drawRect" id="drawRect" style="display: none"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Editor -->
+      <section class="panel">
+        <header>
+          <h2>Editor</h2>
+          <div
+            class="row"
+            style="justify-content: flex-end; gap: 8px; flex: 0 0 auto"
+          >
+            <button id="deleteObjectBtn" class="btn small danger" disabled>
+              Delete
+            </button>
+          </div>
+        </header>
+        <div class="content">
+          <div class="hint" style="margin-bottom: 10px">
+            Edit scene + selected object fields. Interactions’
+            <span class="mono">effect</span> is edited as JSON.
+          </div>
+
+          <div class="hr"></div>
+
+          <h3
+            style="
+              margin: 0 0 8px 0;
+              font-size: 13px;
+              color: var(--muted);
+              text-transform: uppercase;
+              letter-spacing: 0.2px;
+            "
+          >
+            Scene
+          </h3>
+
+          <div class="field">
+            <label>id</label>
+            <input id="sceneId" type="text" />
+          </div>
+          <div class="field">
+            <label>name</label>
+            <input id="sceneName" type="text" />
+          </div>
+          <div class="field">
+            <label>description</label>
+            <textarea id="sceneDesc"></textarea>
+          </div>
+          <div class="field">
+            <label
+              >imageSrc (string in TS file; you can keep it as your project
+              path)</label
+            >
+            <input id="sceneImageSrc" type="text" />
+          </div>
+
+          <div class="hr"></div>
+
+          <h3
+            style="
+              margin: 0 0 8px 0;
+              font-size: 13px;
+              color: var(--muted);
+              text-transform: uppercase;
+              letter-spacing: 0.2px;
+            "
+          >
+            Selected object
+          </h3>
+
+          <div class="hint" id="noSelectionHint">
+            No object selected. Click a rectangle or an object on the left.
+          </div>
+
+          <div id="objectEditor" style="display: none">
+            <div class="field">
+              <label>id</label>
+              <input id="objId" type="text" />
+            </div>
+            <div class="field">
+              <label>name</label>
+              <input id="objName" type="text" />
+            </div>
+            <div class="field">
+              <label>description</label>
+              <textarea id="objDesc"></textarea>
+            </div>
+
+            <div class="split">
+              <div class="field">
+                <label>x</label>
+                <input id="bbX" type="text" class="mono" />
+              </div>
+              <div class="field">
+                <label>y</label>
+                <input id="bbY" type="text" class="mono" />
+              </div>
+              <div class="field">
+                <label>width</label>
+                <input id="bbW" type="text" class="mono" />
+              </div>
+              <div class="field">
+                <label>height</label>
+                <input id="bbH" type="text" class="mono" />
+              </div>
+            </div>
+
+            <div class="row" style="gap: 8px; margin-top: 8px">
+              <button id="normalizeBtn" class="btn small">Clamp 0..1</button>
+              <button id="copyCoordsBtn" class="btn small">Copy coords</button>
+            </div>
+
+            <div class="hr"></div>
+
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+              "
+            >
+              <h3
+                style="
+                  margin: 0;
+                  font-size: 13px;
+                  color: var(--muted);
+                  text-transform: uppercase;
+                  letter-spacing: 0.2px;
+                "
+              >
+                Interactions
+              </h3>
+              <button id="addInteractionBtn" class="btn small primary">
+                + Interaction
+              </button>
+            </div>
+
+            <div
+              id="interactionList"
+              class="list"
+              style="margin-top: 10px"
+            ></div>
+          </div>
+
+          <div class="hr"></div>
+
+          <h3
+            style="
+              margin: 0 0 8px 0;
+              font-size: 13px;
+              color: var(--muted);
+              text-transform: uppercase;
+              letter-spacing: 0.2px;
+            "
+          >
+            TS Preview
+          </h3>
+          <div class="field">
+            <label class="hint"
+              >This is what will be saved. (Auto-generated formatting.)</label
+            >
+            <textarea
+              id="tsPreview"
+              class="mono"
+              style="min-height: 180px"
+            ></textarea>
+          </div>
+
+          <div class="hint">
+            Tip: If “Save” is disabled in your browser, use “Download .ts” and
+            replace the file manually.
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      (() => {
+        // -------------------------
+        // State
+        // -------------------------
+        const state = {
+          image: {
+            file: null,
+            url: null,
+            naturalWidth: 0,
+            naturalHeight: 0,
+            renderedWidth: 0,
+            renderedHeight: 0,
+          },
+          ts: {
+            file: null,
+            fileHandle: null, // File System Access API handle if available
+            originalText: "",
+            importBlock: "",
+            varName: "scene",
+            typeAnnotation: "SceneDefinition",
+            exportDefaultName: null,
+          },
+          scene: null, // object model
+          selectedObjectId: null,
+          ui: {
+            drawing: false,
+            drawStart: null,
+            drawCurrent: null,
+            dragging: null, // { id, mode: 'move'|'resize', corner?, startMouse, startBox }
+          },
+        };
+
+        // Default scene if none loaded
+        function makeEmptyScene() {
+          return {
+            id: "new-scene",
+            name: "New Scene",
+            description: "",
+            imageSrc: "",
+            objects: [],
+          };
+        }
+
+        // -------------------------
+        // DOM
+        // -------------------------
+        const el = {
+          imageInput: document.getElementById("imageInput"),
+          tsInput: document.getElementById("tsInput"),
+          saveBtn: document.getElementById("saveBtn"),
+          downloadBtn: document.getElementById("downloadBtn"),
+          addObjectBtn: document.getElementById("addObjectBtn"),
+          deleteObjectBtn: document.getElementById("deleteObjectBtn"),
+          fitBtn: document.getElementById("fitBtn"),
+          clearSelBtn: document.getElementById("clearSelBtn"),
+          stageBadge: document.getElementById("stageBadge"),
+          imageFrame: document.getElementById("imageFrame"),
+          sceneImg: document.getElementById("sceneImg"),
+          overlay: document.getElementById("overlay"),
+          drawRect: document.getElementById("drawRect"),
+          objectList: document.getElementById("objectList"),
+          loadHint: document.getElementById("loadHint"),
+
+          sceneId: document.getElementById("sceneId"),
+          sceneName: document.getElementById("sceneName"),
+          sceneDesc: document.getElementById("sceneDesc"),
+          sceneImageSrc: document.getElementById("sceneImageSrc"),
+
+          noSelectionHint: document.getElementById("noSelectionHint"),
+          objectEditor: document.getElementById("objectEditor"),
+          objId: document.getElementById("objId"),
+          objName: document.getElementById("objName"),
+          objDesc: document.getElementById("objDesc"),
+          bbX: document.getElementById("bbX"),
+          bbY: document.getElementById("bbY"),
+          bbW: document.getElementById("bbW"),
+          bbH: document.getElementById("bbH"),
+          normalizeBtn: document.getElementById("normalizeBtn"),
+          copyCoordsBtn: document.getElementById("copyCoordsBtn"),
+          addInteractionBtn: document.getElementById("addInteractionBtn"),
+          interactionList: document.getElementById("interactionList"),
+
+          tsPreview: document.getElementById("tsPreview"),
+          toast: document.getElementById("toast"),
+          stageScroll: document.getElementById("stageScroll"),
+        };
+
+        // -------------------------
+        // Utils
+        // -------------------------
+        function toast(msg, ms = 2400) {
+          el.toast.textContent = msg;
+          el.toast.style.display = "block";
+          window.clearTimeout(toast._t);
+          toast._t = window.setTimeout(
+            () => (el.toast.style.display = "none"),
+            ms
+          );
+        }
+
+        function clamp01(n) {
+          n = Number(n);
+          if (!Number.isFinite(n)) return 0;
+          return Math.max(0, Math.min(1, n));
+        }
+
+        function round4(n) {
+          // keep TS readable; you can change precision if you like
+          return Math.round(n * 10000) / 10000;
+        }
+
+        function deepClone(x) {
+          return JSON.parse(JSON.stringify(x));
+        }
+
+        function isIdentifierKey(k) {
+          return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(k);
+        }
+
+        // Convert client coords to image-local pixel coords (relative to rendered image)
+        function getImageRect() {
+          const r = el.sceneImg.getBoundingClientRect();
+          return r;
+        }
+
+        function pointerToImagePx(clientX, clientY) {
+          const r = getImageRect();
+          const x = clientX - r.left;
+          const y = clientY - r.top;
+          return { x, y, w: r.width, h: r.height };
+        }
+
+        function pxToNorm(px, py) {
+          const r = getImageRect();
+          return {
+            x: clamp01(px / r.width),
+            y: clamp01(py / r.height),
+          };
+        }
+
+        function normToPx(box) {
+          const r = getImageRect();
+          return {
+            left: box.x * r.width,
+            top: box.y * r.height,
+            width: box.width * r.width,
+            height: box.height * r.height,
+          };
+        }
+
+        function getSelectedObject() {
+          if (!state.scene || !state.selectedObjectId) return null;
+          return (
+            state.scene.objects.find((o) => o.id === state.selectedObjectId) ||
+            null
+          );
+        }
+
+        function ensureSceneReady() {
+          if (!state.scene) state.scene = makeEmptyScene();
+        }
+
+        function uniqId(prefix = "obj") {
+          const base = prefix.replace(/[^a-z0-9_-]/gi, "_");
+          const ids = new Set((state.scene?.objects || []).map((o) => o.id));
+          let i = 1;
+          let candidate = base;
+          while (ids.has(candidate)) {
+            candidate = `${base}_${i++}`;
+          }
+          return candidate;
+        }
+
+        // -------------------------
+        // TS parsing & serialization
+        // -------------------------
+        function parseTsScene(text) {
+          // Extract import block (all lines starting with import)
+          const importLines = text
+            .split(/\r?\n/)
+            .filter((l) => /^\s*import\s/.test(l));
+          const importBlock = importLines.join("\n");
+
+          // Try find "const <name> : <type> ="
+          const constMatch = text.match(
+            /const\s+([A-Za-z0-9_$]+)\s*(?::\s*([A-Za-z0-9_$.<>,\s]+))?\s*=\s*/m
+          );
+          const varName = constMatch?.[1] || "scene";
+          const typeAnn = (constMatch?.[2] || "SceneDefinition").trim();
+
+          // Grab object literal between first "={" (or "= {") after that const and the matching "};"
+          // We'll do a simple approach: locate first "{" after const, then find matching brace.
+          let startIdx = -1;
+          if (constMatch) {
+            startIdx = text.indexOf("{", constMatch.index);
+          } else {
+            startIdx = text.indexOf("{");
+          }
+          if (startIdx < 0)
+            throw new Error("Couldn't find object literal '{' in TS file.");
+
+          const slice = text.slice(startIdx);
+          const endIdxRel = findMatchingBraceEnd(slice);
+          if (endIdxRel < 0)
+            throw new Error("Couldn't match braces for object literal.");
+          const objLiteral = slice.slice(0, endIdxRel + 1);
+
+          // Identify export default name if present
+          const exportMatch = text.match(
+            /export\s+default\s+([A-Za-z0-9_$]+)\s*;?/m
+          );
+          const exportDefaultName = exportMatch?.[1] || varName;
+
+          // Convert TS-ish literal to JS literal safely enough for local trusted usage
+          // - remove trailing commas (allowed in JS anyway, but keep)
+          // - allow double quotes + single quotes + template strings (won't transform)
+          // Evaluate it as an expression.
+          const expr = "(" + objLiteral + ")";
+          let sceneObj;
+          try {
+            // eslint-disable-next-line no-new-func
+            sceneObj = new Function("return " + expr)();
+          } catch (e) {
+            console.error("Eval failed", e);
+            throw new Error(
+              "Failed to evaluate scene object literal. Make sure the file is a plain object literal (no external references)."
+            );
+          }
+
+          // Ensure shape
+          if (!sceneObj || typeof sceneObj !== "object")
+            throw new Error("Parsed scene is not an object.");
+          if (!Array.isArray(sceneObj.objects)) sceneObj.objects = [];
+
+          return {
+            scene: sceneObj,
+            meta: { importBlock, varName, typeAnn, exportDefaultName },
+          };
+        }
+
+        function findMatchingBraceEnd(s) {
+          // s starts at "{"
+          let depth = 0;
+          let inStr = false;
+          let strCh = null;
+          let esc = false;
+          let inTemplate = false;
+          for (let i = 0; i < s.length; i++) {
+            const ch = s[i];
+
+            if (inStr) {
+              if (esc) {
+                esc = false;
+                continue;
+              }
+              if (ch === "\\") {
+                esc = true;
+                continue;
+              }
+              if (ch === strCh) {
+                inStr = false;
+                strCh = null;
+                continue;
+              }
+              continue;
+            }
+            if (inTemplate) {
+              if (esc) {
+                esc = false;
+                continue;
+              }
+              if (ch === "\\") {
+                esc = true;
+                continue;
+              }
+              if (ch === "`") {
+                inTemplate = false;
+                continue;
+              }
+              // NOTE: we are not parsing ${} blocks; if you have template expressions inside, this can break.
+              continue;
+            }
+
+            if (ch === "'" || ch === '"') {
+              inStr = true;
+              strCh = ch;
+              continue;
+            }
+            if (ch === "`") {
+              inTemplate = true;
+              continue;
+            }
+
+            if (ch === "{") depth++;
+            if (ch === "}") {
+              depth--;
+              if (depth === 0) return i;
+            }
+          }
+          return -1;
+        }
+
+        function toTsValue(v, indent = 0) {
+          const pad = "  ".repeat(indent);
+          const padIn = "  ".repeat(indent + 1);
+
+          if (v === null) return "null";
+          if (typeof v === "number") {
+            if (!Number.isFinite(v)) return "null";
+            return String(v);
+          }
+          if (typeof v === "boolean") return v ? "true" : "false";
+          if (typeof v === "string") return JSON.stringify(v); // good escaping, uses double quotes
+          if (Array.isArray(v)) {
+            if (v.length === 0) return "[]";
+            const items = v
+              .map((x) => padIn + toTsValue(x, indent + 1))
+              .join(",\n");
+            return "[\n" + items + "\n" + pad + "]";
+          }
+          if (typeof v === "object") {
+            const keys = Object.keys(v);
+            if (keys.length === 0) return "{}";
+            const lines = keys
+              .map((k) => {
+                const key = isIdentifierKey(k) ? k : JSON.stringify(k);
+                return padIn + key + ": " + toTsValue(v[k], indent + 1);
+              })
+              .join(",\n");
+            return "{\n" + lines + "\n" + pad + "}";
+          }
+          // functions / undefined / symbols
+          return "undefined";
+        }
+
+        function buildTsFile(sceneObj) {
+          const importBlock =
+            state.ts.importBlock ||
+            'import type { SceneDefinition } from "../../types/scenes";';
+          const varName = state.ts.varName || "scene";
+          const typeAnn = state.ts.typeAnnotation || "SceneDefinition";
+
+          const objTs = toTsValue(sceneObj, 0);
+          const exportName = state.ts.exportDefaultName || varName;
+
+          // Ensure const name is used in export (common pattern)
+          return [
+            importBlock.trim(),
+            "",
+            `const ${varName}: ${typeAnn} = ${objTs};`,
+            "",
+            `export default ${exportName};`,
+            "",
+          ].join("\n");
+        }
+
+        // -------------------------
+        // Rendering
+        // -------------------------
+        function refreshAll() {
+          ensureSceneReady();
+          el.loadHint.style.display =
+            state.scene.objects.length === 0 && !state.selectedObjectId
+              ? "block"
+              : "none";
+
+          // Enable buttons if we have image or scene
+          const hasImage = !!state.image.url;
+          const hasScene = !!state.scene;
+          el.addObjectBtn.disabled = !hasScene;
+          el.fitBtn.disabled = !hasImage;
+          el.clearSelBtn.disabled = !hasScene;
+          el.downloadBtn.disabled = !hasScene;
+          el.saveBtn.disabled = !hasScene || !state.ts.fileHandle; // Save (overwrite) only with fileHandle
+          el.deleteObjectBtn.disabled = !getSelectedObject();
+
+          el.stageBadge.textContent = hasImage ? "Image loaded" : "No image";
+          el.imageFrame.style.display = hasImage ? "inline-block" : "none";
+
+          // Scene fields
+          el.sceneId.value = state.scene.id ?? "";
+          el.sceneName.value = state.scene.name ?? "";
+          el.sceneDesc.value = state.scene.description ?? "";
+          el.sceneImageSrc.value = state.scene.imageSrc ?? "";
+
+          // Object list
+          el.objectList.innerHTML = "";
+          for (const obj of state.scene.objects) {
+            const card = document.createElement("div");
+            card.className =
+              "card" + (obj.id === state.selectedObjectId ? " selected" : "");
+            card.onclick = () => {
+              state.selectedObjectId = obj.id;
+              refreshAll();
+              scrollRectIntoView(obj.id);
+            };
+            const bb = obj.boundingBox || { x: 0, y: 0, width: 0, height: 0 };
+            const pct = `x:${Math.round((bb.x || 0) * 100)}% y:${Math.round(
+              (bb.y || 0) * 100
+            )}% w:${Math.round((bb.width || 0) * 100)}% h:${Math.round(
+              (bb.height || 0) * 100
+            )}%`;
+            card.innerHTML = `
+        <div class="title">
+          <strong>${escapeHtml(obj.name || obj.id || "(unnamed)")}</strong>
+          <span class="mono">${escapeHtml(obj.id || "")}</span>
+        </div>
+        <div class="sub">${escapeHtml(obj.description || "")}</div>
+        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="badge mono">${pct}</span>
+          <span class="badge">${
+            obj.interactions?.length || 0
+          } interactions</span>
+        </div>
+      `;
+            el.objectList.appendChild(card);
+          }
+
+          // Overlay rectangles
+          renderRects();
+
+          // Editor (selected object)
+          const sel = getSelectedObject();
+          el.noSelectionHint.style.display = sel ? "none" : "block";
+          el.objectEditor.style.display = sel ? "block" : "none";
+          if (sel) {
+            el.objId.value = sel.id ?? "";
+            el.objName.value = sel.name ?? "";
+            el.objDesc.value = sel.description ?? "";
+
+            const bb =
+              sel.boundingBox ||
+              (sel.boundingBox = { x: 0.1, y: 0.1, width: 0.2, height: 0.2 });
+            el.bbX.value = String(round4(bb.x ?? 0));
+            el.bbY.value = String(round4(bb.y ?? 0));
+            el.bbW.value = String(round4(bb.width ?? 0));
+            el.bbH.value = String(round4(bb.height ?? 0));
+
+            renderInteractions(sel);
+          } else {
+            el.interactionList.innerHTML = "";
+          }
+
+          // TS preview
+          const tsText = buildTsFile(sceneForSaving());
+          el.tsPreview.value = tsText;
+        }
+
+        function sceneForSaving() {
+          // Keep numeric bbox values clean
+          const s = deepClone(state.scene);
+          s.objects = (s.objects || []).map((o) => {
+            const bb = o.boundingBox || { x: 0, y: 0, width: 0, height: 0 };
+            o.boundingBox = {
+              x: round4(clamp01(bb.x)),
+              y: round4(clamp01(bb.y)),
+              width: round4(clamp01(bb.width)),
+              height: round4(clamp01(bb.height)),
+            };
+            return o;
+          });
+          return s;
+        }
+
+        function renderRects() {
+          el.overlay.innerHTML = "";
+          const hasImage = !!state.image.url;
+          if (!hasImage || !state.scene) return;
+
+          for (const obj of state.scene.objects) {
+            const bb = obj.boundingBox || { x: 0, y: 0, width: 0, height: 0 };
+            const r = normToPx(bb);
+
+            const div = document.createElement("div");
+            div.className =
+              "rect" + (obj.id === state.selectedObjectId ? " selected" : "");
+            div.style.left = r.left + "px";
+            div.style.top = r.top + "px";
+            div.style.width = r.width + "px";
+            div.style.height = r.height + "px";
+            div.dataset.id = obj.id;
+
+            const label = document.createElement("div");
+            label.className = "label";
+            label.textContent = obj.name || obj.id || "";
+            div.appendChild(label);
+
+            // Handles only for selected
+            if (obj.id === state.selectedObjectId) {
+              for (const corner of ["nw", "ne", "sw", "se"]) {
+                const h = document.createElement("div");
+                h.className = "handle " + corner;
+                h.dataset.corner = corner;
+                h.addEventListener("pointerdown", (ev) =>
+                  startResize(ev, obj.id, corner)
+                );
+                div.appendChild(h);
+              }
+            }
+
+            div.addEventListener("pointerdown", (ev) => {
+              // If clicking handle, that handler runs; otherwise, start moving
+              if (ev.target.classList.contains("handle")) return;
+              ev.preventDefault();
+              ev.stopPropagation();
+              state.selectedObjectId = obj.id;
+              refreshAll();
+              startMove(ev, obj.id);
+            });
+
+            el.overlay.appendChild(div);
+          }
+
+          // Allow drawing new on empty space by listening on image (not overlay divs)
+        }
+
+        function renderInteractions(obj) {
+          el.interactionList.innerHTML = "";
+          const interactions = obj.interactions || (obj.interactions = []);
+
+          interactions.forEach((it, idx) => {
+            const card = document.createElement("div");
+            card.className = "card";
+            const effectStr = safeJsonStringify(it.effect ?? {}, 2);
+
+            card.innerHTML = `
+        <div class="title">
+          <strong>Interaction #${idx + 1}</strong>
+          <span class="badge">${escapeHtml(it.effect?.type || "effect")}</span>
+        </div>
+        <div style="margin-top:10px" class="field">
+          <label>label</label>
+          <input type="text" data-k="label" value="${escapeAttr(
+            it.label ?? ""
+          )}" />
+        </div>
+        <div class="field">
+          <label>effect (JSON)</label>
+          <textarea class="mono" data-k="effect">${escapeHtml(
+            effectStr
+          )}</textarea>
+        </div>
+        <div class="row" style="gap:8px;">
+          <button class="btn small danger" data-act="del">Delete</button>
+          <button class="btn small" data-act="dup">Duplicate</button>
+        </div>
+      `;
+
+            const labelInput = card.querySelector('input[data-k="label"]');
+            const effectTa = card.querySelector('textarea[data-k="effect"]');
+
+            labelInput.addEventListener("input", () => {
+              it.label = labelInput.value;
+              refreshAll();
+            });
+            effectTa.addEventListener("input", () => {
+              // live preview tries to parse; if invalid, keep as text but don’t overwrite object
+              const txt = effectTa.value;
+              try {
+                it.effect = JSON.parse(txt);
+                effectTa.style.borderColor = "rgba(34,197,94,0.45)";
+              } catch {
+                effectTa.style.borderColor = "rgba(245,158,11,0.55)";
+              }
+              refreshAll();
+            });
+
+            card.querySelector('[data-act="del"]').onclick = () => {
+              interactions.splice(idx, 1);
+              refreshAll();
+            };
+            card.querySelector('[data-act="dup"]').onclick = () => {
+              interactions.splice(idx + 1, 0, deepClone(it));
+              refreshAll();
+            };
+
+            el.interactionList.appendChild(card);
+          });
+        }
+
+        function scrollRectIntoView(id) {
+          const node = el.overlay.querySelector(
+            `.rect[data-id="${cssEscape(id)}"]`
+          );
+          if (!node) return;
+          node.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "nearest",
+          });
+        }
+
+        // -------------------------
+        // Events: file loading
+        // -------------------------
+        el.imageInput.addEventListener("change", async () => {
+          const f = el.imageInput.files?.[0];
+          if (!f) return;
+          if (state.image.url) URL.revokeObjectURL(state.image.url);
+
+          state.image.file = f;
+          state.image.url = URL.createObjectURL(f);
+          el.sceneImg.src = state.image.url;
+
+          el.sceneImg.onload = () => {
+            state.image.naturalWidth = el.sceneImg.naturalWidth;
+            state.image.naturalHeight = el.sceneImg.naturalHeight;
+            toast(
+              `Loaded image: ${f.name} (${state.image.naturalWidth}×${state.image.naturalHeight})`
+            );
+            ensureSceneReady();
+            refreshAll();
+            fitImage();
+          };
+
+          // If no scene, create one
+          ensureSceneReady();
+          refreshAll();
+        });
+
+        el.tsInput.addEventListener("change", async () => {
+          const f = el.tsInput.files?.[0];
+          if (!f) return;
+
+          state.ts.file = f;
+          state.ts.originalText = await f.text();
+
+          // Try to get a file handle (works if user used showOpenFilePicker; but here we used <input>)
+          state.ts.fileHandle = null;
+
+          try {
+            const parsed = parseTsScene(state.ts.originalText);
+            state.scene = parsed.scene;
+            state.ts.importBlock =
+              parsed.meta.importBlock || state.ts.importBlock;
+            state.ts.varName = parsed.meta.varName || state.ts.varName;
+            state.ts.typeAnnotation =
+              parsed.meta.typeAnn || state.ts.typeAnnotation;
+            state.ts.exportDefaultName =
+              parsed.meta.exportDefaultName || state.ts.exportDefaultName;
+
+            toast(`Loaded TS: ${f.name} (const ${state.ts.varName})`);
+            refreshAll();
+          } catch (e) {
+            console.error(e);
+            toast("Failed to parse TS: " + e.message, 4200);
+          }
+        });
+
+        // Optional: better open/save with File System Access API
+        async function openTsWithPicker() {
+          if (!window.showOpenFilePicker) return null;
+          const [handle] = await window.showOpenFilePicker({
+            multiple: false,
+            types: [
+              {
+                description: "TypeScript",
+                accept: { "text/plain": [".ts", ".tsx"] },
+              },
+            ],
+          });
+          const file = await handle.getFile();
+          return { handle, file };
+        }
+
+        // Enhance: Shift-click "Open .ts…" area doesn’t exist; so add keyboard shortcut:
+        window.addEventListener("keydown", async (ev) => {
+          if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === "o") {
+            ev.preventDefault();
+            if (window.showOpenFilePicker) {
+              try {
+                const res = await openTsWithPicker();
+                if (!res) return;
+                state.ts.fileHandle = res.handle;
+                state.ts.file = res.file;
+                state.ts.originalText = await res.file.text();
+                const parsed = parseTsScene(state.ts.originalText);
+                state.scene = parsed.scene;
+                state.ts.importBlock =
+                  parsed.meta.importBlock || state.ts.importBlock;
+                state.ts.varName = parsed.meta.varName || state.ts.varName;
+                state.ts.typeAnnotation =
+                  parsed.meta.typeAnn || state.ts.typeAnnotation;
+                state.ts.exportDefaultName =
+                  parsed.meta.exportDefaultName || state.ts.exportDefaultName;
+                toast(`Opened with picker: ${res.file.name}`);
+                refreshAll();
+              } catch (e) {
+                toast("Open canceled / failed.", 1800);
+              }
+            } else {
+              toast(
+                "Your browser doesn't support file picker API. Use the Open .ts button.",
+                2500
+              );
+            }
+          }
+
+          if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === "s") {
+            ev.preventDefault();
+            if (!state.scene) return;
+            if (state.ts.fileHandle) {
+              await saveToHandle();
+            } else {
+              downloadTs();
+            }
+          }
+        });
+
+        // -------------------------
+        // Events: scene fields
+        // -------------------------
+        el.sceneId.addEventListener("input", () => {
+          ensureSceneReady();
+          state.scene.id = el.sceneId.value;
+          refreshAll();
+        });
+        el.sceneName.addEventListener("input", () => {
+          ensureSceneReady();
+          state.scene.name = el.sceneName.value;
+          refreshAll();
+        });
+        el.sceneDesc.addEventListener("input", () => {
+          ensureSceneReady();
+          state.scene.description = el.sceneDesc.value;
+          refreshAll();
+        });
+        el.sceneImageSrc.addEventListener("input", () => {
+          ensureSceneReady();
+          state.scene.imageSrc = el.sceneImageSrc.value;
+          refreshAll();
+        });
+
+        // -------------------------
+        // Events: object actions
+        // -------------------------
+        el.addObjectBtn.onclick = () => {
+          ensureSceneReady();
+          const id = uniqId("object");
+          const obj = {
+            id,
+            name: "New Object",
+            description: "",
+            boundingBox: { x: 0.1, y: 0.1, width: 0.2, height: 0.2 },
+            interactions: [],
+          };
+          state.scene.objects.push(obj);
+          state.selectedObjectId = id;
+          refreshAll();
+          toast("Object added.");
+        };
+
+        el.deleteObjectBtn.onclick = () => {
+          const sel = getSelectedObject();
+          if (!sel) return;
+          const idx = state.scene.objects.findIndex((o) => o.id === sel.id);
+          if (idx >= 0) state.scene.objects.splice(idx, 1);
+          state.selectedObjectId = null;
+          refreshAll();
+          toast("Object deleted.");
+        };
+
+        el.clearSelBtn.onclick = () => {
+          state.selectedObjectId = null;
+          refreshAll();
+        };
+
+        // Selected object fields
+        el.objId.addEventListener("input", () => {
+          const sel = getSelectedObject();
+          if (!sel) return;
+          const oldId = sel.id;
+          const newId = el.objId.value.trim();
+          if (!newId) return;
+
+          // If id changes, ensure unique
+          if (newId !== oldId) {
+            if (state.scene.objects.some((o) => o.id === newId)) {
+              el.objId.style.borderColor = "rgba(245,158,11,0.55)";
+              return;
+            } else {
+              el.objId.style.borderColor = "rgba(255,255,255,0.12)";
+            }
+          }
+
+          sel.id = newId;
+          state.selectedObjectId = newId;
+          refreshAll();
+        });
+
+        el.objName.addEventListener("input", () => {
+          const sel = getSelectedObject();
+          if (!sel) return;
+          sel.name = el.objName.value;
+          refreshAll();
+        });
+        el.objDesc.addEventListener("input", () => {
+          const sel = getSelectedObject();
+          if (!sel) return;
+          sel.description = el.objDesc.value;
+          refreshAll();
+        });
+
+        function writeBbFromInputs() {
+          const sel = getSelectedObject();
+          if (!sel) return;
+          const bb =
+            sel.boundingBox ||
+            (sel.boundingBox = { x: 0, y: 0, width: 0, height: 0 });
+          const x = Number(el.bbX.value),
+            y = Number(el.bbY.value),
+            w = Number(el.bbW.value),
+            h = Number(el.bbH.value);
+          if ([x, y, w, h].some((n) => !Number.isFinite(n))) return;
+          bb.x = x;
+          bb.y = y;
+          bb.width = w;
+          bb.height = h;
+          refreshAll();
+        }
+        [el.bbX, el.bbY, el.bbW, el.bbH].forEach((inp) =>
+          inp.addEventListener("input", writeBbFromInputs)
+        );
+
+        el.normalizeBtn.onclick = () => {
+          const sel = getSelectedObject();
+          if (!sel) return;
+          const bb =
+            sel.boundingBox ||
+            (sel.boundingBox = { x: 0, y: 0, width: 0, height: 0 });
+          bb.x = clamp01(bb.x);
+          bb.y = clamp01(bb.y);
+          bb.width = clamp01(bb.width);
+          bb.height = clamp01(bb.height);
+          refreshAll();
+          toast("Clamped to 0..1");
+        };
+
+        el.copyCoordsBtn.onclick = async () => {
+          const sel = getSelectedObject();
+          if (!sel) return;
+          const bb = sel.boundingBox || { x: 0, y: 0, width: 0, height: 0 };
+          const txt = `{ x: ${round4(bb.x)}, y: ${round4(
+            bb.y
+          )}, width: ${round4(bb.width)}, height: ${round4(bb.height)} }`;
+          try {
+            await navigator.clipboard.writeText(txt);
+            toast("Copied boundingBox.");
+          } catch {
+            toast("Clipboard blocked by browser.");
+          }
+        };
+
+        el.addInteractionBtn.onclick = () => {
+          const sel = getSelectedObject();
+          if (!sel) return;
+          sel.interactions = sel.interactions || [];
+          sel.interactions.push({
+            label: "New interaction",
+            effect: { type: "noop" },
+          });
+          refreshAll();
+          toast("Interaction added.");
+        };
+
+        // -------------------------
+        // Stage: fit
+        // -------------------------
+        function fitImage() {
+          // scroll to top-left and keep image fully visible if possible
+          el.stageScroll.scrollTop = 0;
+          el.stageScroll.scrollLeft = 0;
+          toast("Fit: scroll reset.");
+        }
+        el.fitBtn.onclick = fitImage;
+
+        // -------------------------
+        // Stage: drawing new rectangles
+        // -------------------------
+        // We'll listen on the IMG element for "empty space" drawing:
+        el.sceneImg.addEventListener("pointerdown", (ev) => {
+          // If clicked on existing rectangle, its handler captured on overlay.
+          // Here: start drawing.
+          if (!state.scene) return;
+          // If no image, skip
+          if (!state.image.url) return;
+
+          ev.preventDefault();
+          ev.stopPropagation();
+
+          // If user is holding Alt, always draw; otherwise draw when not on rectangle (we are on img)
+          const p = pointerToImagePx(ev.clientX, ev.clientY);
+          if (p.x < 0 || p.y < 0 || p.x > p.w || p.y > p.h) return;
+
+          state.ui.drawing = true;
+          state.ui.drawStart = { x: p.x, y: p.y };
+          state.ui.drawCurrent = { x: p.x, y: p.y };
+          el.drawRect.style.display = "block";
+          updateDrawRect();
+          el.sceneImg.setPointerCapture(ev.pointerId);
+        });
+
+        el.sceneImg.addEventListener("pointermove", (ev) => {
+          if (!state.ui.drawing) return;
+          const p = pointerToImagePx(ev.clientX, ev.clientY);
+          state.ui.drawCurrent = { x: p.x, y: p.y };
+          updateDrawRect();
+        });
+
+        el.sceneImg.addEventListener("pointerup", (ev) => {
+          if (!state.ui.drawing) return;
+          state.ui.drawing = false;
+          el.drawRect.style.display = "none";
+
+          const a = state.ui.drawStart;
+          const b = state.ui.drawCurrent;
+          if (!a || !b) return;
+
+          const left = Math.min(a.x, b.x);
+          const top = Math.min(a.y, b.y);
+          const width = Math.abs(a.x - b.x);
+          const height = Math.abs(a.y - b.y);
+
+          // ignore tiny
+          if (width < 8 || height < 8) {
+            toast("Too small — draw a bigger rectangle.");
+            return;
+          }
+
+          // Convert to normalized
+          const r = getImageRect();
+          const bb = {
+            x: clamp01(left / r.width),
+            y: clamp01(top / r.height),
+            width: clamp01(width / r.width),
+            height: clamp01(height / r.height),
+          };
+
+          ensureSceneReady();
+          const id = uniqId("region");
+          const obj = {
+            id,
+            name: "New Region",
+            description: "",
+            boundingBox: {
+              x: round4(bb.x),
+              y: round4(bb.y),
+              width: round4(bb.width),
+              height: round4(bb.height),
+            },
+            interactions: [],
+          };
+          state.scene.objects.push(obj);
+          state.selectedObjectId = id;
+          refreshAll();
+          toast("Region created.");
+        });
+
+        function updateDrawRect() {
+          const a = state.ui.drawStart;
+          const b = state.ui.drawCurrent;
+          if (!a || !b) return;
+          const left = Math.min(a.x, b.x);
+          const top = Math.min(a.y, b.y);
+          const width = Math.abs(a.x - b.x);
+          const height = Math.abs(a.y - b.y);
+          el.drawRect.style.left = left + "px";
+          el.drawRect.style.top = top + "px";
+          el.drawRect.style.width = width + "px";
+          el.drawRect.style.height = height + "px";
+        }
+
+        // -------------------------
+        // Moving / Resizing existing rectangles
+        // -------------------------
+        function startMove(ev, id) {
+          const obj = state.scene.objects.find((o) => o.id === id);
+          if (!obj) return;
+
+          const bb =
+            obj.boundingBox ||
+            (obj.boundingBox = { x: 0, y: 0, width: 0, height: 0 });
+          const start = pointerToImagePx(ev.clientX, ev.clientY);
+
+          state.ui.dragging = {
+            id,
+            mode: "move",
+            startMouse: { x: start.x, y: start.y },
+            startBox: deepClone(bb),
+          };
+
+          el.overlay.setPointerCapture(ev.pointerId);
+          window.addEventListener("pointermove", onDragMove);
+          window.addEventListener("pointerup", onDragEnd, { once: true });
+        }
+
+        function startResize(ev, id, corner) {
+          ev.preventDefault();
+          ev.stopPropagation();
+
+          const obj = state.scene.objects.find((o) => o.id === id);
+          if (!obj) return;
+          const bb =
+            obj.boundingBox ||
+            (obj.boundingBox = { x: 0, y: 0, width: 0, height: 0 });
+          const start = pointerToImagePx(ev.clientX, ev.clientY);
+
+          state.ui.dragging = {
+            id,
+            mode: "resize",
+            corner,
+            startMouse: { x: start.x, y: start.y },
+            startBox: deepClone(bb),
+          };
+
+          el.overlay.setPointerCapture(ev.pointerId);
+          window.addEventListener("pointermove", onDragMove);
+          window.addEventListener("pointerup", onDragEnd, { once: true });
+        }
+
+        function onDragMove(ev) {
+          const drag = state.ui.dragging;
+          if (!drag) return;
+
+          const obj = state.scene.objects.find((o) => o.id === drag.id);
+          if (!obj) return;
+          const bb =
+            obj.boundingBox ||
+            (obj.boundingBox = { x: 0, y: 0, width: 0, height: 0 });
+
+          const p = pointerToImagePx(ev.clientX, ev.clientY);
+          const r = getImageRect();
+          const dx = (p.x - drag.startMouse.x) / r.width;
+          const dy = (p.y - drag.startMouse.y) / r.height;
+
+          if (drag.mode === "move") {
+            bb.x = round4(drag.startBox.x + dx);
+            bb.y = round4(drag.startBox.y + dy);
+            // keep within bounds (best-effort)
+            bb.x = clamp01(bb.x);
+            bb.y = clamp01(bb.y);
+          } else if (drag.mode === "resize") {
+            let x = drag.startBox.x,
+              y = drag.startBox.y,
+              w = drag.startBox.width,
+              h = drag.startBox.height;
+            const c = drag.corner;
+
+            // Convert to edges
+            let left = x,
+              top = y,
+              right = x + w,
+              bottom = y + h;
+            if (c === "nw") {
+              left = x + dx;
+              top = y + dy;
+            }
+            if (c === "ne") {
+              right = x + w + dx;
+              top = y + dy;
+            }
+            if (c === "sw") {
+              left = x + dx;
+              bottom = y + h + dy;
+            }
+            if (c === "se") {
+              right = x + w + dx;
+              bottom = y + h + dy;
+            }
+
+            // Normalize (prevent flip)
+            const minSize = 0.005;
+            const nl = Math.min(left, right - minSize);
+            const nt = Math.min(top, bottom - minSize);
+            const nr = Math.max(right, nl + minSize);
+            const nb = Math.max(bottom, nt + minSize);
+
+            bb.x = round4(clamp01(nl));
+            bb.y = round4(clamp01(nt));
+            bb.width = round4(clamp01(nr - nl));
+            bb.height = round4(clamp01(nb - nt));
+          }
+
+          // Update coord inputs live
+          if (state.selectedObjectId === obj.id) {
+            el.bbX.value = String(round4(bb.x));
+            el.bbY.value = String(round4(bb.y));
+            el.bbW.value = String(round4(bb.width));
+            el.bbH.value = String(round4(bb.height));
+          }
+
+          renderRects();
+          el.tsPreview.value = buildTsFile(sceneForSaving());
+        }
+
+        function onDragEnd() {
+          state.ui.dragging = null;
+          window.removeEventListener("pointermove", onDragMove);
+          refreshAll();
+        }
+
+        // Clicking empty overlay space clears selection
+        el.overlay.addEventListener("pointerdown", (ev) => {
+          // If user clicks overlay but not a rect (rare), clear selection
+          if (ev.target === el.overlay) {
+            state.selectedObjectId = null;
+            refreshAll();
+          }
+        });
+
+        // -------------------------
+        // Saving
+        // -------------------------
+        el.downloadBtn.onclick = () => downloadTs();
+
+        function downloadTs() {
+          if (!state.scene) return;
+          const text = buildTsFile(sceneForSaving());
+          const blob = new Blob([text], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+
+          const a = document.createElement("a");
+          const base = (state.ts.file?.name || "scene.ts").replace(
+            /\.tsx?$/i,
+            ""
+          );
+          a.download = base + ".ts";
+          a.href = url;
+          a.click();
+          URL.revokeObjectURL(url);
+          toast("Downloaded .ts");
+        }
+
+        el.saveBtn.onclick = async () => {
+          if (!state.ts.fileHandle) {
+            toast(
+              "No file handle. Use Download .ts or open with Ctrl/Cmd+O (picker).",
+              3200
+            );
+            return;
+          }
+          await saveToHandle();
+        };
+
+        async function saveToHandle() {
+          const text = buildTsFile(sceneForSaving());
+          try {
+            const writable = await state.ts.fileHandle.createWritable();
+            await writable.write(text);
+            await writable.close();
+            toast("Saved to original .ts");
+          } catch (e) {
+            console.error(e);
+            toast("Save failed. Use Download .ts instead.", 3000);
+          }
+        }
+
+        // -------------------------
+        // Helpers
+        // -------------------------
+        function escapeHtml(s) {
+          return String(s ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+        }
+        function escapeAttr(s) {
+          return escapeHtml(s).replaceAll("\n", "&#10;");
+        }
+        function safeJsonStringify(obj, space = 2) {
+          try {
+            return JSON.stringify(obj, null, space) ?? "{}";
+          } catch {
+            return "{}";
+          }
+        }
+        function cssEscape(str) {
+          // minimal escape for querySelector
+          return String(str).replace(/["\\]/g, "\\$&");
+        }
+
+        // -------------------------
+        // Boot
+        // -------------------------
+        state.scene = makeEmptyScene();
+        refreshAll();
+
+        // Bonus: show a hint about better save if supported
+        if (window.showOpenFilePicker) {
+          toast(
+            "Tip: Press Ctrl/Cmd+O to open .ts with picker (enables true Save).",
+            3500
+          );
+        } else {
+          toast(
+            "Tip: Your browser may not support true overwrite Save. Download works everywhere.",
+            3500
+          );
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -28,7 +28,7 @@ const storageOutsideCar: SceneDefinition = {
       interactions: [
         {
           label: "Get inside the storage unit",
-          effect: setScene("storage-chair-broken"),
+          effect: setScene("storage-back"),
         },
       ],
     },

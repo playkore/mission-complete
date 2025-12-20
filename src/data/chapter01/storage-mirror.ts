@@ -54,7 +54,7 @@ const storageMirror: SceneDefinition = {
       interactions: [
         {
           label: "Check on the chair",
-          effect: setScene("storage-chair-broken")
+          effect: setScene("storage-back")
         }
       ]
     }

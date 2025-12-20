@@ -21,7 +21,7 @@ const storageVcr: SceneDefinition = {
       interactions: [
         {
           label: "Head back to the chair",
-          effect: setScene("storage-chair-broken"),
+          effect: setScene("storage-back"),
         },
       ],
     },

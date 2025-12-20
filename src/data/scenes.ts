@@ -1,9 +1,8 @@
 import type { SceneDefinition, SceneId } from "../types/scenes";
-import storageChairBroken from "./chapter01/storage-chair-broken";
+import storageChairBroken from "./chapter01/storage-back";
 import storageMirror from "./chapter01/storage-mirror";
 import storageOutsideCar from "./chapter01/storage-outside-car";
 import storageOutsideCarInside from "./chapter01/storage-outside-car-inside";
-import storageChairFixed from "./chapter01/storage-chair-fixed";
 import storageExit from "./chapter01/storage-exit";
 import storageShelf from "./chapter01/storage-shelf";
 import storageMirrorAngry from "./chapter01/storage-mirror-angry";
@@ -16,7 +15,6 @@ export const scenes: SceneDefinition[] = [
   storageOutsideCar,
   storageOutsideCarInside,
   storageChairBroken,
-  storageChairFixed,
   storageExit,
   storageShelf,
   storageMirror,
@@ -27,4 +25,4 @@ export const scenes: SceneDefinition[] = [
   storeHardwareDucttape,
 ];
 
-export const initialSceneId: SceneId = "storage-chair-broken";
+export const initialSceneId: SceneId = "storage-back";

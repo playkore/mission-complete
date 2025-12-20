@@ -25,7 +25,7 @@ const storageExit: SceneDefinition = {
         },
         {
           label: "Return deeper inside",
-          effect: setScene("storage-chair-broken"),
+          effect: setScene("storage-back"),
         },
       ],
     },

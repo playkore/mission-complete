@@ -2,8 +2,7 @@ import { GameState } from "../effects/useGameState";
 
 // Should correspond the image name <sceneId>.png in src/assets/scenes/chapter01/
 export type SceneId =
-  | "storage-chair-broken"
-  | "storage-chair-fixed"
+  | "storage-back"
   | "storage-shelf-car-keys"
   | "storage-exit"
   | "storage-mirror-angry"

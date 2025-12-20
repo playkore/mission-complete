@@ -28,6 +28,13 @@ const App = () => {
     currentScene?.objects.find((object) => object.id === selectedObjectId) ??
     null;
 
+  const sceneDescriptionText =
+    gameState.message && gameState.message.trim() !== ""
+      ? gameState.message
+      : selectedObject
+      ? selectedObject.description
+      : currentScene?.description ?? null;
+
   useEffect(() => {
     if (!currentScene || !selectedObjectId) {
       return;
@@ -170,6 +177,7 @@ const App = () => {
               gameState={gameState}
               selectedObjectId={selectedObjectId}
               onObjectSelect={handleObjectSelect}
+              descriptionText={sceneDescriptionText}
             />
           </section>
 
@@ -181,13 +189,6 @@ const App = () => {
               <div>
                 <p className="eyebrow">{currentScene.name}</p>
                 {selectedObject && <h1>{selectedObject.name}</h1>}
-                <p className="sceneDescription">
-                  {gameState.message && gameState.message.trim() !== ""
-                    ? gameState.message
-                    : selectedObject
-                    ? selectedObject.description
-                    : currentScene.description}
-                </p>
               </div>
             </div>
             {(selectedObject || currentScene.interactions.length > 0) && (

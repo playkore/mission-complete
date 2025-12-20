@@ -4,12 +4,14 @@ import type { GameState } from "../effects/useGameState";
 import { useSceneAssetsLoading } from "../effects/useSceneAssetsLoading";
 import { resolveSceneImage } from "../utils/resolveSceneImage";
 import "./SceneView.css";
+import SceneDescriptionOverlay from "./SceneDescriptionOverlay";
 
 export interface SceneViewProps {
   scene: SceneDefinition;
   gameState: GameState;
   selectedObjectId: string | null;
   onObjectSelect: (sceneObject: SceneObject | null) => void;
+  descriptionText: string | null;
 }
 
 const SceneView = ({
@@ -17,6 +19,7 @@ const SceneView = ({
   gameState,
   selectedObjectId,
   onObjectSelect,
+  descriptionText,
 }: SceneViewProps) => {
   const { isLoading, loadedCount, totalCount } = useSceneAssetsLoading(scene);
   const progressPercent =
@@ -49,6 +52,7 @@ const SceneView = ({
           alt={scene.description ?? scene.name}
           draggable="false"
         />
+        <SceneDescriptionOverlay text={descriptionText} />
         {objectsWithVisibility.map(({ sceneObject, isVisible }) => {
           if (!sceneObject.imageSrc || !isVisible) {
             return null;

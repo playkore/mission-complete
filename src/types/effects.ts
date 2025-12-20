@@ -1,6 +1,8 @@
+import { SceneId } from "./scenes";
+
 export interface ChangeSceneEffect {
   type: "change_scene";
-  sceneId: string;
+  sceneId: SceneId;
 }
 
 export interface FixChairEffect {

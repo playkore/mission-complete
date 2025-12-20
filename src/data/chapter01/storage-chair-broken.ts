@@ -40,10 +40,10 @@ const storageChairBroken: SceneDefinition = {
       },
       interactions: [
         {
-          label: "Inspect the workbench wall",
+          label: "Inspect the shelves",
           effect: {
             type: "change_scene",
-            sceneId: "storage-vcr",
+            sceneId: "storage-shelf-car-keys",
           },
         },
       ],

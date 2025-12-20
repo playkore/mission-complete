@@ -1,15 +1,9 @@
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   MouseEvent as ReactMouseEvent,
   PointerEvent as ReactPointerEvent,
   RefObject,
 } from "react";
-import type { SceneEffectCommand } from "../types/effects";
 import type {
   BoundingBox,
   SceneDefinition,
@@ -50,8 +44,9 @@ type PointerSession =
     };
 
 const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
-  const defaultSceneId =
-    (initialSceneId ?? scenes[0]?.id ?? "") as SceneDefinition["id"] | "";
+  const defaultSceneId = (initialSceneId ?? scenes[0]?.id ?? "") as
+    | SceneDefinition["id"]
+    | "";
   const [selectedSceneId, setSelectedSceneId] = useState<
     SceneDefinition["id"] | ""
   >(defaultSceneId);
@@ -102,7 +97,9 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
     return JSON.stringify(sceneDraft, null, 2);
   }, [sceneDraft]);
 
-  const stageImageSrc = sceneDraft ? resolveSceneImage(sceneDraft.imageSrc) : "";
+  const stageImageSrc = sceneDraft
+    ? resolveSceneImage(sceneDraft.imageSrc)
+    : "";
 
   const handleSceneFieldChange = (
     key: keyof Omit<DraftScene, "objects">,
@@ -180,42 +177,27 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
       }
       return {
         ...prev,
-        objects: prev.objects.filter((object) => object.id !== selectedObjectId),
+        objects: prev.objects.filter(
+          (object) => object.id !== selectedObjectId
+        ),
       };
     });
     setSelectedObjectId(null);
-  };
-
-  const getFallbackSceneId = (): SceneDefinition["id"] => {
-    const fallback =
-      selectedSceneId ||
-      sceneDraft?.id ||
-      scenes[0]?.id ||
-      "storage-chair-broken";
-    return fallback as SceneDefinition["id"];
   };
 
   const handleAddInteraction = () => {
     if (!selectedObject) {
       return;
     }
-    const template = selectedObject.interactions.find(
-      (interaction) => interaction.effect.type === "change_scene"
-    )?.effect;
-    const defaultEffect: SceneEffectCommand =
-      template && template.type === "change_scene"
-        ? {
-            type: "change_scene",
-            sceneId: template.sceneId ?? getFallbackSceneId(),
-          }
-        : { type: "change_scene", sceneId: getFallbackSceneId() };
     updateObject(selectedObject.id, (object) => ({
       ...object,
       interactions: [
         ...object.interactions,
         {
           label: "New interaction",
-          effect: defaultEffect,
+          effect: (state) => {
+            return state;
+          },
         },
       ],
     }));
@@ -233,23 +215,6 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
       interactions[index] = {
         ...interactions[index],
         ...changes,
-      };
-      return { ...object, interactions };
-    });
-  };
-
-  const handleInteractionEffectChange = (
-    index: number,
-    effect: SceneEffectCommand
-  ) => {
-    if (!selectedObject) {
-      return;
-    }
-    updateObject(selectedObject.id, (object) => {
-      const interactions = [...object.interactions];
-      interactions[index] = {
-        ...interactions[index],
-        effect,
       };
       return { ...object, interactions };
     });
@@ -288,9 +253,7 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
     if (!sceneDraft) {
       return;
     }
-    const object = sceneDraft.objects.find(
-      (item) => item.id === objectId
-    );
+    const object = sceneDraft.objects.find((item) => item.id === objectId);
     if (!object) {
       return;
     }
@@ -582,10 +545,7 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                     type="text"
                     value={sceneDraft?.ambientSound ?? ""}
                     onChange={(event) =>
-                      handleSceneFieldChange(
-                        "ambientSound",
-                        event.target.value
-                      )
+                      handleSceneFieldChange("ambientSound", event.target.value)
                     }
                   />
                 </label>
@@ -637,30 +597,30 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                     </label>
 
                     <div className="sceneEditorBoundingGrid">
-                      {(["x", "y", "width", "height"] as (keyof BoundingBox)[]).map(
-                        (axis) => (
-                          <label key={axis} className="sceneEditorField">
-                            <span>{axis}</span>
-                            <input
-                              type="number"
-                              min={0}
-                              max={1}
-                              step={0.01}
-                              value={
-                                Math.round(
-                                  (selectedObject.boundingBox[axis] ?? 0) * 100
-                                ) / 100
-                              }
-                              onChange={(event) =>
-                                handleBoundingBoxChange(
-                                  axis,
-                                  Number(event.target.value)
-                                )
-                              }
-                            />
-                          </label>
-                        )
-                      )}
+                      {(
+                        ["x", "y", "width", "height"] as (keyof BoundingBox)[]
+                      ).map((axis) => (
+                        <label key={axis} className="sceneEditorField">
+                          <span>{axis}</span>
+                          <input
+                            type="number"
+                            min={0}
+                            max={1}
+                            step={0.01}
+                            value={
+                              Math.round(
+                                (selectedObject.boundingBox[axis] ?? 0) * 100
+                              ) / 100
+                            }
+                            onChange={(event) =>
+                              handleBoundingBoxChange(
+                                axis,
+                                Number(event.target.value)
+                              )
+                            }
+                          />
+                        </label>
+                      ))}
                     </div>
 
                     <div className="sceneEditorDetailsActions">
@@ -710,57 +670,6 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
                                   }
                                 />
                               </label>
-                              <div className="sceneEditorInteractionRow">
-                                <label className="sceneEditorField">
-                                  <span>effect type</span>
-                                  <select
-                                    value={interaction.effect.type}
-                                    onChange={(event) => {
-                                      const nextType = event.target
-                                        .value as SceneEffectCommand["type"];
-                                      if (nextType === "change_scene") {
-                                        const newSceneId =
-                                          interaction.effect.type ===
-                                            "change_scene" &&
-                                          interaction.effect.sceneId
-                                            ? interaction.effect.sceneId
-                                            : getFallbackSceneId();
-                                        handleInteractionEffectChange(index, {
-                                          type: "change_scene",
-                                          sceneId: newSceneId,
-                                        });
-                                      } else {
-                                        handleInteractionEffectChange(index, {
-                                          type: "fix_chair",
-                                        });
-                                      }
-                                    }}
-                                  >
-                                    <option value="change_scene">
-                                      change_scene
-                                    </option>
-                                    <option value="fix_chair">fix_chair</option>
-                                  </select>
-                                </label>
-                                {interaction.effect.type === "change_scene" && (
-                                  <label className="sceneEditorField">
-                                    <span>sceneId</span>
-                                    <input
-                                      type="text"
-                                      value={interaction.effect.sceneId}
-                                      onChange={(event) =>
-                                        handleInteractionEffectChange(index, {
-                                          type: "change_scene",
-                                          sceneId:
-                                            event.target.value as
-                                              | SceneDefinition["id"]
-                                              | "storage-chair-broken",
-                                        })
-                                      }
-                                    />
-                                  </label>
-                                )}
-                              </div>
                               <button
                                 type="button"
                                 className="sceneEditorButton sceneEditorButton--danger"

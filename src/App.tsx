@@ -14,7 +14,7 @@ const App = () => {
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSceneEditorOpen, setIsSceneEditorOpen] = useState(false);
-  const { executeEffect, currentSceneId, resetGame } = useGameState();
+  const { executeEffect, gameState, resetGame } = useGameState();
   const menuWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const sceneMap = useMemo(() => {
@@ -23,7 +23,7 @@ const App = () => {
     );
   }, []);
 
-  const currentScene = sceneMap.get(currentSceneId);
+  const currentScene = sceneMap.get(gameState.currentSceneId);
   const selectedObject: SceneObject | null =
     currentScene?.objects.find((object) => object.id === selectedObjectId) ??
     null;
@@ -35,7 +35,7 @@ const App = () => {
   const handleInteraction = (interaction: ObjectInteraction) => {
     if (!currentScene || !selectedObject) return;
 
-    executeEffect(interaction.effect);
+    executeEffect(interaction);
   };
 
   const handleMenuToggle = () => {
@@ -131,7 +131,7 @@ const App = () => {
         </div>
         {isSceneEditorOpen && (
           <SceneEditor
-            initialSceneId={currentSceneId}
+            initialSceneId={gameState.currentSceneId}
             onClose={handleCloseSceneEditor}
           />
         )}
@@ -168,7 +168,7 @@ const App = () => {
               <div className="actionsGrid">
                 {selectedObject.interactions.map((interaction) => (
                   <button
-                    key={`${selectedObject.id}-${interaction.effect.type}`}
+                    key={`${selectedObject.id}-${interaction.effect.toString()}`}
                     type="button"
                     className="actionButton"
                     onClick={() => handleInteraction(interaction)}
@@ -183,7 +183,7 @@ const App = () => {
       </div>
       {isSceneEditorOpen && (
         <SceneEditor
-          initialSceneId={currentSceneId}
+          initialSceneId={gameState.currentSceneId}
           onClose={handleCloseSceneEditor}
         />
       )}

@@ -18,7 +18,6 @@ const createInitialGameState = (): GameState => ({
 
 export const useGameState = () => {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [currentSceneId, setCurrentSceneId] = useState<SceneId>(initialSceneId);
 
   const [gameState, setGameState] = useState<GameState>(createInitialGameState);
 
@@ -31,13 +30,11 @@ export const useGameState = () => {
   const resetGame = () => {
     setStatusMessage(null);
     setGameState(createInitialGameState());
-    setCurrentSceneId(initialSceneId);
   };
 
   return {
     executeEffect,
-    currentSceneId,
-    setCurrentSceneId,
+    gameState,
     statusMessage,
     resetGame,
   };

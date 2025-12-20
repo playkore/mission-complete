@@ -1,5 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
-import { addToInventory } from "../../effects/mutators";
+import { addToInventory, setScene } from "../../effects/mutators";
 
 const storageShelf: SceneDefinition = {
   id: "storage-shelf-car-keys",
@@ -16,14 +16,31 @@ const storageShelf: SceneDefinition = {
       visible: (state) => !state.inventory.includes("car-keys"),
       boundingBox: {
         x: 0.37,
-        y: 0.6,
-        width: 0.36,
-        height: 0.21,
+        y: 0.61,
+        width: 0.32,
+        height: 0.2,
       },
       interactions: [
         {
           label: "Take",
           effect: addToInventory("car-keys"),
+        },
+      ],
+    },
+    {
+      id: "storage_back_area",
+      name: "Storage back area",
+      description: "",
+      boundingBox: {
+        x: 0.78,
+        y: 0.06,
+        width: 0.2,
+        height: 0.94,
+      },
+      interactions: [
+        {
+          label: "Get back",
+          effect: setScene("storage-back"),
         },
       ],
     },

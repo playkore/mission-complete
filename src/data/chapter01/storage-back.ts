@@ -35,7 +35,7 @@ const storageBack: SceneDefinition = {
         {
           label: "Try to fix the chair",
           effect: (state) => {
-            if (state.inventory.includes("duct_tape")) {
+            if (state.inventory.includes("duct-tape")) {
               return {
                 ...state,
                 isChairFixed: true,

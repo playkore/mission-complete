@@ -9,6 +9,7 @@ import { useSceneAssetsLoading } from "../effects/useSceneAssetsLoading";
 import { resolveSceneImage } from "../utils/resolveSceneImage";
 import "./SceneView.css";
 import SceneDescriptionOverlay from "./SceneDescriptionOverlay";
+import TVStaticCanvas from "./TVStaticCanvas";
 
 export interface SceneViewProps {
   scene: SceneDefinition;
@@ -126,6 +127,7 @@ const SceneView = ({
 
         {isLoading && (
           <div className="sceneLoadingOverlay" role="status" aria-live="polite">
+            <TVStaticCanvas />
             <span>
               Loading scene{" "}
               {totalCount > 0

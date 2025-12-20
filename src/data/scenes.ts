@@ -1,5 +1,6 @@
 import type { SceneDefinition, SceneId } from "../types/scenes";
 import storageChairBroken from "./chapter01/storage-chair-broken";
+import storageMirror from "./chapter01/storage-mirror";
 
 export const scenes: SceneDefinition[] = [
   {
@@ -205,51 +206,7 @@ export const scenes: SceneDefinition[] = [
       },
     ],
   },
-  {
-    id: "storage-mirror",
-    name: "Storage Mirror",
-    description:
-      "A wall-length mirror leans against the shelves, reflecting your determined expression.",
-    imageSrc: "/scenes/chapter01/storage-mirror.png",
-    objects: [
-      {
-        id: "mirror_frame",
-        name: "Full-Length Mirror",
-        description: "Full-length mirror reflecting your stance.",
-        boundingBox: { x: 0.14, y: 0.08, width: 0.46, height: 0.78 },
-        interactions: [
-          {
-            label: "Practice a tough stare",
-            effect: { type: "change_scene", sceneId: "storage-mirror-angry" },
-          },
-        ],
-      },
-      {
-        id: "doorway_glow",
-        name: "Doorway",
-        description: "Backlit doorway inviting you toward the corridor.",
-        boundingBox: { x: 0.56, y: 0.14, width: 0.28, height: 0.72 },
-        interactions: [
-          {
-            label: "Walk toward the exit",
-            effect: { type: "change_scene", sceneId: "storage-exit" },
-          },
-        ],
-      },
-      {
-        id: "shelf_edge",
-        name: "Side Shelves",
-        description: "Side shelves stacked with crates and bins.",
-        boundingBox: { x: 0.02, y: 0.1, width: 0.2, height: 0.72 },
-        interactions: [
-          {
-            label: "Check on the chair",
-            effect: { type: "change_scene", sceneId: "storage" },
-          },
-        ],
-      },
-    ],
-  },
+  storageMirror,
   {
     id: "storage-mirror-angry",
     name: "Storage Mirror — Angry",

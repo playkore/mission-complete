@@ -7,6 +7,7 @@ const storageOutsideCar: SceneDefinition = {
   description:
     "Late afternoon outside a suburban storage facility. Fallen leaves collect near unit doors while a sedan idles nearby.",
   imageSrc: "/scenes/chapter01/storage-outside-car.png",
+  interactions: [],
   objects: [
     {
       id: "car_001",

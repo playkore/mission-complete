@@ -7,6 +7,7 @@ const storeEntrance: SceneDefinition = {
   description:
     "A festive supermarket entryway greets customers with pumpkins, produce, and a Halloween banner.",
   imageSrc: "/scenes/chapter01/store-entrance.png",
+  interactions: [],
   objects: [
     {
       id: "pumpkin_display",

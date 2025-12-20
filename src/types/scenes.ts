@@ -51,4 +51,5 @@ export interface SceneDefinition {
   description?: string;
   objects: SceneObject[];
   ambientSound?: string;
+  interactions: ObjectInteraction[];
 }

@@ -7,6 +7,7 @@ const storeHardwareDucttape: SceneDefinition = {
   description:
     "A pair of duct tape rolls sit proudly in the cart, mission accomplished.",
   imageSrc: "/scenes/chapter01/store-hardware-ducttape.png",
+  interactions: [],
   objects: [
     {
       id: "duct_tape_rolls",

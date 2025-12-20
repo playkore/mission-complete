@@ -7,6 +7,12 @@ const storageShelf: SceneDefinition = {
   description:
     "A cluttered shelf inside the storage unit. Among the assorted items, your car keys are clearly visible.",
   imageSrc: "/scenes/chapter01/storage-shelf.png",
+  interactions: [
+    {
+      label: "Get back",
+      effect: setScene("storage-back"),
+    },
+  ],
   objects: [
     {
       id: "car-keys",

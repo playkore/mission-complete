@@ -7,6 +7,7 @@ const storageExit: SceneDefinition = {
   description:
     "An industrial metal door marked EXIT bleeds warm light through the crack at the floor.",
   imageSrc: "/scenes/chapter01/storage-exit.png",
+  interactions: [],
   objects: [
     {
       id: "exit_door",

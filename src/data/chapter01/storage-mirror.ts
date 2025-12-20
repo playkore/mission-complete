@@ -6,6 +6,7 @@ const storageMirror: SceneDefinition = {
   name: "Storage Mirror",
   description: "A wall-length mirror leans against the shelves, reflecting your determined expression.",
   imageSrc: "/scenes/chapter01/storage-mirror.png",
+  interactions: [],
   objects: [
     {
       id: "mirror_frame",

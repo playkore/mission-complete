@@ -7,6 +7,16 @@ const storageBack: SceneDefinition = {
   description:
     "The center of the unit is occupied by a splintered wooden chair. It appears to have lost the will to exist. Dust and aging shelves complete the composition.",
   imageSrc: "/scenes/chapter01/storage-back.png",
+  interactions: [
+    {
+      label: "Turn left",
+      effect: setScene("storage-mirror"),
+    },
+    {
+      label: "Turn right",
+      effect: setScene("storage-vcr"),
+    },
+  ],
   objects: [
     {
       id: "broken_chair",

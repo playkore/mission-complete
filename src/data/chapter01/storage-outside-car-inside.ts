@@ -7,6 +7,7 @@ const storageOutsideCarInside: SceneDefinition = {
   description:
     "Inside the sedan parked outside the storage facility. The engine is off, and the keys are in the ignition.",
   imageSrc: "/scenes/chapter01/storage-outside-car-inside.png",
+  interactions: [],
   objects: [
     {
       id: "dashboard",

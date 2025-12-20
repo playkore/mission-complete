@@ -7,6 +7,7 @@ const storeHardware: SceneDefinition = {
   description:
     "The aisle is lined with power tools, pliers, batteries, and anything else one could need.",
   imageSrc: "/scenes/chapter01/store-hardware.png",
+  interactions: [],
   objects: [
     {
       id: "tape_shelf",

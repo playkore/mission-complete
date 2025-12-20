@@ -52,8 +52,9 @@ const App = () => {
   };
 
   const handleInteraction = (interaction: ObjectInteraction) => {
-    if (!currentScene || !selectedObject) return;
-
+    if (!currentScene) {
+      return;
+    }
     executeEffect(interaction);
   };
 
@@ -189,13 +190,16 @@ const App = () => {
                 </p>
               </div>
             </div>
-            {selectedObject && (
+            {(selectedObject || currentScene.interactions.length > 0) && (
               <div className="actionsGrid">
-                {selectedObject.interactions.map((interaction) => (
+                {(selectedObject
+                  ? selectedObject.interactions
+                  : currentScene.interactions
+                ).map((interaction, index) => (
                   <button
                     key={`${
-                      selectedObject.id
-                    }-${interaction.effect.toString()}`}
+                      selectedObject?.id ?? currentScene.id
+                    }-interaction-${index}`}
                     type="button"
                     className="actionButton"
                     onClick={() => handleInteraction(interaction)}

@@ -7,6 +7,7 @@ const storageVcr: SceneDefinition = {
   description:
     "A dusty workbench holds a VCR surrounded by tools, extension cords, and paint cans.",
   imageSrc: "/scenes/chapter01/storage-vcr.png",
+  interactions: [],
   objects: [
     {
       id: "vcr_player",

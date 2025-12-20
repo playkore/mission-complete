@@ -32,36 +32,6 @@
   pointer-events: none;
 }
 
-.hudGrid {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 24px 24px;
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-.vfx {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-      closest-side at 50% 50%,
-      transparent 55%,
-      rgba(0, 0, 0, 0.55) 100%
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(0, 255, 122, 0.04),
-      rgba(0, 255, 122, 0.04) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-  mix-blend-mode: screen;
-  opacity: 0.55;
-}
-
 .hitbox {
   position: absolute;
   border: 2px solid transparent;

@@ -56,8 +56,6 @@ const SceneView = ({
             />
           );
         })}
-        <div className="hudGrid" aria-hidden="true" />
-        <div className="vfx" aria-hidden="true" />
 
         {objectsWithVisibility.map(({ sceneObject, isVisible }) => {
           if (!isVisible) {

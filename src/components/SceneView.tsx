@@ -1,5 +1,9 @@
 import type { MouseEvent as ReactMouseEvent } from "react";
-import type { SceneDefinition, SceneObject } from "../types/scenes";
+import type {
+  ObjectInteraction,
+  SceneDefinition,
+  SceneObject,
+} from "../types/scenes";
 import type { GameState } from "../effects/useGameState";
 import { useSceneAssetsLoading } from "../effects/useSceneAssetsLoading";
 import { resolveSceneImage } from "../utils/resolveSceneImage";
@@ -12,6 +16,8 @@ export interface SceneViewProps {
   selectedObjectId: string | null;
   onObjectSelect: (sceneObject: SceneObject | null) => void;
   descriptionText: string | null;
+  interactions: ObjectInteraction[];
+  onInteractionSelect: (interaction: ObjectInteraction) => void;
 }
 
 const SceneView = ({
@@ -20,6 +26,8 @@ const SceneView = ({
   selectedObjectId,
   onObjectSelect,
   descriptionText,
+  interactions,
+  onInteractionSelect,
 }: SceneViewProps) => {
   const { isLoading, loadedCount, totalCount } = useSceneAssetsLoading(scene);
   const progressPercent =
@@ -53,6 +61,22 @@ const SceneView = ({
           draggable="false"
         />
         <SceneDescriptionOverlay text={descriptionText} />
+        {interactions.length > 0 && (
+          <div className="sceneActionsOverlay">
+            <div className="sceneActionsList" role="group">
+              {interactions.map((interaction, index) => (
+                <button
+                  key={`${scene.id}-interaction-${index}`}
+                  type="button"
+                  className="sceneActionButton"
+                  onClick={() => onInteractionSelect(interaction)}
+                >
+                  <strong>{interaction.label}</strong>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         {objectsWithVisibility.map(({ sceneObject, isVisible }) => {
           if (!sceneObject.imageSrc || !isVisible) {
             return null;

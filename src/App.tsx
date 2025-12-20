@@ -28,6 +28,11 @@ const App = () => {
     currentScene?.objects.find((object) => object.id === selectedObjectId) ??
     null;
 
+  const availableInteractions =
+    (selectedObject
+      ? selectedObject.interactions
+      : currentScene?.interactions) ?? [];
+
   const sceneDescriptionText =
     gameState.message && gameState.message.trim() !== ""
       ? gameState.message
@@ -178,6 +183,8 @@ const App = () => {
               selectedObjectId={selectedObjectId}
               onObjectSelect={handleObjectSelect}
               descriptionText={sceneDescriptionText}
+              interactions={availableInteractions}
+              onInteractionSelect={handleInteraction}
             />
           </section>
 
@@ -191,25 +198,6 @@ const App = () => {
                 {selectedObject && <h1>{selectedObject.name}</h1>}
               </div>
             </div>
-            {(selectedObject || currentScene.interactions.length > 0) && (
-              <div className="actionsGrid">
-                {(selectedObject
-                  ? selectedObject.interactions
-                  : currentScene.interactions
-                ).map((interaction, index) => (
-                  <button
-                    key={`${
-                      selectedObject?.id ?? currentScene.id
-                    }-interaction-${index}`}
-                    type="button"
-                    className="actionButton"
-                    onClick={() => handleInteraction(interaction)}
-                  >
-                    <strong>{interaction.label}</strong>
-                  </button>
-                ))}
-              </div>
-            )}
           </section>
         </main>
       </div>

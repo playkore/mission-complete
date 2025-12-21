@@ -1,5 +1,5 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { setScene } from "../../../effects/mutators";
 
 const storageExit: SceneDefinition = {
   id: "storage-exit",

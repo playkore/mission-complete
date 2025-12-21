@@ -1,5 +1,5 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { addToInventory, setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { addToInventory, setScene } from "../../../effects/mutators";
 
 const storageVcr: SceneDefinition = {
   id: "storage-vcr",

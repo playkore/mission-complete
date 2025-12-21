@@ -1,5 +1,5 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { setMessage, setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { setMessage, setScene } from "../../../effects/mutators";
 
 const storageBack: SceneDefinition = {
   id: "storage-back",

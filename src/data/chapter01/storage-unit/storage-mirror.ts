@@ -1,5 +1,5 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { setScene, setStateLook } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { setScene, setStateLook } from "../../../effects/mutators";
 
 const storageMirror: SceneDefinition = {
   id: "storage-mirror",

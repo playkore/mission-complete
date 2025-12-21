@@ -25,8 +25,8 @@ const storageExit: SceneDefinition = {
       boundingBox: {
         x: 0.34,
         y: 0.18,
-        width: 0.29,
-        height: 0.66,
+        width: 0.33,
+        height: 0.42,
       },
       interactions: [
         {

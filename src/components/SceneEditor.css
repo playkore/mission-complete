@@ -169,10 +169,14 @@
 }
 
 .sceneEditorStage {
+  --scene-editor-stage-height: min(70vh, 900px);
   flex: 1;
   padding: 16px;
   min-height: 0;
   overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .sceneEditorStageFrame {
@@ -180,22 +184,31 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(4, 8, 18, 0.85);
   padding: 10px;
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  width: min(
+    100%,
+    calc(var(--scene-editor-stage-height) * (2 / 3) + 20px)
+  );
 }
 
 .sceneEditorStageImage {
   position: relative;
-  display: inline-block;
+  display: block;
   user-select: none;
   border-radius: 12px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.4);
+  width: min(100%, calc(var(--scene-editor-stage-height) * (2 / 3)));
+  max-height: var(--scene-editor-stage-height);
+  aspect-ratio: 2 / 3;
 }
 
 .sceneEditorStageImage img {
   display: block;
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   user-select: none;
   pointer-events: none;
 }

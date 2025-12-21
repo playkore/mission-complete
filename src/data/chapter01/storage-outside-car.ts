@@ -14,10 +14,10 @@ const storageOutsideCar: SceneDefinition = {
       name: "Sedan",
       description: "Family sedan idling outside the storage facility.",
       boundingBox: {
-        x: 0.64,
-        y: 0.27,
-        width: 0.36,
-        height: 0.34,
+        x: 0.65,
+        y: 0.39,
+        width: 0.35,
+        height: 0.17,
       },
       interactions: [
         {
@@ -37,9 +37,9 @@ const storageOutsideCar: SceneDefinition = {
       description: "Roll-up door leading into your rented unit.",
       boundingBox: {
         x: 0.22,
-        y: 0.13,
+        y: 0.31,
         width: 0.19,
-        height: 0.43,
+        height: 0.23,
       },
       interactions: [
         {

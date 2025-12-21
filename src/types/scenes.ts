@@ -10,13 +10,13 @@ export type SceneId =
   | "storage-outside-car-inside"
   | "storage-outside-car"
   | "car-glove-box"
+  | "car-look-right"
   | "city-map"
   | "store-entrance"
   | "store-hardware-ducttape"
   | "store-hardware";
 
-  
-type SceneEffectCommandFunction = (state: GameState) => GameState
+type SceneEffectCommandFunction = (state: GameState) => GameState;
 export interface ObjectInteraction {
   label: string;
   effect: SceneEffectCommandFunction;

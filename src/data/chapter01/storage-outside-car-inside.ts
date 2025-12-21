@@ -12,6 +12,10 @@ const storageOutsideCarInside: SceneDefinition = {
       label: "Step back outside",
       effect: setScene("storage-outside-car"),
     },
+    {
+      label: "Look right",
+      effect: setScene("car-look-right"),
+    },
   ],
   objects: [
     {
@@ -19,10 +23,10 @@ const storageOutsideCarInside: SceneDefinition = {
       name: "Steering Wheel",
       description: "The steering wheel of the car. Can be used to drive.",
       boundingBox: {
-        x: 0.03,
+        x: 0.01,
         y: 0.48,
-        width: 0.38,
-        height: 0.52,
+        width: 0.6,
+        height: 0.41,
       },
       interactions: [
         {
@@ -37,30 +41,13 @@ const storageOutsideCarInside: SceneDefinition = {
       ],
     },
     {
-      id: "glove_box",
-      name: "Glove Box",
-      description: "Glove compartment stuffed with paperwork.",
-      boundingBox: {
-        x: 0.61,
-        y: 0.7,
-        width: 0.39,
-        height: 0.18,
-      },
-      interactions: [
-        {
-          label: "Look in the glove box",
-          effect: setScene("car-glove-box"),
-        },
-      ],
-    },
-    {
       id: "rearview_mirror",
       name: "Rear View Mirror",
       description: "Mirror aligned toward the storage row behind you.",
       boundingBox: {
-        x: 0.44,
-        y: 0.14,
-        width: 0.21,
+        x: 0.69,
+        y: 0.2,
+        width: 0.31,
         height: 0.1,
       },
       interactions: [],

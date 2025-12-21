@@ -26,10 +26,10 @@ const storageBack: SceneDefinition = {
       imageSrc: "/scenes/chapter01/storage-back-chair-broken.png",
       visible: (state) => !state.chairFixed,
       boundingBox: {
-        x: 0.3075,
-        y: 0.6164,
-        width: 0.2653,
-        height: 0.3072,
+        x: 0.13,
+        y: 0.45,
+        width: 0.75,
+        height: 0.31,
       },
       interactions: [
         {
@@ -58,10 +58,10 @@ const storageBack: SceneDefinition = {
       imageSrc: "/scenes/chapter01/storage-back-chair-fixed.png",
       visible: (state) => state.chairFixed,
       boundingBox: {
-        x: 0.3075,
-        y: 0.6164,
-        width: 0.2653,
-        height: 0.3072,
+        x: 0.3,
+        y: 0.31,
+        width: 0.45,
+        height: 0.48,
       },
       interactions: [],
     },
@@ -72,9 +72,9 @@ const storageBack: SceneDefinition = {
         "Shelf densely packed with objects. Most of them useless. Some of them familiar. None of them labeled, of course.",
       boundingBox: {
         x: 0.4,
-        y: 0.18,
-        width: 0.14,
-        height: 0.14,
+        y: 0.15,
+        width: 0.2,
+        height: 0.11,
       },
       interactions: [
         {

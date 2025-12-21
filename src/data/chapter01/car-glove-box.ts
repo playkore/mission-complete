@@ -21,10 +21,10 @@ const carGloveBox: SceneDefinition = {
       visible: (state) => !state.inventory.includes("city-map"),
       imageSrc: "/scenes/chapter01/car-glove-box-map.png",
       boundingBox: {
-        x: 0.34,
-        y: 0.18,
-        width: 0.29,
-        height: 0.66,
+        x: 0.03,
+        y: 0.33,
+        width: 0.89,
+        height: 0.36,
       },
       interactions: [
         {

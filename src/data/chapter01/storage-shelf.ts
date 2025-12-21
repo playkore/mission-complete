@@ -21,32 +21,15 @@ const storageShelf: SceneDefinition = {
       imageSrc: "/scenes/chapter01/storage-shelf-car-keys.png",
       visible: (state) => !state.inventory.includes("car-keys"),
       boundingBox: {
-        x: 0.37,
-        y: 0.61,
-        width: 0.32,
-        height: 0.2,
+        x: 0.48,
+        y: 0.46,
+        width: 0.25,
+        height: 0.12,
       },
       interactions: [
         {
           label: "Take",
           effect: addToInventory("car-keys"),
-        },
-      ],
-    },
-    {
-      id: "storage_back_area",
-      name: "Storage back area",
-      description: "",
-      boundingBox: {
-        x: 0.78,
-        y: 0.06,
-        width: 0.2,
-        height: 0.94,
-      },
-      interactions: [
-        {
-          label: "Get back",
-          effect: setScene("storage-back"),
         },
       ],
     },

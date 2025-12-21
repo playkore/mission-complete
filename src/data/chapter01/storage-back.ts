@@ -71,10 +71,10 @@ const storageBack: SceneDefinition = {
       description:
         "Shelf densely packed with objects. Most of them useless. Some of them familiar. None of them labeled, of course.",
       boundingBox: {
-        x: 0.4,
-        y: 0.15,
-        width: 0.2,
-        height: 0.11,
+        x: 0,
+        y: 0.04,
+        width: 1,
+        height: 0.23,
       },
       interactions: [
         {

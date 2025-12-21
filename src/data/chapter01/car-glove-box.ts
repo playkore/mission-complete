@@ -10,7 +10,7 @@ const carGloveBox: SceneDefinition = {
   interactions: [
     {
       label: "Close glove box",
-      effect: setScene("storage-outside-car-inside"),
+      effect: setScene("car-look-right"),
     },
   ],
   objects: [

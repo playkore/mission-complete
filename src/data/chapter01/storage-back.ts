@@ -1,5 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
-import { setScene } from "../../effects/mutators";
+import { setMessage, setScene } from "../../effects/mutators";
 
 const storageBack: SceneDefinition = {
   id: "storage-back",
@@ -35,17 +35,16 @@ const storageBack: SceneDefinition = {
         {
           label: "Try to fix the chair",
           effect: (state) => {
-            if (state.inventory.includes("duct-tape")) {
-              return {
-                ...state,
-                isChairFixed: true,
-              };
-            } else {
-              return {
-                ...state,
-                message: "I need something to fix the chair with.",
-              };
+            if (!state.inventory.includes("duct-tape")) {
+              return setMessage("I need something to fix the chair with.")(
+                state
+              );
             }
+            return {
+              ...state,
+              chairFixed: true,
+              message: "The tape is doing its best. The chair might hold now.",
+            };
           },
         },
       ],
@@ -79,7 +78,14 @@ const storageBack: SceneDefinition = {
       interactions: [
         {
           label: "Inspect the shelves",
-          effect: setScene("storage-shelf-car-keys"),
+          effect: (state) => {
+            if (!state.chairFixed) {
+              return setMessage(
+                "The shelf is out of reach. I should fix the chair first."
+              )(state);
+            }
+            return setScene("storage-shelf-car-keys")(state);
+          },
         },
       ],
     },

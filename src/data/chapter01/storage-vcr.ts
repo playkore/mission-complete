@@ -1,5 +1,5 @@
 import type { SceneDefinition } from "../../types/scenes";
-import { setScene } from "../../effects/mutators";
+import { addToInventory, setScene } from "../../effects/mutators";
 
 const storageVcr: SceneDefinition = {
   id: "storage-vcr",
@@ -17,7 +17,28 @@ const storageVcr: SceneDefinition = {
       effect: setScene("storage-exit"),
     },
   ],
-  objects: [],
+  objects: [
+    {
+      id: "duct_tape",
+      name: "Duct Tape",
+      description:
+        "Reliable, gray, and ready to fix anything that is more stubborn than it should be.",
+      imageSrc: "/scenes/chapter01/storage-vcr-duct-tape.png",
+      visible: (state) => !state.inventory.includes("duct-tape"),
+      boundingBox: {
+        x: 0.54,
+        y: 0.44,
+        width: 0.24,
+        height: 0.09,
+      },
+      interactions: [
+        {
+          label: "Pick up duct tape",
+          effect: addToInventory("duct-tape"),
+        },
+      ],
+    },
+  ],
 };
 
 export default storageVcr;

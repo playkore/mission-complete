@@ -5,7 +5,7 @@ const carGloveBox: SceneDefinition = {
   id: "car-glove-box",
   name: "Car Glove Box",
   description:
-    "The glove box of the sedan, filled with various papers and small items.",
+    "The glove box of the sedan, filled with various papers and small items. A treasure trove of expired receipts and broken pens.",
   imageSrc: "/scenes/chapter01/car-glove-box.png",
   interactions: [
     {

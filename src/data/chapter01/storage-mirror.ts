@@ -5,7 +5,7 @@ const storageMirror: SceneDefinition = {
   id: "storage-mirror",
   name: "Storage Mirror",
   description:
-    "A wall-length mirror leans against the shelves, reflecting your determined expression.",
+    "A wall-length mirror leans against the shelves, reflecting my determined expression. Or what passes for determination these days.",
   imageSrc: "/scenes/chapter01/storage-mirror.png",
   interactions: [
     {
@@ -21,7 +21,7 @@ const storageMirror: SceneDefinition = {
     {
       id: "mirror_frame_neutral",
       name: "My reflection",
-      description: "Full-length mirror reflecting my stance.",
+      description: "A full-length mirror reflecting my stance. Looking perfectly neutral. How exciting.",
       imageSrc: "/scenes/chapter01/storage-mirror-neutral-male.png",
       visible: (gameState) => gameState.look === "neutral",
       boundingBox: {
@@ -44,7 +44,7 @@ const storageMirror: SceneDefinition = {
     {
       id: "mirror_frame_happy",
       name: "My reflection",
-      description: "Full-length mirror reflecting my happy stance.",
+      description: "A full-length mirror reflecting my happy stance. This smile won't last long, but let's enjoy it while it does.",
       imageSrc: "/scenes/chapter01/storage-mirror-happy-male.png",
       visible: (gameState) => gameState.look === "happy",
       boundingBox: {
@@ -67,7 +67,7 @@ const storageMirror: SceneDefinition = {
     {
       id: "mirror_frame_angry",
       name: "My reflection",
-      description: "Full-length mirror reflecting my angry stance.",
+      description: "A full-length mirror reflecting my angry stance. Yes, very intimidating. The storage unit is terrified.",
       imageSrc: "/scenes/chapter01/storage-mirror-angry-male.png",
       boundingBox: {
         x: 0.16,

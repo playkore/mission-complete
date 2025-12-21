@@ -22,7 +22,7 @@ const storageVcr: SceneDefinition = {
       id: "duct_tape",
       name: "Duct Tape",
       description:
-        "Reliable, gray, and ready to fix anything that is more stubborn than it should be.",
+        "Reliable, gray, and ready to fix anything that's more stubborn than it should be. The universal solution to problems that probably needed actual repair.",
       imageSrc: "/scenes/chapter01/storage-vcr-duct-tape.png",
       visible: (state) => !state.inventory.includes("duct-tape"),
       boundingBox: {

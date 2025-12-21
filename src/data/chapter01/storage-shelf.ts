@@ -5,7 +5,7 @@ const storageShelf: SceneDefinition = {
   id: "storage-shelf-car-keys",
   name: "Shelf",
   description:
-    "A cluttered shelf inside the storage unit. Among the assorted items, your car keys are clearly visible.",
+    "A cluttered shelf inside the storage unit.",
   imageSrc: "/scenes/chapter01/storage-shelf.png",
   interactions: [
     {
@@ -17,7 +17,7 @@ const storageShelf: SceneDefinition = {
     {
       id: "car-keys",
       name: "Car keys",
-      description: "Old merceides car keys",
+      description: "Old Mercedes car keys. Even the keys look tired.",
       imageSrc: "/scenes/chapter01/storage-shelf-car-keys.png",
       visible: (state) => !state.inventory.includes("car-keys"),
       boundingBox: {

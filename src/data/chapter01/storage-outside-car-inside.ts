@@ -5,7 +5,7 @@ const storageOutsideCarInside: SceneDefinition = {
   id: "storage-outside-car-inside",
   name: "Inside The Car",
   description:
-    "Inside the sedan parked outside the storage facility. The engine is off, and the keys are in the ignition.",
+    "Inside the dusty sedan parked outside the storage facility. The engine is off, the keys are in the ignition, and everything smells vaguely of regret and old upholstery.",
   imageSrc: "/scenes/chapter01/storage-outside-car-inside.png",
   interactions: [
     {
@@ -21,7 +21,7 @@ const storageOutsideCarInside: SceneDefinition = {
     {
       id: "steering-wheel",
       name: "Steering Wheel",
-      description: "The steering wheel of the car. Can be used to drive.",
+      description: "The steering wheel of the car. Surprisingly, it can still be used to drive. Who would have thought?",
       boundingBox: {
         x: 0.01,
         y: 0.48,
@@ -35,7 +35,7 @@ const storageOutsideCarInside: SceneDefinition = {
             if (state.inventory.includes("city-map")) {
               return setScene("city-map")(state);
             }
-            return setMessage("Where do I go? I need a map. I'm wondering where do I store it?")(state);
+            return setMessage("Where do I go? I need a map. Now, where would I store something important? Probably somewhere inconvenient.")(state);
           },
         },
       ],
@@ -43,7 +43,7 @@ const storageOutsideCarInside: SceneDefinition = {
     {
       id: "rearview_mirror",
       name: "Rear View Mirror",
-      description: "Mirror aligned toward the storage row behind you.",
+      description: "A rear-view mirror aligned toward the storage row behind you. Perfect for reflecting on poor life choices.",
       boundingBox: {
         x: 0.69,
         y: 0.2,

@@ -4,7 +4,7 @@ import { setScene } from "../../effects/mutators";
 const carLookRight: SceneDefinition = {
   id: "car-look-right",
   name: "Inside The Car",
-  description: "I look to my right and see the glove box slightly ajar.",
+  description: "Looking to my right, I see the glove box slightly ajar. At least something in this car still opens.",
   imageSrc: "/scenes/chapter01/car-look-right.png",
   interactions: [
     {
@@ -16,7 +16,7 @@ const carLookRight: SceneDefinition = {
     {
       id: "glove_box",
       name: "Glove box",
-      description: "The glove box is slightly ajar. This is a very old car.",
+      description: "The glove box is slightly ajar. This is a very old car. The kind that has character, which is code for 'falling apart'.",
       boundingBox: {
         x: 0,
         y: 0.38,

@@ -5,14 +5,14 @@ const storageOutsideCar: SceneDefinition = {
   id: "storage-outside-car",
   name: "Storage Facility Approach",
   description:
-    "Late afternoon outside a suburban storage facility. Fallen leaves collect near unit doors while a sedan idles nearby.",
+    "Late afternoon outside a suburban storage facility. Fallen leaves collect near unit doors while an old sedan sits nearby, looking like it hasn't moved in days.",
   imageSrc: "/scenes/chapter01/storage-outside-car.png",
   interactions: [],
   objects: [
     {
       id: "car_001",
       name: "Sedan",
-      description: "Family sedan idling outside the storage facility.",
+      description: "An old family sedan covered in a thin layer of dust. It looks like it's been sitting here for days, maybe longer. Definitely not winning any beauty contests.",
       boundingBox: {
         x: 0.65,
         y: 0.39,
@@ -34,7 +34,7 @@ const storageOutsideCar: SceneDefinition = {
     {
       id: "storage_door_001",
       name: "Storage Unit Door",
-      description: "Roll-up door leading into your rented unit.",
+      description: "A roll-up door leading into your rented unit. Because calling it 'home' would be generous.",
       boundingBox: {
         x: 0.22,
         y: 0.31,

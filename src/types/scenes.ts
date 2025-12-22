@@ -1,6 +1,4 @@
 import { GameState } from "../effects/useGameState";
-import type { SceneId } from "../data/scenes";
-
 type SceneEffectCommandFunction = (state: GameState) => GameState;
 export interface ObjectInteraction {
   label: string;
@@ -31,7 +29,7 @@ export interface SceneObject {
 }
 
 export interface SceneDefinition {
-  id: SceneId;
+  id: string;
   name: string;
   imageSrc: string;
   description?: string;

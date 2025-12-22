@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import SceneView from "./components/SceneView";
 import SceneEditor from "./components/SceneEditor";
-import { scenes } from "./data/scenes";
+import { games, type GameId } from "./data/games";
 import { useGameState } from "./effects/useGameState";
+import type { GameDefinition } from "./types/games";
 import type {
   ObjectInteraction,
   SceneDefinition,
@@ -10,18 +11,83 @@ import type {
 } from "./types/scenes";
 import "./App.css";
 
-const App = () => {
+const GAME_SELECTION_STORAGE_KEY = "mission-complete/selected-game";
+
+const loadSelectedGameId = (): GameId | null => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  try {
+    const stored = window.localStorage.getItem(GAME_SELECTION_STORAGE_KEY);
+    if (!stored) {
+      return null;
+    }
+    return games.some((game) => game.id === stored) ? (stored as GameId) : null;
+  } catch (error) {
+    console.warn("Failed to read selected game", error);
+    return null;
+  }
+};
+
+const GameSelection = ({
+  onSelectGame,
+}: {
+  onSelectGame: (gameId: GameId) => void;
+}) => {
+  return (
+    <div className="appStack">
+      <main className="appShell">
+        <section className="panel gameSelectPanel">
+          <header className="gameSelectHeader">
+            <p className="eyebrow">Select a game</p>
+            <h1>Pick your mission</h1>
+            <p className="gameSelectSubhead">
+              Choose a story to jump into. Progress saves per game.
+            </p>
+          </header>
+          <div className="gameSelectGrid">
+            {games.map((game) => (
+              <button
+                key={game.id}
+                type="button"
+                className="gameCard"
+                onClick={() => onSelectGame(game.id)}
+              >
+                <span className="gameCardTitle">{game.name}</span>
+                <span className="gameCardMeta">
+                  {game.scenes.length > 0
+                    ? `${game.scenes.length} scenes ready`
+                    : "No scenes yet"}
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+};
+
+type GameSessionProps = {
+  game: GameDefinition;
+  onExitToSelector: () => void;
+};
+
+const GameSession = ({ game, onExitToSelector }: GameSessionProps) => {
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSceneEditorOpen, setIsSceneEditorOpen] = useState(false);
-  const { executeEffect, gameState, resetGame, resetMessage } = useGameState();
+  const { executeEffect, gameState, resetGame, resetMessage } = useGameState({
+    initialSceneId: game.initialSceneId,
+    storageKey: `${game.id}/game-state`,
+  });
   const menuWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const sceneMap = useMemo(() => {
     return new Map<string, SceneDefinition>(
-      scenes.map((scene) => [scene.id, scene])
+      game.scenes.map((scene) => [scene.id, scene])
     );
-  }, []);
+  }, [game.scenes]);
 
   const currentScene = sceneMap.get(gameState.currentSceneId);
   const selectedObject: SceneObject | null =
@@ -74,6 +140,10 @@ const App = () => {
     setIsMenuOpen((prevState) => !prevState);
   };
 
+  const handleMenuClose = () => {
+    setIsMenuOpen(false);
+  };
+
   const handleNewGame = () => {
     setSelectedObjectId(null);
     resetGame();
@@ -87,6 +157,13 @@ const App = () => {
 
   const handleCloseSceneEditor = () => {
     setIsSceneEditorOpen(false);
+  };
+
+  const handleChangeGame = () => {
+    setSelectedObjectId(null);
+    resetMessage();
+    setIsMenuOpen(false);
+    onExitToSelector();
   };
 
   useEffect(() => {
@@ -133,17 +210,32 @@ const App = () => {
           Menu
         </button>
         {isMenuOpen && (
-          <div className="appMenu" role="menu" aria-label="Game menu">
-            <button type="button" className="menuItem" onClick={handleNewGame}>
-              New game
-            </button>
-            <button
-              type="button"
-              className="menuItem"
-              onClick={handleOpenSceneEditor}
+          <div className="appMenuOverlay" onClick={handleMenuClose}>
+            <div
+              className="appMenu"
+              role="menu"
+              aria-label="Game menu"
+              onClick={(event) => event.stopPropagation()}
             >
-              DEV: edit current scene
-            </button>
+              <button type="button" className="menuItem" onClick={handleNewGame}>
+                New game
+              </button>
+              <button
+                type="button"
+                className="menuItem"
+                onClick={handleChangeGame}
+              >
+                Select game
+              </button>
+              <button
+                type="button"
+                className="menuItem"
+                onClick={handleOpenSceneEditor}
+                disabled={game.scenes.length === 0}
+              >
+                DEV: edit current scene
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -157,7 +249,10 @@ const App = () => {
           {menu}
           <main className="appShell">
             <section className="panel">
-              <p>No scenes registered yet. Add one in src/data/scenes.ts.</p>
+              <p>
+                No scenes registered yet. Add one in{" "}
+                <code>{`src/data/${game.id}/`}</code>.
+              </p>
             </section>
           </main>
         </div>
@@ -165,6 +260,7 @@ const App = () => {
           <SceneEditor
             initialSceneId={gameState.currentSceneId}
             onClose={handleCloseSceneEditor}
+            scenes={game.scenes}
           />
         )}
       </>
@@ -193,9 +289,49 @@ const App = () => {
         <SceneEditor
           initialSceneId={gameState.currentSceneId}
           onClose={handleCloseSceneEditor}
+          scenes={game.scenes}
         />
       )}
     </>
+  );
+};
+
+const App = () => {
+  const [selectedGameId, setSelectedGameId] = useState<GameId | null>(
+    loadSelectedGameId
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      if (selectedGameId) {
+        window.localStorage.setItem(
+          GAME_SELECTION_STORAGE_KEY,
+          selectedGameId
+        );
+      } else {
+        window.localStorage.removeItem(GAME_SELECTION_STORAGE_KEY);
+      }
+    } catch (error) {
+      console.warn("Failed to store selected game", error);
+    }
+  }, [selectedGameId]);
+
+  const selectedGame =
+    games.find((game) => game.id === selectedGameId) ?? null;
+
+  if (!selectedGame) {
+    return <GameSelection onSelectGame={setSelectedGameId} />;
+  }
+
+  return (
+    <GameSession
+      key={selectedGame.id}
+      game={selectedGame}
+      onExitToSelector={() => setSelectedGameId(null)}
+    />
   );
 };
 

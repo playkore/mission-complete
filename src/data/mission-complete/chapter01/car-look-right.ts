@@ -1,11 +1,11 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { setScene } from "../../../effects/mutators";
 
 const carLookRight: SceneDefinition = {
   id: "car-look-right",
   name: "Inside The Car",
   description: "Looking to my right, I see the glove box slightly ajar. At least something in this car still opens.",
-  imageSrc: "/scenes/chapter01/car-look-right.png",
+  imageSrc: "/scenes/mission-complete/chapter01/car-look-right.png",
   interactions: [
     {
       label: "Look left",

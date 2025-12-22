@@ -1,8 +1,7 @@
 import { InventoryItemId } from "../types/inventory";
-import type { SceneId } from "../data/scenes";
 import { GameState, GameStateLook } from "./useGameState";
 
-export const setScene = (sceneId: SceneId) => {
+export const setScene = (sceneId: string) => {
   return (state: GameState): GameState => {
     return {
       ...state,

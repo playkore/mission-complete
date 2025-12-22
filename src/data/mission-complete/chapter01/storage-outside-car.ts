@@ -1,12 +1,12 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { setMessage, setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { setMessage, setScene } from "../../../effects/mutators";
 
 const storageOutsideCar: SceneDefinition = {
   id: "storage-outside-car",
   name: "Storage Facility Approach",
   description:
     "Late afternoon outside a suburban storage facility. Fallen leaves collect near unit doors while an old sedan sits nearby, looking like it hasn't moved in days.",
-  imageSrc: "/scenes/chapter01/storage-outside-car.png",
+  imageSrc: "/scenes/mission-complete/chapter01/storage-outside-car.png",
   interactions: [],
   objects: [
     {

@@ -1,12 +1,12 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { setScene } from "../../../effects/mutators";
 
 const storageExit: SceneDefinition = {
   id: "storage-exit",
   name: "Storage Exit Door",
   description:
     "An industrial metal door marked EXIT bleeds warm light through the crack at the bottom. Freedom is just beyond this door. Or at least a parking lot.",
-  imageSrc: "/scenes/chapter01/storage-exit.png",
+  imageSrc: "/scenes/mission-complete/chapter01/storage-exit.png",
   interactions: [
     {
       label: "Turn left",

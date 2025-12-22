@@ -1,12 +1,12 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { addToInventory, setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { addToInventory, setScene } from "../../../effects/mutators";
 
 const storageVcr: SceneDefinition = {
   id: "storage-vcr",
   name: "Workbench & VCR",
   description:
     "A dusty workbench holds a VCR surrounded by tools, extension cords, and paint cans.",
-  imageSrc: "/scenes/chapter01/storage-vcr.png",
+  imageSrc: "/scenes/mission-complete/chapter01/storage-vcr.png",
   interactions: [
     {
       label: "Turn left",
@@ -23,7 +23,7 @@ const storageVcr: SceneDefinition = {
       name: "Duct Tape",
       description:
         "Reliable, gray, and ready to fix anything that's more stubborn than it should be. The universal solution to problems that probably needed actual repair.",
-      imageSrc: "/scenes/chapter01/storage-vcr-duct-tape.png",
+      imageSrc: "/scenes/mission-complete/chapter01/storage-vcr-duct-tape.png",
       visible: (state) => !state.inventory.includes("duct-tape"),
       boundingBox: {
         x: 0.54,

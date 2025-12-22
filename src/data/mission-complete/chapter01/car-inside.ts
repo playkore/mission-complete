@@ -1,12 +1,12 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { setMessage, setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { setMessage, setScene } from "../../../effects/mutators";
 
 const storageOutsideCarInside: SceneDefinition = {
   id: "car-inside",
   name: "Inside The Car",
   description:
     "Inside the dusty sedan parked outside the storage facility. The engine is off, the keys are in the ignition, and everything smells vaguely of regret and old upholstery.",
-  imageSrc: "/scenes/chapter01/car-inside.png",
+  imageSrc: "/scenes/mission-complete/chapter01/car-inside.png",
   interactions: [
     {
       label: "Step back outside",

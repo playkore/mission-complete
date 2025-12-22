@@ -1,12 +1,12 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { addToInventory, setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { addToInventory, setScene } from "../../../effects/mutators";
 
 const storageShelf: SceneDefinition = {
   id: "storage-shelf-car-keys",
   name: "Shelf",
   description:
     "A cluttered shelf inside the storage unit.",
-  imageSrc: "/scenes/chapter01/storage-shelf.png",
+  imageSrc: "/scenes/mission-complete/chapter01/storage-shelf.png",
   interactions: [
     {
       label: "Get back",
@@ -18,7 +18,7 @@ const storageShelf: SceneDefinition = {
       id: "car-keys",
       name: "Car keys",
       description: "Old Mercedes car keys. Even the keys look tired.",
-      imageSrc: "/scenes/chapter01/storage-shelf-car-keys.png",
+      imageSrc: "/scenes/mission-complete/chapter01/storage-shelf-car-keys.png",
       visible: (state) => !state.inventory.includes("car-keys"),
       boundingBox: {
         x: 0.48,

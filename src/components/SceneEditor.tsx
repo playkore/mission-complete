@@ -9,13 +9,13 @@ import type {
   SceneDefinition,
   SceneObject,
 } from "../types/scenes";
-import { scenes } from "../data/scenes";
 import { resolveSceneImage } from "../utils/resolveSceneImage";
 import "./SceneEditor.css";
 
 export interface SceneEditorProps {
   initialSceneId?: string;
   onClose: () => void;
+  scenes: SceneDefinition[];
 }
 
 type DraftScene = Omit<SceneDefinition, "id" | "objects"> & {
@@ -44,7 +44,7 @@ type PointerSession =
       corner: ResizeCorner;
     };
 
-const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
+const SceneEditor = ({ initialSceneId, onClose, scenes }: SceneEditorProps) => {
   const defaultSceneId = (initialSceneId ?? scenes[0]?.id ?? "") as
     | SceneDefinition["id"]
     | "";
@@ -66,7 +66,7 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
     const scene = scenes.find((item) => item.id === selectedSceneId);
     setSceneDraft(createDraftScene(scene));
     setSelectedObjectId(null);
-  }, [selectedSceneId]);
+  }, [selectedSceneId, scenes]);
 
   useEffect(() => {
     const handleEscapeClose = (event: KeyboardEvent) => {
@@ -84,7 +84,7 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
 
   const sceneOptions = useMemo(
     () => scenes.map((scene) => ({ id: scene.id, name: scene.name })),
-    []
+    [scenes]
   );
 
   const selectedObject =
@@ -361,6 +361,33 @@ const SceneEditor = ({ initialSceneId, onClose }: SceneEditorProps) => {
       setSelectedObjectId(null);
     }
   };
+
+  if (scenes.length === 0) {
+    return (
+      <div className="sceneEditorOverlay" role="dialog" aria-modal="true">
+        <div className="sceneEditorShell">
+          <header className="sceneEditorHeader">
+            <div>
+              <p className="sceneEditorEyebrow">Scene editor</p>
+              <h2>No scenes available</h2>
+            </div>
+            <div className="sceneEditorHeaderControls">
+              <button
+                type="button"
+                className="sceneEditorButton sceneEditorButton--ghost"
+                onClick={onClose}
+              >
+                Close
+              </button>
+            </div>
+          </header>
+          <p className="sceneEditorEmptyState">
+            Add a scene to start editing interactive regions.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="sceneEditorOverlay" role="dialog" aria-modal="true">

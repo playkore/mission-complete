@@ -1,12 +1,12 @@
-import type { SceneDefinition } from "../../types/scenes";
-import { setMessage, setScene } from "../../effects/mutators";
+import type { SceneDefinition } from "../../../types/scenes";
+import { setMessage, setScene } from "../../../effects/mutators";
 
 const storageBack: SceneDefinition = {
   id: "storage-back",
   name: "Storage Unit Back Area",
   description:
     "The center of the unit is occupied by a splintered wooden chair. It appears to have lost the will to exist years ago. Dust and aging shelves complete this masterpiece of neglect.",
-  imageSrc: "/scenes/chapter01/storage-back.png",
+  imageSrc: "/scenes/mission-complete/chapter01/storage-back.png",
   interactions: [
     {
       label: "Turn left",
@@ -23,7 +23,7 @@ const storageBack: SceneDefinition = {
       name: "Splintered Chair",
       description:
         "The chair is broken. This conclusion required minimal analysis. I've been sitting on it for months. I'm not lightweight. At least, not by human standards. Classification pending.",
-      imageSrc: "/scenes/chapter01/storage-back-chair-broken.png",
+      imageSrc: "/scenes/mission-complete/chapter01/storage-back-chair-broken.png",
       visible: (state) => !state.chairFixed,
       boundingBox: {
         x: 0.13,
@@ -54,7 +54,7 @@ const storageBack: SceneDefinition = {
       name: "Chair",
       description:
         "The chair has been fixed. It's now safe to sit on again. Comfort levels have not improved significantly. Or at all.",
-      imageSrc: "/scenes/chapter01/storage-back-chair-fixed.png",
+      imageSrc: "/scenes/mission-complete/chapter01/storage-back-chair-fixed.png",
       visible: (state) => state.chairFixed,
       boundingBox: {
         x: 0.3,

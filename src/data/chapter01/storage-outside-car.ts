@@ -24,7 +24,7 @@ const storageOutsideCar: SceneDefinition = {
           label: "Get in car",
           effect: (state) => {
             if (state.inventory.includes("car-keys")) {
-              return setScene("storage-outside-car-inside")(state);
+              return setScene("car-inside")(state);
             } 
             return setMessage("The car is locked. I need to find my keys.")(state);
           }

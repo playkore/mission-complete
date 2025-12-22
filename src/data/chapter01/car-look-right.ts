@@ -9,7 +9,7 @@ const carLookRight: SceneDefinition = {
   interactions: [
     {
       label: "Look left",
-      effect: setScene("storage-outside-car-inside"),
+      effect: setScene("car-inside"),
     },
   ],
   objects: [

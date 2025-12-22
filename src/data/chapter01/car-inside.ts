@@ -6,7 +6,7 @@ const storageOutsideCarInside: SceneDefinition = {
   name: "Inside The Car",
   description:
     "Inside the dusty sedan parked outside the storage facility. The engine is off, the keys are in the ignition, and everything smells vaguely of regret and old upholstery.",
-  imageSrc: "/scenes/chapter01/storage-outside-car-inside.png",
+  imageSrc: "/scenes/chapter01/car-inside.png",
   interactions: [
     {
       label: "Step back outside",

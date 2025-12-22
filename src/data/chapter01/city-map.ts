@@ -10,7 +10,7 @@ const cityMap: SceneDefinition = {
   interactions: [
     {
       label: "Close map",
-      effect: setScene("storage-outside-car-inside"),
+      effect: setScene("car-inside"),
     },
   ],
   objects: [
@@ -27,7 +27,7 @@ const cityMap: SceneDefinition = {
       interactions: [
         {
           label: "Go to Storage Units",
-          effect: setScene("storage-outside-car-inside"),
+          effect: setScene("car-inside"),
         },
       ],
     },

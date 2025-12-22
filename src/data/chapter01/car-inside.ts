@@ -2,7 +2,7 @@ import type { SceneDefinition } from "../../types/scenes";
 import { setMessage, setScene } from "../../effects/mutators";
 
 const storageOutsideCarInside: SceneDefinition = {
-  id: "storage-outside-car-inside",
+  id: "car-inside",
   name: "Inside The Car",
   description:
     "Inside the dusty sedan parked outside the storage facility. The engine is off, the keys are in the ignition, and everything smells vaguely of regret and old upholstery.",

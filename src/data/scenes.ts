@@ -5,12 +5,12 @@ import type { SceneDefinition } from "../types/scenes";
 
 // Chapter 01
 import carGloveBox from "./chapter01/car-glove-box";
+import carInside from "./chapter01/car-inside";
 import carLookRight from "./chapter01/car-look-right";
 import cityMap from "./chapter01/city-map";
 import storageBack from "./chapter01/storage-back";
 import storageExit from "./chapter01/storage-exit";
 import storageMirror from "./chapter01/storage-mirror";
-import storageOutsideCarInside from "./chapter01/storage-outside-car-inside";
 import storageOutsideCar from "./chapter01/storage-outside-car";
 import storageShelf from "./chapter01/storage-shelf";
 import storageVcr from "./chapter01/storage-vcr";
@@ -20,12 +20,12 @@ import cityMallRestaurantTable from "./chapter02/city-mall-restaurant-table";
 
 export type SceneId =
   | "car-glove-box"
+  | "car-inside"
   | "car-look-right"
   | "city-map"
   | "storage-back"
   | "storage-exit"
   | "storage-mirror"
-  | "storage-outside-car-inside"
   | "storage-outside-car"
   | "storage-shelf-car-keys"
   | "storage-vcr"
@@ -35,12 +35,12 @@ export type SceneId =
 export const scenes: SceneDefinition[] = [
   // Chapter 01
   carGloveBox,
+  carInside,
   carLookRight,
   cityMap,
   storageBack,
   storageExit,
   storageMirror,
-  storageOutsideCarInside,
   storageOutsideCar,
   storageShelf,
   storageVcr,

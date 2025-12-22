@@ -12,9 +12,9 @@ export type SceneId =
   | "car-glove-box"
   | "car-look-right"
   | "city-map"
-  | "store-entrance"
-  | "store-hardware-ducttape"
-  | "store-hardware";
+  
+  // City mall location scenes
+  | "city-mall-restaurant-table";
 
 type SceneEffectCommandFunction = (state: GameState) => GameState;
 export interface ObjectInteraction {

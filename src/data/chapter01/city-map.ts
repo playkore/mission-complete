@@ -13,7 +13,42 @@ const cityMap: SceneDefinition = {
       effect: setScene("storage-outside-car-inside"),
     },
   ],
-  objects: [],
+  objects: [
+    {
+      id: "storages",
+      name: "Storage Units",
+      description: "",
+      boundingBox: {
+        x: 0.02,
+        y: 0.06,
+        width: 0.41,
+        height: 0.17,
+      },
+      interactions: [
+        {
+          label: "Go to Storage Units",
+          effect: setScene("storage-outside-car-inside"),
+        },
+      ],
+    },
+    {
+      id: "city-mall",
+      name: "City Mall",
+      description: "",
+      boundingBox: {
+        x: 0.53,
+        y: 0.06,
+        width: 0.47,
+        height: 0.22,
+      },
+      interactions: [
+        {
+          label: "Go to City Mall",
+          effect: setScene("city-mall-restaurant-table"),
+        },
+      ],
+    },
+  ],
 };
 
 export default cityMap;

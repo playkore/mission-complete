@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { initialSceneId } from "../data/scenes";
-import { ObjectInteraction, SceneId } from "../types/scenes";
+import { initialSceneId, type SceneId } from "../data/scenes";
+import { ObjectInteraction } from "../types/scenes";
 import { InventoryItemId } from "../types/inventory";
 
 export type GameStateLook = "neutral" | "happy" | "angry";

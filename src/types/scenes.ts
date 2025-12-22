@@ -1,20 +1,5 @@
 import { GameState } from "../effects/useGameState";
-
-// Should correspond the image name <sceneId>.png in src/assets/scenes/chapter01/
-export type SceneId =
-  | "storage-back"
-  | "storage-shelf-car-keys"
-  | "storage-exit"
-  | "storage-mirror"
-  | "storage-vcr"
-  | "storage-outside-car-inside"
-  | "storage-outside-car"
-  | "car-glove-box"
-  | "car-look-right"
-  | "city-map"
-  
-  // City mall location scenes
-  | "city-mall-restaurant-table";
+import type { SceneId } from "../data/scenes";
 
 type SceneEffectCommandFunction = (state: GameState) => GameState;
 export interface ObjectInteraction {

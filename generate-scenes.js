@@ -3,6 +3,16 @@ import path from "node:path";
 
 const DATA_DIR = path.join(process.cwd(), "src", "data");
 const OUT_FILE = path.join(DATA_DIR, "scenes.ts");
+const WATCH_FLAG = "--watch";
+const WATCH_DEBOUNCE_MS = 100;
+const DEBUG_FLAG = "--debug";
+const POLL_FLAG = "--poll";
+const POLL_INTERVAL_MS = 500;
+const ARGS = new Set(process.argv.slice(2));
+
+const isDebug = () => ARGS.has(DEBUG_FLAG);
+const isWatch = () => ARGS.has(WATCH_FLAG);
+const isPoll = () => ARGS.has(POLL_FLAG);
 
 function toCamelCase(input) {
   const parts = input.split(/[^a-zA-Z0-9]+/).filter(Boolean);
@@ -42,12 +52,17 @@ async function walk(dir) {
   return files;
 }
 
-async function readSceneFiles() {
+async function listSceneFilePaths() {
   const files = await walk(DATA_DIR);
-  const sceneFiles = files
+  return files
     .filter((file) => path.basename(file) !== "scenes.ts")
     .filter((file) => !file.endsWith(".d.ts"))
+    .filter((file) => file.endsWith(".ts"))
     .sort((a, b) => a.localeCompare(b));
+}
+
+async function readSceneFiles() {
+  const sceneFiles = await listSceneFilePaths();
 
   const usedNames = new Map();
   const scenes = [];
@@ -143,7 +158,7 @@ function buildFile(scenes, initialSceneId) {
   return lines.join("\n");
 }
 
-async function main() {
+async function generate() {
   const scenes = await readSceneFiles();
   if (scenes.length === 0) {
     throw new Error("No scene files found under src/data.");
@@ -158,6 +173,166 @@ async function main() {
 
   const output = buildFile(scenes, initialSceneId);
   await fs.writeFile(OUT_FILE, output, "utf8");
+}
+
+async function listDirs(root) {
+  const dirs = [root];
+  const entries = await fs.readdir(root, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      const fullPath = path.join(root, entry.name);
+      dirs.push(...(await listDirs(fullPath)));
+    }
+  }
+  return dirs;
+}
+
+async function watchTree(onChange) {
+  const watchers = new Map();
+  const attach = async () => {
+    const dirs = await listDirs(DATA_DIR);
+    for (const dir of dirs) {
+      if (watchers.has(dir)) {
+        continue;
+      }
+      const watcher = fs.watch(dir, (eventType, filename) => {
+        if (isDebug()) {
+          const relDir = path.relative(process.cwd(), dir);
+          console.log(`[watch] ${eventType} ${relDir}/${filename ?? ""}`);
+        }
+        if (!filename || !filename.endsWith(".ts")) {
+          return;
+        }
+        if (path.basename(filename) === "scenes.ts") {
+          return;
+        }
+        onChange();
+      });
+      watchers.set(dir, watcher);
+    }
+  };
+
+  await attach();
+  return {
+    refresh: attach,
+  };
+}
+
+function startPolling(onChange) {
+  let lastSnapshot = new Map();
+
+  const snapshot = async () => {
+    const files = await listSceneFilePaths();
+    const nextSnapshot = new Map();
+    for (const file of files) {
+      const stat = await fs.stat(file);
+      nextSnapshot.set(file, stat.mtimeMs);
+    }
+
+    let changed = false;
+    if (nextSnapshot.size !== lastSnapshot.size) {
+      changed = true;
+    } else {
+      for (const [file, mtime] of nextSnapshot) {
+        if (lastSnapshot.get(file) !== mtime) {
+          changed = true;
+          break;
+        }
+      }
+    }
+
+    lastSnapshot = nextSnapshot;
+    if (changed) {
+      if (isDebug()) {
+        console.log("[poll] change detected");
+      }
+      onChange();
+    }
+  };
+
+  const interval = setInterval(() => {
+    snapshot().catch((error) => {
+      console.error(error);
+    });
+  }, POLL_INTERVAL_MS);
+
+  // Initial baseline.
+  snapshot().catch((error) => {
+    console.error(error);
+  });
+
+  return () => clearInterval(interval);
+}
+
+async function main() {
+  const shouldWatch = isWatch();
+  await generate();
+
+  if (!shouldWatch) {
+    return;
+  }
+
+  let timer = null;
+  const schedule = () => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      if (isDebug()) {
+        console.log("[watch] change detected, regenerating...");
+      }
+      generate().catch((error) => {
+        console.error(error);
+      });
+    }, WATCH_DEBOUNCE_MS);
+  };
+
+  const shouldPoll =
+    isPoll() || process.platform === "darwin";
+
+  if (shouldPoll) {
+    startPolling(schedule);
+  } else {
+    let watcher = null;
+    try {
+      watcher = fs.watch(
+        DATA_DIR,
+        { recursive: true },
+        (eventType, filename) => {
+          if (isDebug()) {
+            const relPath = filename
+              ? path.join(path.relative(process.cwd(), DATA_DIR), filename)
+              : path.relative(process.cwd(), DATA_DIR);
+            console.log(`[watch] ${eventType} ${relPath}`);
+          }
+          if (!filename || !filename.endsWith(".ts")) {
+            return;
+          }
+          if (path.basename(filename) === "scenes.ts") {
+            return;
+          }
+          schedule();
+        }
+      );
+    } catch {
+      watcher = null;
+    }
+
+    if (!watcher) {
+      let treeWatcher = null;
+      treeWatcher = await watchTree(() => {
+        schedule();
+        if (treeWatcher && treeWatcher.refresh) {
+          treeWatcher.refresh().catch(() => {});
+        }
+      });
+    }
+  }
+
+  console.log(
+    `Watching ${path.relative(process.cwd(), DATA_DIR)} for scene changes...`
+  );
+  process.stdin.resume();
 }
 
 main().catch((error) => {
